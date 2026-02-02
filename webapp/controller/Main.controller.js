@@ -4,7 +4,7 @@ sap.ui.define([
 function (Controller) {
     "use strict";
 
-    return Controller.extend("com.gsp26.sap17.nc.notificationcenter.controller.Main", {
+    return Controller.extend("com.gsp26.sap17.notificationcenter.controller.Main", {
         onInit: function () {
 
         }

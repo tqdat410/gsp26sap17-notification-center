@@ -2,7 +2,7 @@
 
 specVersion: "4.0"
 metadata:
-  name: com.gsp26.sap17.nc.notificationcenter
+  name: com.gsp26.sap17.notificationcenter
 type: application
 builder:
   resources:

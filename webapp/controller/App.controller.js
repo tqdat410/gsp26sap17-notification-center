@@ -5,7 +5,7 @@ sap.ui.define(
     function(BaseController) {
       "use strict";
   
-      return BaseController.extend("com.gsp26.sap17.nc.notificationcenter.controller.App", {
+      return BaseController.extend("com.gsp26.sap17.notificationcenter.controller.App", {
         onInit: function() {
         }
       });

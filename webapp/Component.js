@@ -10,7 +10,7 @@ sap.ui.define([
     function (UIComponent, Device, models) {
         "use strict";
 
-        return UIComponent.extend("com.gsp26.sap17.nc.notificationcenter.Component", {
+        return UIComponent.extend("com.gsp26.sap17.notificationcenter.Component", {
             metadata: {
                 manifest: "json"
             },
