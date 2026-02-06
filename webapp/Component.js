@@ -1,35 +1,72 @@
 /**
- * eslint-disable @sap/ui5-jsdocs/no-jsdoc
+ * Component.js
+ *
+ * Notification Center application component
+ * - Initializes device and app models
+ * - Loads initial unread count for bell badge
+ * - Provides refreshUnreadCount method for controllers
  */
-
 sap.ui.define([
-        "sap/ui/core/UIComponent",
-        "sap/ui/Device",
-        "com/gsp26/sap17/nc/notificationcenter/model/models"
-    ],
-    function (UIComponent, Device, models) {
-        "use strict";
+    'sap/ui/core/UIComponent',
+    'sap/ui/Device',
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator'
+], function (UIComponent, Device, JSONModel, Filter, FilterOperator) {
+    'use strict';
 
-        return UIComponent.extend("com.gsp26.sap17.notificationcenter.Component", {
-            metadata: {
-                manifest: "json"
-            },
+    return UIComponent.extend('com.gsp26.sap17.notificationcenter.Component', {
+        metadata: {
+            manifest: 'json'
+        },
 
-            /**
-             * The component is initialized by UI5 automatically during the startup of the app and calls the init method once.
-             * @public
-             * @override
-             */
-            init: function () {
-                // call the base component's init function
-                UIComponent.prototype.init.apply(this, arguments);
+        init: function () {
+            UIComponent.prototype.init.apply(this, arguments);
 
-                // enable routing
-                this.getRouter().initialize();
+            var oDeviceModel = new JSONModel(Device);
+            oDeviceModel.setDefaultBindingMode('OneWay');
+            this.setModel(oDeviceModel, 'device');
 
-                // set the device model
-                this.setModel(models.createDeviceModel(), "device");
+            var oAppModel = new JSONModel({
+                UnreadCount: 0,
+                busy: false,
+                lastRefresh: null
+            });
+            this.setModel(oAppModel, 'app');
+
+            this.getRouter().initialize();
+            this._loadUnreadCount();
+        },
+
+        _loadUnreadCount: function () {
+            var oModel = this.getModel();
+            var oAppModel = this.getModel('app');
+
+            if (!oModel) {
+                return;
             }
-        });
-    }
-);
+
+            var oListBinding = oModel.bindList('/Recipient', null, null, [
+                new Filter({ path: 'IsRead', operator: FilterOperator.EQ, value1: false }),
+                new Filter({ path: 'IsArchived', operator: FilterOperator.EQ, value1: false })
+            ], { $count: true });
+
+            oListBinding.requestContexts(0, 1).then(function () {
+                var iCount = oListBinding.getCount();
+                oAppModel.setProperty('/UnreadCount', iCount || 0);
+                oAppModel.setProperty('/lastRefresh', new Date());
+            }).catch(function (oError) {
+                jQuery.sap.log.error('Error loading unread count: ' + oError.message);
+                oAppModel.setProperty('/UnreadCount', 0);
+            });
+        },
+
+        refreshUnreadCount: function () {
+            this._loadUnreadCount();
+        },
+
+        destroy: function () {
+            UIComponent.prototype.destroy.apply(this, arguments);
+        }
+    });
+});

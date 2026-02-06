@@ -1,0 +1,177 @@
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.NotificationList"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic">
+
+    <semantic:SemanticPage
+        id="notificationListPage"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title text="{i18n>allNotifications}"/>
+        </semantic:titleHeading>
+
+        <semantic:content>
+            <IconTabBar
+                id="notificationTabs"
+                class="notificationTabBar"
+                select="onTabSelect"
+                selectedKey="{view>/selectedTab}"
+                expandable="false"
+                stretchContentHeight="true"
+                applyContentPadding="false">
+
+                <items>
+                    <IconTabFilter key="all" text="{i18n>all}" icon="sap-icon://list"/>
+                    <IconTabFilter key="unread" text="{i18n>unread}"
+                        icon="sap-icon://email" count="{app>/UnreadCount}"/>
+                    <IconTabFilter key="archived" text="{i18n>archived}"
+                        icon="sap-icon://folder"/>
+                </items>
+
+                <content>
+                    <OverflowToolbar design="Solid"
+                        class="sapUiTinyMarginBottom notificationFilterBar">
+                        <ToolbarSpacer/>
+                        <SearchField id="searchField" width="auto"
+                            placeholder="{i18n>searchNotifications}"
+                            liveChange="onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData minWidth="200px"
+                                    maxWidth="300px" shrinkable="true" priority="High"/>
+                            </layoutData>
+                        </SearchField>
+                        <ToolbarSeparator/>
+                        <Select id="categoryFilter" change="onCategoryFilterChange"
+                            selectedKey="all" width="auto" autoAdjustWidth="true">
+                            <items>
+                                <core:Item key="all" text="{i18n>allCategories}"/>
+                                <core:Item key="TASK" text="{i18n>categoryTask}"/>
+                                <core:Item key="SYTM" text="{i18n>categorySystem}"/>
+                                <core:Item key="INFO" text="{i18n>categoryInfo}"/>
+                                <core:Item key="ALRT" text="{i18n>categoryAlert}"/>
+                            </items>
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="1"/>
+                            </layoutData>
+                        </Select>
+                        <Select id="priorityFilter" change="onPriorityFilterChange"
+                            selectedKey="all" width="auto" autoAdjustWidth="true">
+                            <items>
+                                <core:Item key="all" text="{i18n>allPriorities}"/>
+                                <core:Item key="H" text="{i18n>priorityHigh}"/>
+                                <core:Item key="M" text="{i18n>priorityMedium}"/>
+                                <core:Item key="L" text="{i18n>priorityLow}"/>
+                            </items>
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="1"/>
+                            </layoutData>
+                        </Select>
+                        <DatePicker id="dateFromFilter" placeholder="{i18n>dateFrom}"
+                            change="onDateFilterChange" width="auto" displayFormat="short">
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="2"
+                                    minWidth="120px" shrinkable="true"/>
+                            </layoutData>
+                        </DatePicker>
+                        <DatePicker id="dateToFilter" placeholder="{i18n>dateTo}"
+                            change="onDateFilterChange" width="auto" displayFormat="short">
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="2"
+                                    minWidth="120px" shrinkable="true"/>
+                            </layoutData>
+                        </DatePicker>
+                    </OverflowToolbar>
+
+                    <Table id="notificationTable" class="notificationTable" width="auto"
+                        items="{
+                            path: '/Recipient',
+                            parameters: {
+                                $expand: '_Notification($expand=_Actions)',
+                                $count: true
+                            },
+                            sorter: {
+                                path: '_Notification/CreatedAt',
+                                descending: true
+                            }
+                        }"
+                        mode="MultiSelect"
+                        noDataText="{i18n>noNotifications}"
+                        growing="true" growingThreshold="20"
+                        growingScrollToLoad="true"
+                        itemPress="onNotificationPress"
+                        selectionChange="onSelectionChange"
+                        updateFinished="onUpdateFinished">
+                        <headerToolbar>
+                            <OverflowToolbar design="Transparent">
+                                <content>
+                                    <Title id="tableTitle" text="{i18n>notifications}" level="H2"/>
+                                    <ToolbarSpacer/>
+                                    <Button id="btnDelete"
+                                        text="{view>/deleteButtonText}"
+                                        icon="sap-icon://delete" type="Reject"
+                                        press="onDeleteAction"/>
+                                    <Button id="btnMarkRead"
+                                        text="{view>/markReadButtonText}"
+                                        icon="{view>/markReadButtonIcon}"
+                                        type="Transparent" press="onMarkReadAction"/>
+                                    <Button id="btnArchive"
+                                        text="{view>/archiveButtonText}"
+                                        icon="{view>/archiveButtonIcon}"
+                                        type="Transparent" press="onArchiveAction"
+                                        visible="{= ${view>/hasSelection} }"/>
+                                </content>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column>
+                                <Text text="{i18n>subjectColumn}"/>
+                            </Column>
+                            <Column width="8rem" minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="{i18n>categoryColumn}"/>
+                            </Column>
+                            <Column width="6rem" minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="{i18n>priorityColumn}"/>
+                            </Column>
+                            <Column width="10rem" minScreenWidth="Desktop" demandPopin="true">
+                                <Text text="{i18n>dateColumn}"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem vAlign="Middle" type="Navigation"
+                                press="onNotificationPress"
+                                highlight="{= ${IsRead} ? 'None' : 'Information'}">
+                                <cells>
+                                    <FormattedText htmlText="{parts: ['IsRead',
+                                        '_Notification/Title', '_Notification/Message'],
+                                        formatter: '.formatSubjectHtml'}"/>
+                                    <FormattedText htmlText="{parts: ['IsRead',
+                                        '_Notification/Category'],
+                                        formatter: '.formatCategoryHtml'}"/>
+                                    <FormattedText htmlText="{parts: ['IsRead',
+                                        '_Notification/Priority'],
+                                        formatter: '.formatPriorityHtml'}"/>
+                                    <FormattedText htmlText="{parts: ['IsRead',
+                                        '_Notification/CreatedAt'],
+                                        formatter: '.formatDateHtml'}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+            </IconTabBar>
+        </semantic:content>
+
+        <semantic:positiveAction>
+            <semantic:PositiveAction text="{i18n>markAllRead}" press="onMarkAllAsRead"/>
+        </semantic:positiveAction>
+
+        <semantic:negativeAction>
+            <semantic:NegativeAction text="{i18n>archiveAll}" press="onArchiveAll"/>
+        </semantic:negativeAction>
+
+    </semantic:SemanticPage>
+</mvc:View>

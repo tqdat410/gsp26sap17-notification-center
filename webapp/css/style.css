@@ -1,1 +1,198 @@
-/* Enter your custom styles here */
+/* Notification Center Custom Styles */
+
+/* Badge styling for bell icon */
+.sapFShellBarNotificationsButton .sapMBtnInner {
+    position: relative;
+}
+
+/* Unread notification highlight */
+.sapMNLI.sapMNLIUnread {
+    background-color: rgba(0, 112, 192, 0.05);
+}
+
+/* Unread notification - bold text */
+.notificationUnread {
+    font-weight: 700 !important;
+}
+
+.sapMText.notificationUnread {
+    font-weight: 700 !important;
+}
+
+.sapMObjStatus.notificationUnread .sapMObjStatusText {
+    font-weight: 700 !important;
+}
+
+span.notificationUnread {
+    font-weight: 700 !important;
+}
+
+/* Priority indicator colors */
+.sapMNLI .sapMNLIPriorityHigh .sapMNLIBPriorityDiv {
+    background-color: #bb0000;
+}
+
+.sapMNLI .sapMNLIPriorityMedium .sapMNLIBPriorityDiv {
+    background-color: #e9730c;
+}
+
+.sapMNLI .sapMNLIPriorityLow .sapMNLIBPriorityDiv {
+    background-color: #107e3e;
+}
+
+/* Popover styling */
+.sapMPopover .sapMNLIB {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.sapMPopover .sapMNLIB:last-child {
+    border-bottom: none;
+}
+
+/* Icon tab bar styling */
+.sapMITBFilter .sapMITBCount {
+    font-weight: bold;
+}
+
+/* Compact mode adjustments */
+.sapUiSizeCompact .sapMNLI {
+    padding: 0.5rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+    .sapMPopover {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .sapMNLIBButtons {
+        flex-direction: column;
+    }
+
+    .sapMNLIBButtons .sapMBtn {
+        margin-bottom: 0.25rem;
+    }
+}
+
+/* Animation for new notifications */
+@keyframes notificationSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.sapMNLI {
+    animation: notificationSlideIn 0.3s ease-out;
+}
+
+/* Notification message styling - secondary text appearance */
+.notificationMessage {
+    color: #6a6d70;
+    font-size: 0.875rem;
+}
+
+/* FormattedText em tag - used for message text in subject column */
+.sapMFT em {
+    color: #6a6d70;
+    font-style: normal;
+}
+
+/* Subject column - ensure proper vertical alignment */
+.sapMListTblCell .sapMVBox {
+    justify-content: center;
+}
+
+/* Rounded Table Styling */
+.notificationTable {
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Remove default inner borders of the table */
+.notificationTable .sapMListUl {
+    border: none !important;
+}
+
+.notificationTable .sapMListTblHeader {
+    border-bottom: 1px solid #e5e5e5 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Tab Bar Styling */
+.notificationTabBar .sapMITH {
+    border-radius: 0.75rem 0.75rem 0 0;
+    background-color: white;
+    border: 1px solid #e5e5e5 !important;
+    border-bottom: none !important;
+}
+
+.notificationTabBar .sapMITBContent {
+    border: none;
+    border-radius: 0 0 0.75rem 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0 !important;
+}
+
+.notificationTabBar {
+    margin: 1.5rem;
+    width: auto;
+    box-sizing: border-box;
+}
+
+/* Filter Bar Styling */
+.notificationFilterBar {
+    border: 1px solid #e5e5e5 !important;
+    border-top: none !important;
+    border-radius: 0 0 0.75rem 0.75rem;
+    height: auto !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+}
+
+/* Fix sticky/dummy area borders */
+.sapMListDummyArea, .sapMListDummyAreaSticky {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    height: 0 !important;
+    min-height: 0 !important;
+}
+
+/* Ensure table container doesn't leak bottom border */
+.notificationTable .sapMList {
+    border-bottom: none !important;
+}
+
+/* Remove bottom border from last row */
+.notificationTable .sapMListShowSeparatorsAll .sapMLIBShowSeparator:last-child > td,
+.notificationTable .sapMListShowSeparatorsAll .sapMListTblSubRow:last-child > td {
+    border-bottom: none !important;
+}
+
+/* Detail Page Card Styling */
+.notificationDetailCard {
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden;
+    background-color: white;
+    box-sizing: border-box;
+    margin: 1rem !important;
+    width: auto !important;
+    max-width: none !important;
+}

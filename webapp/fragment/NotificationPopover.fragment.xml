@@ -1,0 +1,37 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <ResponsivePopover
+        id="notificationPopover"
+        placement="Bottom"
+        contentWidth="420px"
+        contentHeight="480px"
+        title="{i18n>notifications}"
+        class="sapUiResponsivePadding--content">
+
+        <customHeader>
+            <OverflowToolbar>
+                <Title text="{i18n>notifications}"/>
+                <ToolbarSpacer/>
+                <Button
+                    id="markAllReadBtn"
+                    text="{i18n>markAllRead}"
+                    type="Transparent"
+                    press="onMarkAllAsRead"
+                    enabled="{= ${app>/UnreadCount} > 0 }"/>
+            </OverflowToolbar>
+        </customHeader>
+
+        <content>
+            <List
+                id="popoverNotificationList"
+                noDataText="{i18n>noNotifications}"
+                growing="true"
+                growingThreshold="10"
+                growingScrollToLoad="true">
+            </List>
+        </content>
+
+    </ResponsivePopover>
+</core:FragmentDefinition>

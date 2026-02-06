@@ -1,7 +1,28 @@
-<mvc:View controllerName="com.gsp26.sap17.notificationcenter.controller.App"
-    xmlns:html="http://www.w3.org/1999/xhtml"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
-    <App id="app">
-    </App>
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    displayBlock="true">
+
+    <VBox fitContainer="true">
+        <f:ShellBar
+            id="shellBar"
+            title="{i18n>appTitle}"
+            homeIcon="sap-icon://home"
+            showMenuButton="true"
+            menuButtonPressed="onMenuPress"
+            showNavButton="false"
+            showNotifications="true"
+            notificationsNumber="{= ${app>/UnreadCount} > 99 ? '99+' : ${app>/UnreadCount} }"
+            notificationsPressed="onNotificationPress"
+            homeIconPressed="onHomePress">
+        </f:ShellBar>
+
+        <App id="app" class="sapUiSizeCompact">
+            <layoutData>
+                <FlexItemData growFactor="1" baseSize="0%"/>
+            </layoutData>
+        </App>
+    </VBox>
 </mvc:View>
