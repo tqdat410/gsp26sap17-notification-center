@@ -11,8 +11,9 @@ sap.ui.define([
     'sap/ui/Device',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
-    'sap/ui/model/FilterOperator'
-], function (UIComponent, Device, JSONModel, Filter, FilterOperator) {
+    'sap/ui/model/FilterOperator',
+    'sap/base/Log'
+], function (UIComponent, Device, JSONModel, Filter, FilterOperator, Log) {
     'use strict';
 
     return UIComponent.extend('com.gsp26.sap17.notificationcenter.Component', {
@@ -56,7 +57,7 @@ sap.ui.define([
                 oAppModel.setProperty('/UnreadCount', iCount || 0);
                 oAppModel.setProperty('/lastRefresh', new Date());
             }).catch(function (oError) {
-                jQuery.sap.log.error('Error loading unread count: ' + oError.message);
+                Log.error('Error loading unread count: ' + oError.message);
                 oAppModel.setProperty('/UnreadCount', 0);
             });
         },

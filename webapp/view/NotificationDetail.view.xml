@@ -11,7 +11,7 @@
         toggleHeaderOnTitleClick="false"
         showFooter="true"
         showNavButton="true"
-        navButtonPress="onNavBack"
+        navButtonPress=".onNavBack"
         busy="{view>/busy}"
         busyIndicatorDelay="0">
 
@@ -20,7 +20,7 @@
                 <Button
                     icon="sap-icon://nav-back"
                     type="Transparent"
-                    press="onNavBack"
+                    press=".onNavBack"
                     class="sapUiTinyMarginEnd"
                     tooltip="{i18n>back}"/>
                 <Title text="{i18n>notificationDetails}"/>
@@ -91,7 +91,7 @@
                                 <Text text="{path: '_Notification/SourceObject', formatter: '.formatSourceObjectType'}"/>
                                 <Link
                                     text="{i18n>openSourceObject}"
-                                    press="onNavigateToSource"/>
+                                    press=".onNavigateToSource"/>
                             </VBox>
                         </HBox>
                     </content>
@@ -105,21 +105,21 @@
                 text="{i18n>openSourceObject}"
                 icon="sap-icon://action"
                 visible="{= !!${_Notification/SourceObject} }"
-                press="onNavigateToSource"/>
+                press=".onNavigateToSource"/>
         </semantic:footerMainAction>
 
         <semantic:footerCustomActions>
             <Button id="btnDelete"
                 text="{i18n>delete}" icon="sap-icon://delete"
-                type="Reject" press="onDelete"/>
+                type="Reject" press=".onDelete"/>
             <Button id="btnToggleRead"
                 text="{path: 'IsRead', formatter: '.formatMarkReadText'}"
                 icon="{path: 'IsRead', formatter: '.formatMarkReadIcon'}"
-                type="Transparent" press="onToggleRead"/>
+                type="Transparent" press=".onToggleRead"/>
             <Button id="btnArchive"
                 text="{path: 'IsArchived', formatter: '.formatArchiveText'}"
                 icon="{path: 'IsArchived', formatter: '.formatArchiveIcon'}"
-                type="Transparent" press="onArchive"/>
+                type="Transparent" press=".onArchive"/>
         </semantic:footerCustomActions>
 
     </semantic:SemanticPage>

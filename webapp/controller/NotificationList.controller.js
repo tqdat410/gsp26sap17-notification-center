@@ -10,11 +10,12 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'sap/m/MessageToast',
     'sap/m/MessageBox',
+    'sap/base/Log',
     'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
     'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper',
     'com/gsp26/sap17/notificationcenter/util/ToolbarStateHelper'
 ], function (Controller, Filter, FilterOperator, JSONModel, MessageToast,
-             MessageBox, Formatter, ActionHelper, ToolbarHelper) {
+             MessageBox, Log, Formatter, ActionHelper, ToolbarHelper) {
     'use strict';
 
     var EVENT_CHANNEL = 'notification.center';
@@ -130,7 +131,7 @@ sap.ui.define([
             if (!oCtx) { return; }
             var that = this, sR = oCtx.getProperty('RecipientID'), sN = oCtx.getProperty('NotificationID');
             if (!oCtx.getProperty('IsRead')) {
-                ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { jQuery.sap.log.error('Mark read failed: ' + e.message); });
+                ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { Log.error('Mark read failed: ' + e.message); });
             }
             this.getOwnerComponent().getRouter().navTo('detail', { recipientId: sR, notificationId: sN });
         },

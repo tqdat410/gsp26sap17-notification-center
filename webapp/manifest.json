@@ -1,5 +1,5 @@
 {
-  "_version": "1.48.0",
+  "_version": "2.0.0",
   "sap.app": {
     "id": "com.gsp26.sap17.notificationcenter",
     "type": "application",
@@ -60,7 +60,7 @@
   "sap.ui5": {
     "flexEnabled": true,
     "dependencies": {
-      "minUI5Version": "1.108.33",
+      "minUI5Version": "1.136.0",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
@@ -85,7 +85,6 @@
         "dataSource": "mainService",
         "preload": true,
         "settings": {
-          "synchronizationMode": "None",
           "operationMode": "Server",
           "autoExpandSelect": true,
           "earlyRequests": true,
@@ -110,9 +109,9 @@
     "routing": {
       "config": {
         "routerClass": "sap.m.routing.Router",
+        "type": "View",
         "viewType": "XML",
-        "async": true,
-        "viewPath": "com.gsp26.sap17.notificationcenter.view",
+        "path": "com.gsp26.sap17.notificationcenter.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
@@ -136,29 +135,31 @@
       ],
       "targets": {
         "notificationList": {
+          "type": "View",
           "viewType": "XML",
           "transition": "slide",
-          "viewId": "notificationList",
-          "viewName": "NotificationList"
+          "id": "notificationList",
+          "name": "NotificationList"
         },
         "notificationDetail": {
+          "type": "View",
           "viewType": "XML",
           "transition": "slide",
-          "viewId": "notificationDetail",
-          "viewName": "NotificationDetail"
+          "id": "notificationDetail",
+          "name": "NotificationDetail"
         },
         "settings": {
+          "type": "View",
           "viewType": "XML",
           "transition": "slide",
-          "viewId": "settings",
-          "viewName": "Settings"
+          "id": "settings",
+          "name": "Settings"
         }
       }
     },
     "rootView": {
       "viewName": "com.gsp26.sap17.notificationcenter.view.App",
       "type": "XML",
-      "async": true,
       "id": "App"
     }
   }

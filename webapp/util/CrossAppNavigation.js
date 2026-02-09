@@ -5,26 +5,28 @@
  * Handles navigation to source objects (e.g., Leave Request)
  */
 sap.ui.define([
-    'sap/m/MessageToast'
-], function (MessageToast) {
+    'sap/m/MessageToast',
+    'sap/ushell/Container'
+], function (MessageToast, Container) {
     'use strict';
 
     return {
         navigateToSource: function (sObject, sKey) {
-            var oCrossAppNav = sap.ushell && sap.ushell.Container &&
-                sap.ushell.Container.getService('CrossApplicationNavigation');
+            var oCrossAppNav = Container && Container.getServiceAsync('CrossApplicationNavigation');
 
             if (oCrossAppNav) {
-                switch (sObject) {
-                    case 'LEAVE_REQUEST':
-                        oCrossAppNav.toExternal({
-                            target: { semanticObject: 'Y17LeaveRequest', action: 'display' },
-                            params: { RequestId: sKey }
-                        });
-                        break;
-                    default:
-                        MessageToast.show('Navigate to: ' + sObject + ' - ' + sKey);
-                }
+                oCrossAppNav.then(function (oService) {
+                    switch (sObject) {
+                        case 'LEAVE_REQUEST':
+                            oService.toExternal({
+                                target: { semanticObject: 'Y17LeaveRequest', action: 'display' },
+                                params: { RequestId: sKey }
+                            });
+                            break;
+                        default:
+                            MessageToast.show('Navigate to: ' + sObject + ' - ' + sKey);
+                    }
+                });
             } else {
                 MessageToast.show('Source: ' + sObject + ' - ' + sKey);
             }

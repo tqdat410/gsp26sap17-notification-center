@@ -18,10 +18,12 @@ sap.ui.define([
     'sap/m/MessageToast',
     'sap/m/MessageBox',
     'sap/m/NotificationListItem',
+    'sap/base/Log',
+    'sap/ui/core/CustomData',
     'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
     'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper'
 ], function (Controller, Fragment, Menu, MenuItem, Filter, FilterOperator, Sorter,
-             MessageToast, MessageBox, NotificationListItem, Formatter, ActionHelper) {
+             MessageToast, MessageBox, NotificationListItem, Log, CustomData, Formatter, ActionHelper) {
     'use strict';
 
     var EVENT_CHANNEL = 'notification.center';
@@ -51,7 +53,7 @@ sap.ui.define([
         },
 
         onMenuPress: function (oEvent) {
-            var oButton = oEvent.getSource();
+            var oButton = oEvent.getParameter("button") || this.byId("shellBar");
             var oBundle = this.getView().getModel('i18n').getResourceBundle();
             var that = this;
 
@@ -122,12 +124,15 @@ sap.ui.define([
             return new NotificationListItem({
                 title: '{_Notification/Title}',
                 description: '{_Notification/Message}',
-                datetime: { path: '_Notification/CreatedAt', formatter: Formatter.formatDateTime },
                 unread: '{= !${IsRead}}',
                 priority: { path: '_Notification/Priority', formatter: Formatter.formatPriority },
                 showCloseButton: false,
                 press: that.onNotificationItemPress.bind(that)
-            });
+            }).addCustomData(new CustomData({
+                key: 'datetime',
+                value: { path: '_Notification/CreatedAt', formatter: Formatter.formatDateTime },
+                writeToDom: true
+            }));
         },
 
         _refreshPopoverData: function () {
@@ -155,7 +160,7 @@ sap.ui.define([
                         that._refreshPopoverData();
                         that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
                     }).catch(function (oError) {
-                        jQuery.sap.log.error('Failed to mark as read: ' + oError.message);
+                        Log.error('Failed to mark as read: ' + oError.message);
                     });
             }
 

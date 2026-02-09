@@ -12,18 +12,18 @@
             title="{i18n>appTitle}"
             homeIcon="sap-icon://home"
             showMenuButton="true"
-            menuButtonPressed="onMenuPress"
+            menuButtonPressed=".onMenuPress"
             showNavButton="false"
             showNotifications="true"
             notificationsNumber="{= ${app>/UnreadCount} > 99 ? '99+' : ${app>/UnreadCount} }"
-            notificationsPressed="onNotificationPress"
-            homeIconPressed="onHomePress">
+            notificationsPressed=".onNotificationPress"
+            homeIconPressed=".onHomePress">
             <f:additionalContent>
                 <OverflowToolbarButton
                     id="settingsButton"
                     icon="sap-icon://action-settings"
                     type="Transparent"
-                    press="onSettingsPress"
+                    press=".onSettingsPress"
                     tooltip="{i18n>settings}"/>
             </f:additionalContent>
         </f:ShellBar>

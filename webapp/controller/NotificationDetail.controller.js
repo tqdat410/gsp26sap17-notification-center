@@ -13,11 +13,13 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'sap/m/MessageToast',
     'sap/m/MessageBox',
+    'sap/ui/core/routing/History',
+    'sap/base/Log',
     'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
     'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper',
     'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
     'com/gsp26/sap17/notificationcenter/util/CrossAppNavigation'
-], function (Controller, JSONModel, MessageToast, MessageBox,
+], function (Controller, JSONModel, MessageToast, MessageBox, History, Log,
              Formatter, ActionHelper, BooleanHelper, CrossAppNav) {
     'use strict';
 
@@ -99,13 +101,13 @@ sap.ui.define([
                         oCtx.refresh();
                         that._publishRefresh();
                     }).catch(function (oErr) {
-                        jQuery.sap.log.error('Auto mark-as-read failed: ' + oErr.message);
+                        Log.error('Auto mark-as-read failed: ' + oErr.message);
                     });
             });
         },
 
         onNavBack: function () {
-            var oHistory = sap.ui.core.routing.History.getInstance();
+            var oHistory = History.getInstance();
             if (oHistory.getPreviousHash() !== undefined) {
                 window.history.go(-1);
             } else {

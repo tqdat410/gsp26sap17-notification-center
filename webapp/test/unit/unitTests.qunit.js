@@ -1,12 +1,5 @@
-/* global QUnit */
-QUnit.config.autostart = false;
-
-sap.ui.getCore().attachInit(function () {
+sap.ui.define([
+	"com/gsp26/sap17/notificationcenter/test/unit/AllTests"
+], function () {
 	"use strict";
-
-	sap.ui.require([
-		"com/gsp26/sap17/notificationcenter/test/unit/AllTests"
-	], function () {
-		QUnit.start();
-	});
 });

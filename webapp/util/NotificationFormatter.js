@@ -9,9 +9,13 @@
  */
 sap.ui.define([
     'sap/ui/core/format/DateFormat',
-    'com/gsp26/sap17/notificationcenter/util/BooleanHelper'
-], function (DateFormat, BooleanHelper) {
+    'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
+    'sap/ui/core/library',
+    'sap/base/security/encodeXML'
+], function (DateFormat, BooleanHelper, coreLibrary, encodeXML) {
     'use strict';
+
+    var Priority = coreLibrary.Priority;
 
     var oDateTimeFormat = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yy HH:mm:ss' });
     var oRelativeFormat = DateFormat.getDateTimeInstance({ relative: true, relativeScale: 'auto' });
@@ -38,7 +42,7 @@ sap.ui.define([
         },
 
         formatPriority: function (sPriority) {
-            return { 'H': sap.ui.core.Priority.High, 'M': sap.ui.core.Priority.Medium, 'L': sap.ui.core.Priority.Low }[sPriority] || sap.ui.core.Priority.None;
+            return { 'H': Priority.High, 'M': Priority.Medium, 'L': Priority.Low }[sPriority] || Priority.None;
         },
 
         formatPriorityState: function (sPriority) {
@@ -51,26 +55,26 @@ sap.ui.define([
         },
 
         formatSubjectHtml: function (vIsRead, sTitle, sMessage) {
-            var sT = jQuery.sap.encodeHTML(sTitle || '');
-            var sM = jQuery.sap.encodeHTML(sMessage || '');
+            var sT = encodeXML(sTitle || '');
+            var sM = encodeXML(sMessage || '');
             var bRead = BooleanHelper.isTrue(vIsRead);
             return bRead ? sT + ' - <em>' + sM + '</em>' : '<strong>' + sT + '</strong> - <em>' + sM + '</em>';
         },
 
         formatCategoryHtml: function (vIsRead, sCategory, oBundle) {
-            var sText = jQuery.sap.encodeHTML(this.formatCategory(sCategory, oBundle));
+            var sText = encodeXML(this.formatCategory(sCategory, oBundle));
             return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
         },
 
         formatDateHtml: function (vIsRead, sDateTime) {
-            var sText = jQuery.sap.encodeHTML(this.formatFullDateTime(sDateTime));
+            var sText = encodeXML(this.formatFullDateTime(sDateTime));
             return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
         },
 
         formatPriorityHtml: function (vIsRead, sPriority) {
             var sText = { 'H': 'High', 'M': 'Medium', 'L': 'Low' }[sPriority] || sPriority || '';
             var sColor = { 'H': '#bb0000', 'M': '#e9730c', 'L': '#107e3e' }[sPriority] || '#6a6d70';
-            var sEsc = jQuery.sap.encodeHTML(sText);
+            var sEsc = encodeXML(sText);
             var sSpan = '<span style="color:' + sColor + '">' + sEsc + '</span>';
             return BooleanHelper.isTrue(vIsRead) ? sSpan : '<strong>' + sSpan + '</strong>';
         },

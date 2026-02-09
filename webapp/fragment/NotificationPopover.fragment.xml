@@ -18,7 +18,7 @@
                     id="markAllReadBtn"
                     text="{i18n>markAllRead}"
                     type="Transparent"
-                    press="onMarkAllAsRead"
+                    press=".onMarkAllAsRead"
                     enabled="{= ${app>/UnreadCount} > 0 }"/>
             </OverflowToolbar>
         </customHeader>

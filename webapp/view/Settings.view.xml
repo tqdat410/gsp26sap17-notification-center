@@ -7,7 +7,7 @@
         id="settingsPage"
         headerPinnable="false"
         showNavButton="true"
-        navButtonPress="onNavBack">
+        navButtonPress=".onNavBack">
         <semantic:titleHeading>
             <Title text="{i18n>notificationSettings}"/>
         </semantic:titleHeading>
