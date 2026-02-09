@@ -46,6 +46,10 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo('main');
         },
 
+        onSettingsPress: function () {
+            this.getOwnerComponent().getRouter().navTo('settings');
+        },
+
         onMenuPress: function (oEvent) {
             var oButton = oEvent.getSource();
             var oBundle = this.getView().getModel('i18n').getResourceBundle();
@@ -57,6 +61,8 @@ sap.ui.define([
                         var sKey = oEvt.getParameter('item').getKey();
                         if (sKey === 'main') {
                             that.getOwnerComponent().getRouter().navTo('main');
+                        } else if (sKey === 'settings') {
+                            that.getOwnerComponent().getRouter().navTo('settings');
                         }
                     },
                     items: [
@@ -64,6 +70,11 @@ sap.ui.define([
                             key: 'main',
                             text: oBundle.getText('allNotifications'),
                             icon: 'sap-icon://list'
+                        }),
+                        new MenuItem({
+                            key: 'settings',
+                            text: oBundle.getText('notificationSettings'),
+                            icon: 'sap-icon://action-settings'
                         })
                     ]
                 });

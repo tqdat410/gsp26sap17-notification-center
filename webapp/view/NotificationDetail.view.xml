@@ -16,7 +16,15 @@
         busyIndicatorDelay="0">
 
         <semantic:titleHeading>
-            <Title text="{i18n>notificationDetails}"/>
+            <HBox alignItems="Center">
+                <Button
+                    icon="sap-icon://nav-back"
+                    type="Transparent"
+                    press="onNavBack"
+                    class="sapUiTinyMarginEnd"
+                    tooltip="{i18n>back}"/>
+                <Title text="{i18n>notificationDetails}"/>
+            </HBox>
         </semantic:titleHeading>
 
         <semantic:content>
@@ -25,6 +33,8 @@
                     id="notificationHeader"
                     class="notificationDetailCard"
                     title="{_Notification/Title}"
+                    number=""
+                    numberUnit=""
                     condensed="false"
                     backgroundDesign="Transparent"
                     responsive="true">

@@ -1,0 +1,20 @@
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.Settings"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:semantic="sap.f.semantic">
+    <semantic:SemanticPage
+        id="settingsPage"
+        headerPinnable="false"
+        showNavButton="true"
+        navButtonPress="onNavBack">
+        <semantic:titleHeading>
+            <Title text="{i18n>notificationSettings}"/>
+        </semantic:titleHeading>
+        <semantic:content>
+            <VBox class="sapUiMediumMargin">
+                <Text text="Settings page - To be implemented"/>
+            </VBox>
+        </semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>

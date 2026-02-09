@@ -144,6 +144,10 @@
                             <ColumnListItem vAlign="Middle" type="Navigation"
                                 press="onNotificationPress"
                                 highlight="{= ${IsRead} ? 'None' : 'Information'}">
+                                <customData>
+                                    <core:CustomData key="IsRead" value="{IsRead}" writeToDom="false"/>
+                                    <core:CustomData key="IsArchived" value="{IsArchived}" writeToDom="false"/>
+                                </customData>
                                 <cells>
                                     <FormattedText htmlText="{parts: ['IsRead',
                                         '_Notification/Title', '_Notification/Message'],

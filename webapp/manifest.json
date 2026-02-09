@@ -127,6 +127,11 @@
           "name": "detail",
           "pattern": "detail/{recipientId}/{notificationId}",
           "target": ["notificationDetail"]
+        },
+        {
+          "name": "settings",
+          "pattern": "settings",
+          "target": ["settings"]
         }
       ],
       "targets": {
@@ -141,6 +146,12 @@
           "transition": "slide",
           "viewId": "notificationDetail",
           "viewName": "NotificationDetail"
+        },
+        "settings": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "settings",
+          "viewName": "Settings"
         }
       }
     },

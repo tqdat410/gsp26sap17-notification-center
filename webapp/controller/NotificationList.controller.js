@@ -62,7 +62,10 @@ sap.ui.define([
             this.getOwnerComponent().refreshUnreadCount();
         },
 
-        _onRouteMatched: function () { this._applyFilters(); },
+        _onRouteMatched: function () {
+            this._applyFilters();
+            this._updateTableTitleCount();
+        },
 
         onTabSelect: function (oEvent) {
             this._sCurrentTab = oEvent.getParameter('key');
@@ -96,7 +99,30 @@ sap.ui.define([
             return a;
         },
 
-        _applyFilters: function () { var b = this.byId('notificationTable').getBinding('items'); if (b) { b.filter(this._buildFilters(), 'Application'); } },
+        _applyFilters: function () {
+            var b = this.byId('notificationTable').getBinding('items');
+            if (b) {
+                b.filter(this._buildFilters(), 'Application');
+                this._updateTableTitleCount();
+            }
+        },
+
+        _updateTableTitleCount: function () {
+            var oList = this.byId('notificationTable');
+            var oBinding = oList.getBinding('items');
+            var oTitle = this.byId('tableTitle');
+            var oBundle = this._getBundle();
+
+            if (oBinding && oTitle) {
+                oBinding.attachEventOnce('dataReceived', function () {
+                    var iCount = oBinding.getLength();
+                    if (iCount === undefined) {
+                        iCount = oList.getItems().length;
+                    }
+                    oTitle.setText(oBundle.getText('notifications') + ' (' + iCount + ')');
+                });
+            }
+        },
 
         onNotificationPress: function (oEvent) { this._markAsReadAndNavigate(oEvent.getSource().getBindingContext()); },
 
@@ -110,7 +136,10 @@ sap.ui.define([
         },
 
         onSelectionChange: function () { this._updateToolbarButtons(); },
-        onUpdateFinished: function () { this._updateToolbarButtons(); },
+        onUpdateFinished: function () {
+            this._updateToolbarButtons();
+            this._updateTableTitleCount();
+        },
         _updateToolbarButtons: function () { ToolbarHelper.updateToolbarButtons(this.byId('notificationTable'), this.getView().getModel('view'), this._getBundle()); },
 
         onDeleteAction: function () {

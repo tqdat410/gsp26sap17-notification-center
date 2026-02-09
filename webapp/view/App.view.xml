@@ -2,6 +2,7 @@
     controllerName="com.gsp26.sap17.notificationcenter.controller.App"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
+    xmlns:core="sap.ui.core"
     xmlns:f="sap.f"
     displayBlock="true">
 
@@ -17,6 +18,14 @@
             notificationsNumber="{= ${app>/UnreadCount} > 99 ? '99+' : ${app>/UnreadCount} }"
             notificationsPressed="onNotificationPress"
             homeIconPressed="onHomePress">
+            <f:additionalContent>
+                <OverflowToolbarButton
+                    id="settingsButton"
+                    icon="sap-icon://action-settings"
+                    type="Transparent"
+                    press="onSettingsPress"
+                    tooltip="{i18n>settings}"/>
+            </f:additionalContent>
         </f:ShellBar>
 
         <App id="app" class="sapUiSizeCompact">

@@ -33,19 +33,22 @@ sap.ui.define([
         },
 
         _bindFormatters: function () {
-            var oBundle = this.getView().getModel('i18n').getResourceBundle();
-            this.formatPriorityText = function (s) { return Formatter.formatPriorityText(s, oBundle); };
+            var that = this;
+            var fnGetBundle = function () {
+                return that.getView().getModel('i18n').getResourceBundle();
+            };
+            this.formatPriorityText = function (s) { return Formatter.formatPriorityText(s, fnGetBundle()); };
             this.formatPriorityState = Formatter.formatPriorityState;
-            this.formatCategory = function (s) { return Formatter.formatCategory(s, oBundle); };
-            this.formatReadStatusText = function (v) { return Formatter.formatReadStatusText(v, oBundle); };
+            this.formatCategory = function (s) { return Formatter.formatCategory(s, fnGetBundle()); };
+            this.formatReadStatusText = function (v) { return Formatter.formatReadStatusText(v, fnGetBundle()); };
             this.formatReadStatusState = Formatter.formatReadStatusState;
             this.formatArchivedStatusVisible = Formatter.formatArchivedStatusVisible;
             this.formatFullDateTime = Formatter.formatFullDateTime;
-            this.formatMarkReadText = function (v) { return Formatter.formatMarkReadText(v, oBundle); };
+            this.formatMarkReadText = function (v) { return Formatter.formatMarkReadText(v, fnGetBundle()); };
             this.formatMarkReadIcon = Formatter.formatMarkReadIcon;
-            this.formatArchiveText = function (v) { return Formatter.formatArchiveText(v, oBundle); };
+            this.formatArchiveText = function (v) { return Formatter.formatArchiveText(v, fnGetBundle()); };
             this.formatArchiveIcon = Formatter.formatArchiveIcon;
-            this.formatSourceObjectType = function (s) { return Formatter.formatSourceObjectType(s, oBundle); };
+            this.formatSourceObjectType = function (s) { return Formatter.formatSourceObjectType(s, fnGetBundle()); };
         },
 
         _onRouteMatched: function (oEvent) {

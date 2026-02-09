@@ -196,3 +196,13 @@ span.notificationUnread {
     width: auto !important;
     max-width: none !important;
 }
+
+/* Settings page styling */
+.sapUiForm .sapUiFormCL {
+    padding: 1rem;
+}
+
+/* Checkbox alignment in settings */
+.sapMCb {
+    margin-right: 1rem;
+}
