@@ -41,11 +41,15 @@ sap.ui.define([
         },
 
         _bindFormatters: function () {
-            var oBundle = this.getView().getModel('i18n').getResourceBundle();
+            var that = this;
             this.formatSubjectHtml = Formatter.formatSubjectHtml;
             this.formatPriorityHtml = Formatter.formatPriorityHtml;
             this.formatDateHtml = Formatter.formatDateHtml;
-            this.formatCategoryHtml = function (v, c) { return Formatter.formatCategoryHtml(v, c, oBundle); };
+            this.formatCategoryHtml = function (v, c) {
+                var oModel = that.getView().getModel('i18n');
+                var oBundle = oModel ? oModel.getResourceBundle() : null;
+                return Formatter.formatCategoryHtml(v, c, oBundle);
+            };
         },
 
         onExit: function () {

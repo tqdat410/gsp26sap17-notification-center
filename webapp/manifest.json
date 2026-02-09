@@ -77,8 +77,8 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
           "bundleName": "com.gsp26.sap17.notificationcenter.i18n.i18n",
-          "supportedLocales": ["", "en"],
-          "fallbackLocale": "en"
+          "supportedLocales": [""],
+          "fallbackLocale": ""
         }
       },
       "": {
