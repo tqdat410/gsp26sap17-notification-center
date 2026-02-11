@@ -93,10 +93,10 @@ sap.ui.define([
                 default: a.push(new Filter('IsArchived', FilterOperator.EQ, false));
             }
             if (this._sPriorityFilter !== 'all') { a.push(new Filter('_Notification/Priority', FilterOperator.EQ, this._sPriorityFilter)); }
-            if (this._sCategoryFilter !== 'all') { a.push(new Filter('_Notification/Category', FilterOperator.EQ, this._sCategoryFilter)); }
+            if (this._sCategoryFilter !== 'all') { a.push(new Filter('_Notification/CategoryCode', FilterOperator.EQ, this._sCategoryFilter)); }
             if (this._dDateFrom) { var d = new Date(this._dDateFrom); d.setHours(0,0,0,0); a.push(new Filter('_Notification/CreatedAt', FilterOperator.GE, d)); }
             if (this._dDateTo) { var t = new Date(this._dDateTo); t.setHours(23,59,59,999); a.push(new Filter('_Notification/CreatedAt', FilterOperator.LE, t)); }
-            if (this._sSearchQuery) { a.push(new Filter({ filters: [new Filter('_Notification/Title', FilterOperator.Contains, this._sSearchQuery), new Filter('_Notification/Message', FilterOperator.Contains, this._sSearchQuery)], and: false })); }
+            if (this._sSearchQuery) { a.push(new Filter({ filters: [new Filter('_Notification/Title', FilterOperator.Contains, this._sSearchQuery), new Filter('_Notification/Body', FilterOperator.Contains, this._sSearchQuery)], and: false })); }
             return a;
         },
 
@@ -129,11 +129,11 @@ sap.ui.define([
 
         _markAsReadAndNavigate: function (oCtx) {
             if (!oCtx) { return; }
-            var that = this, sR = oCtx.getProperty('RecipientID'), sN = oCtx.getProperty('NotificationID');
+            var that = this, sU = oCtx.getProperty('UserId'), sN = oCtx.getProperty('NotificationId');
             if (!oCtx.getProperty('IsRead')) {
                 ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { Log.error('Mark read failed: ' + e.message); });
             }
-            this.getOwnerComponent().getRouter().navTo('detail', { recipientId: sR, notificationId: sN });
+            this.getOwnerComponent().getRouter().navTo('detail', { notificationId: sN, userId: sU });
         },
 
         onSelectionChange: function () { this._updateToolbarButtons(); },
@@ -150,16 +150,16 @@ sap.ui.define([
         },
 
         onArchiveAction: function () {
-            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), bU = this.getView().getModel('view').getProperty('/archiveButtonText') === oB.getText('unarchive'), sA = bU ? 'UnArchive' : 'Archive', that = this;
+            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), bU = this.getView().getModel('view').getProperty('/archiveButtonText') === oB.getText('unarchive'), sA = bU ? 'Unarchive' : 'Archive', that = this;
             if (aS.length > 0) { ActionHelper.executeBatchAction(this.getView().getModel(), aS, sA).then(function () { MessageToast.show(oB.getText(bU ? 'unarchive' : 'archive')); oT.removeSelections(true); that._refreshAfterAction(); }); }
         },
 
         onMarkReadAction: function () {
             var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), sT = this.getView().getModel('view').getProperty('/markReadButtonText');
-            var bMR = (sT === oB.getText('markRead') || sT === oB.getText('markAllRead')), sA = bMR ? 'MarkAsRead' : 'MarkAsUnRead', oM = this.getView().getModel(), that = this;
+            var bMR = (sT === oB.getText('markRead') || sT === oB.getText('markAllRead')), sA = bMR ? 'MarkAsRead' : 'MarkAsUnread', oM = this.getView().getModel(), that = this;
             if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, sA).then(function () { oT.removeSelections(true); that._refreshAfterAction(); }); }
             else if (bMR) { this.onMarkAllAsRead(); }
-            else { ActionHelper.executeBatchAction(oM, oT.getItems(), 'MarkAsUnRead').then(function () { that._refreshAfterAction(); }); }
+            else { ActionHelper.executeBatchAction(oM, oT.getItems(), 'MarkAsUnread').then(function () { that._refreshAfterAction(); }); }
         },
 
         onMarkAllAsRead: function () {

@@ -34,14 +34,30 @@ sap.ui.define([
         onInit: function () {
             this._oNotificationPopover = null;
             this._oMainMenu = null;
-            this._startPolling();
+
+            // Subscribe to WebSocket notification events
+            this.getOwnerComponent().getEventBus().subscribe(
+                'notification.websocket', 'newNotification',
+                this._onWebSocketMessage, this
+            );
         },
 
-        _startPolling: function () {
-            var that = this;
-            this._pollInterval = setInterval(function () {
-                that.getOwnerComponent().refreshUnreadCount();
-            }, 60000);
+        _onWebSocketMessage: function (sChannel, sEvent, oData) {
+            // Refresh unread count badge
+            this.getOwnerComponent().refreshUnreadCount();
+
+            // Show toast with notification title
+            if (oData && oData.title) {
+                MessageToast.show(oData.title);
+            }
+
+            // Refresh popover if it exists and is open
+            if (this._oNotificationPopover && this._oNotificationPopover.isOpen()) {
+                this._refreshPopoverData();
+            }
+
+            // Notify list controller to refresh
+            this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
         },
 
         onHomePress: function () {
@@ -123,7 +139,7 @@ sap.ui.define([
             var that = this;
             return new NotificationListItem({
                 title: '{_Notification/Title}',
-                description: '{_Notification/Message}',
+                description: '{_Notification/Body}',
                 unread: '{= !${IsRead}}',
                 priority: { path: '_Notification/Priority', formatter: Formatter.formatPriority },
                 showCloseButton: false,
@@ -150,8 +166,8 @@ sap.ui.define([
 
             if (!oCtx) { return; }
 
-            var sRecipientId = oCtx.getProperty('RecipientID');
-            var sNotificationId = oCtx.getProperty('NotificationID');
+            var sUserId = oCtx.getProperty('UserId');
+            var sNotificationId = oCtx.getProperty('NotificationId');
 
             if (!oCtx.getProperty('IsRead')) {
                 ActionHelper.executeAction(oCtx.getModel(), sNotificationId, 'MarkAsRead')
@@ -166,8 +182,8 @@ sap.ui.define([
 
             if (this._oNotificationPopover) { this._oNotificationPopover.close(); }
             this.getOwnerComponent().getRouter().navTo('detail', {
-                recipientId: sRecipientId,
-                notificationId: sNotificationId
+                notificationId: sNotificationId,
+                userId: sUserId
             });
         },
 
@@ -187,7 +203,10 @@ sap.ui.define([
         },
 
         onExit: function () {
-            if (this._pollInterval) { clearInterval(this._pollInterval); }
+            this.getOwnerComponent().getEventBus().unsubscribe(
+                'notification.websocket', 'newNotification',
+                this._onWebSocketMessage, this
+            );
             if (this._oNotificationPopover) { this._oNotificationPopover.destroy(); }
             if (this._oMainMenu) { this._oMainMenu.destroy(); }
         }

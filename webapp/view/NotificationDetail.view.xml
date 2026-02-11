@@ -45,7 +45,7 @@
                             state="{path: '_Notification/Priority', formatter: '.formatPriorityState'}"/>
                         <ObjectStatus
                             title="{i18n>categoryLabel}"
-                            text="{path: '_Notification/Category', formatter: '.formatCategory'}"
+                            text="{path: '_Notification/CategoryCode', formatter: '.formatCategory'}"
                             state="Information"/>
                         <ObjectStatus
                             title="{i18n>status}"
@@ -69,7 +69,7 @@
                     class="notificationDetailCard">
                     <content>
                         <FormattedText
-                            htmlText="{_Notification/Message}"
+                            htmlText="{_Notification/Body}"
                             class="sapUiSmallMargin"/>
                     </content>
                 </Panel>
@@ -78,7 +78,7 @@
                     id="sourceObjectPanel"
                     headerText="{i18n>sourceObject}"
                     expandable="false"
-                    visible="{= !!${_Notification/SourceObject} }"
+                    visible="{= !!${_Notification/SourceType} }"
                     class="notificationDetailCard">
                     <content>
                         <HBox alignItems="Center" class="sapUiSmallMargin">
@@ -88,7 +88,7 @@
                                 color="#0854a0"
                                 class="sapUiSmallMarginEnd"/>
                             <VBox>
-                                <Text text="{path: '_Notification/SourceObject', formatter: '.formatSourceObjectType'}"/>
+                                <Text text="{path: '_Notification/SourceType', formatter: '.formatSourceObjectType'}"/>
                                 <Link
                                     text="{i18n>openSourceObject}"
                                     press=".onNavigateToSource"/>
@@ -104,7 +104,7 @@
                 id="btnNavigateSource"
                 text="{i18n>openSourceObject}"
                 icon="sap-icon://action"
-                visible="{= !!${_Notification/SourceObject} }"
+                visible="{= !!${_Notification/SourceType} }"
                 press=".onNavigateToSource"/>
         </semantic:footerMainAction>
 

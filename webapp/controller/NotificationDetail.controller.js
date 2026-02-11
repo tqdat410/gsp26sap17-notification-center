@@ -55,19 +55,19 @@ sap.ui.define([
 
         _onRouteMatched: function (oEvent) {
             var oArgs = oEvent.getParameter('arguments');
-            this._sRecipientId = oArgs.recipientId;
             this._sNotificationId = oArgs.notificationId;
+            this._sUserId = oArgs.userId;
             this._bAutoMarkReadDone = false;
-            this._bindView(this._sRecipientId, this._sNotificationId);
+            this._bindView(this._sNotificationId, this._sUserId);
         },
 
-        _bindView: function (sRecipientId, sNotificationId) {
+        _bindView: function (sNotificationId, sUserId) {
             var oView = this.getView();
             var oVM = oView.getModel('view');
             var that = this;
             oVM.setProperty('/busy', true);
 
-            var sPath = '/Recipient(RecipientID=' + sRecipientId + ',NotificationID=' + sNotificationId + ')';
+            var sPath = '/Recipient(NotificationId=' + sNotificationId + ',UserId=\'' + sUserId + '\')';
 
             oView.bindElement({
                 path: sPath,
@@ -92,7 +92,7 @@ sap.ui.define([
 
             oCtx.requestObject().then(function (oData) {
                 if (!oData || BooleanHelper.isTrue(oData.IsRead)) { return; }
-                var sId = oData.NotificationID;
+                var sId = oData.NotificationId;
                 if (!sId) { return; }
 
                 ActionHelper.executeAction(oCtx.getModel(), sId, 'MarkAsRead')
@@ -118,8 +118,8 @@ sap.ui.define([
         onNavigateToSource: function () {
             var oCtx = this.getView().getBindingContext();
             if (!oCtx) { return; }
-            var sSrc = oCtx.getProperty('_Notification/SourceObject');
-            var sKey = oCtx.getProperty('_Notification/SourceKey');
+            var sSrc = oCtx.getProperty('_Notification/SourceType');
+            var sKey = oCtx.getProperty('_Notification/ObjectKey');
             if (sSrc && sKey) {
                 CrossAppNav.navigateToSource(sSrc, sKey);
             } else {
@@ -132,9 +132,9 @@ sap.ui.define([
             if (!oCtx) { return; }
             var that = this;
             var bIsRead = oCtx.getProperty('IsRead');
-            var sAction = bIsRead ? 'MarkAsUnRead' : 'MarkAsRead';
+            var sAction = bIsRead ? 'MarkAsUnread' : 'MarkAsRead';
 
-            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
+            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), sAction)
                 .then(function () {
                     MessageToast.show(that._getBundle().getText(bIsRead ? 'markUnread' : 'markRead'));
                     that.getOwnerComponent().refreshUnreadCount();
@@ -148,9 +148,9 @@ sap.ui.define([
             if (!oCtx) { return; }
             var that = this;
             var bArchived = oCtx.getProperty('IsArchived');
-            var sAction = bArchived ? 'UnArchive' : 'Archive';
+            var sAction = bArchived ? 'Unarchive' : 'Archive';
 
-            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
+            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), sAction)
                 .then(function () {
                     MessageToast.show(that._getBundle().getText(bArchived ? 'unarchive' : 'archive'));
                     that.getOwnerComponent().refreshUnreadCount();
@@ -167,7 +167,7 @@ sap.ui.define([
             MessageBox.confirm(this._getBundle().getText('delete') + '?', {
                 onClose: function (sBtn) {
                     if (sBtn === MessageBox.Action.OK) {
-                        ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), 'MarkAsDeleted')
+                        ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), 'MarkAsDeleted')
                             .then(function () {
                                 MessageToast.show(that._getBundle().getText('delete'));
                                 that.getOwnerComponent().refreshUnreadCount();

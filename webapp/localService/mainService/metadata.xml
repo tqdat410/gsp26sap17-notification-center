@@ -73,16 +73,21 @@
                 </Key>
                 <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
                 <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="100"/>
-                <Property Name="Message" Type="Edm.String" Nullable="false"/>
+                <Property Name="Body" Type="Edm.String" Nullable="false"/>
                 <Property Name="Priority" Type="Edm.String" Nullable="false" MaxLength="1"/>
-                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="TargetRole" Type="Edm.String" Nullable="false" MaxLength="30"/>
-                <Property Name="SourceObject" Type="Edm.String" Nullable="false" MaxLength="30"/>
-                <Property Name="SourceKey" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="EventCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="SourceType" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="SourceName" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="ObjectKey" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="ScheduledAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="ExpiresAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
-                <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <Property Name="__CreateByAssociationControl" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationCbAControl"/>
                 <Property Name="__OperationControl" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationOperationControl"/>
                 <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.SAP__Message)" Nullable="false"/>
@@ -107,37 +112,42 @@
             </EntityType>
             <EntityType Name="RecipientType">
                 <Key>
-                    <PropertyRef Name="NotificationID"/>
-                    <PropertyRef Name="RecipientID"/>
+                    <PropertyRef Name="NotificationId"/>
+                    <PropertyRef Name="UserId"/>
                 </Key>
-                <Property Name="NotificationID" Type="Edm.Guid" Nullable="false"/>
-                <Property Name="RecipientID" Type="Edm.Guid" Nullable="false"/>
-                <Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="UserId" Type="Edm.String" Nullable="false" MaxLength="12"/>
                 <Property Name="IsRead" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="ReadAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <Property Name="IsArchived" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="ArchivedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="IsEmailSent" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="EmailSentAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <Property Name="IsDeleted" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="DeletedAt" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="DeletedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <NavigationProperty Name="_Notification" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false" Partner="_Recipients">
-                    <ReferentialConstraint Property="NotificationID" ReferencedProperty="NotificationId"/>
+                    <ReferentialConstraint Property="NotificationId" ReferencedProperty="NotificationId"/>
                 </NavigationProperty>
             </EntityType>
             <EntityType Name="ActionType">
                 <Key>
-                    <PropertyRef Name="NotificationID"/>
-                    <PropertyRef Name="ActionID"/>
+                    <PropertyRef Name="NotificationId"/>
+                    <PropertyRef Name="ActionSeq"/>
                 </Key>
-                <Property Name="NotificationID" Type="Edm.Guid" Nullable="false"/>
-                <Property Name="ActionID" Type="Edm.Guid" Nullable="false"/>
-                <Property Name="NotifActionType" Type="Edm.String" Nullable="false" MaxLength="20"/>
-                <Property Name="ActionLabel" Type="Edm.String" Nullable="false" MaxLength="50"/>
-                <Property Name="ActionUrl" Type="Edm.String" Nullable="false"/>
+                <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
                 <Property Name="ActionSeq" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="ActionLabel" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="SematicObject" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="SematicAction" Type="Edm.String" Nullable="false" MaxLength="60"/>
+                <Property Name="Params" Type="Edm.String" Nullable="false"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <NavigationProperty Name="_Notification" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false" Partner="_Actions">
-                    <ReferentialConstraint Property="NotificationID" ReferencedProperty="NotificationId"/>
+                    <ReferentialConstraint Property="NotificationId" ReferencedProperty="NotificationId"/>
                 </NavigationProperty>
             </EntityType>
             <ComplexType Name="NotificationCbAControl">
@@ -148,8 +158,8 @@
                 <Property Name="Archive" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="MarkAsDeleted" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="MarkAsRead" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="MarkAsUnRead" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="UnArchive" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="MarkAsUnread" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="Unarchive" Type="Edm.Boolean" Nullable="false"/>
             </ComplexType>
             <ComplexType Name="EntityControl">
                 <Property Name="Updatable" Type="Edm.Boolean" Nullable="false"/>
@@ -171,7 +181,7 @@
                 <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
                 <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
             </Action>
-            <Action Name="MarkAsUnRead" EntitySetPath="_it" IsBound="true">
+            <Action Name="MarkAsUnread" EntitySetPath="_it" IsBound="true">
                 <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
                 <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
             </Action>
@@ -187,11 +197,15 @@
                 <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="false"/>
                 <ReturnType Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="true"/>
             </Action>
-            <Action Name="MarkAllAsUnRead" EntitySetPath="_it" IsBound="true">
+            <Action Name="MarkAllAsUnread" EntitySetPath="_it" IsBound="true">
                 <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="false"/>
                 <ReturnType Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="true"/>
             </Action>
-            <Action Name="UnArchive" EntitySetPath="_it" IsBound="true">
+            <Action Name="Unarchive" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="CustomCreate" EntitySetPath="_it" IsBound="true">
                 <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
                 <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
             </Action>
@@ -342,7 +356,7 @@
             <Annotations Target="SAP__self.NotificationType/Title">
                 <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
             </Annotations>
-            <Annotations Target="SAP__self.NotificationType/Message">
+            <Annotations Target="SAP__self.NotificationType/Body">
                 <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
             </Annotations>
             <Annotations Target="SAP__self.NotificationType/Priority">
@@ -357,7 +371,7 @@
                 <Annotation Term="SAP__common.Heading" String="Priority"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Notification Priority Level"/>
             </Annotations>
-            <Annotations Target="SAP__self.NotificationType/Category">
+            <Annotations Target="SAP__self.NotificationType/CategoryCode">
                 <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.ValueListReferences">
@@ -368,11 +382,6 @@
                 <Annotation Term="SAP__common.Label" String="Notif. Category"/>
                 <Annotation Term="SAP__common.Heading" String="Category"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Notification Business Category"/>
-            </Annotations>
-            <Annotations Target="SAP__self.NotificationType/TargetRole">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Role ID"/>
-                <Annotation Term="SAP__common.QuickInfo" String="User role identifier"/>
             </Annotations>
             <Annotations Target="SAP__self.NotificationType/CreatedAt">
                 <Annotation Term="SAP__core.Computed"/>
@@ -385,16 +394,10 @@
                 <Annotation Term="SAP__common.Label" String="User Name"/>
                 <Annotation Term="SAP__common.Heading" String="User"/>
             </Annotations>
-            <Annotations Target="SAP__self.NotificationType/ChangedAt">
+            <Annotations Target="SAP__self.NotificationType/LastChangedAt">
                 <Annotation Term="SAP__core.Computed"/>
                 <Annotation Term="SAP__common.Label" String="Time Stamp"/>
                 <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
-            </Annotations>
-            <Annotations Target="SAP__self.NotificationType/ChangedBy">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="User Name"/>
-                <Annotation Term="SAP__common.Heading" String="User"/>
             </Annotations>
             <Annotations Target="SAP__self.NotificationType/__CreateByAssociationControl">
                 <Annotation Term="SAP__core.Computed"/>
@@ -445,7 +448,7 @@
                         <PropertyValue Property="FilterExpressionRestrictions">
                             <Collection>
                                 <Record>
-                                    <PropertyValue Property="Property" PropertyPath="Message"/>
+                                    <PropertyValue Property="Property" PropertyPath="Body"/>
                                     <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
                                 </Record>
                             </Collection>
@@ -462,7 +465,7 @@
                     <Record>
                         <PropertyValue Property="NonSortableProperties">
                             <Collection>
-                                <PropertyPath>Message</PropertyPath>
+                                <PropertyPath>Body</PropertyPath>
                                 <PropertyPath>__CreateByAssociationControl</PropertyPath>
                                 <PropertyPath>__OperationControl</PropertyPath>
                             </Collection>
@@ -497,14 +500,14 @@
             <Annotations Target="SAP__self.MarkAsRead(SAP__self.NotificationType)">
                 <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsRead"/>
             </Annotations>
-            <Annotations Target="SAP__self.MarkAsUnRead(SAP__self.NotificationType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsUnRead"/>
+            <Annotations Target="SAP__self.MarkAsUnread(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsUnread"/>
             </Annotations>
             <Annotations Target="SAP__self.Archive(SAP__self.NotificationType)">
                 <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/Archive"/>
             </Annotations>
-            <Annotations Target="SAP__self.UnArchive(SAP__self.NotificationType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/UnArchive"/>
+            <Annotations Target="SAP__self.Unarchive(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/Unarchive"/>
             </Annotations>
             <Annotations Target="SAP__self.NotificationType">
                 <Annotation Term="SAP__common.Label" String="Notification"/>
@@ -594,17 +597,12 @@
                     <Collection/>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.RecipientType/NotificationID">
+            <Annotations Target="SAP__self.RecipientType/NotificationId">
                 <Annotation Term="SAP__core.Computed"/>
                 <Annotation Term="SAP__common.Label" String="UUID"/>
                 <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
             </Annotations>
-            <Annotations Target="SAP__self.RecipientType/RecipientID">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="UUID"/>
-                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/UserID">
+            <Annotations Target="SAP__self.RecipientType/UserId">
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.Label" String="User Name"/>
                 <Annotation Term="SAP__common.Heading" String="User"/>
@@ -619,17 +617,7 @@
                 <Annotation Term="SAP__common.Label" String="Truth Value"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
             </Annotations>
-            <Annotations Target="SAP__self.RecipientType/IsEmailSent">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Truth Value"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
-            </Annotations>
             <Annotations Target="SAP__self.RecipientType/IsDeleted">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Truth Value"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/DeletedAt">
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.Label" String="Truth Value"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
@@ -684,7 +672,7 @@
                         <PropertyValue Property="FilterExpressionRestrictions">
                             <Collection>
                                 <Record>
-                                    <PropertyValue Property="Property" PropertyPath="UserID"/>
+                                    <PropertyValue Property="Property" PropertyPath="UserId"/>
                                     <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
                                 </Record>
                                 <Record>
@@ -696,15 +684,7 @@
                                     <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
                                 </Record>
                                 <Record>
-                                    <PropertyValue Property="Property" PropertyPath="IsEmailSent"/>
-                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
-                                </Record>
-                                <Record>
                                     <PropertyValue Property="Property" PropertyPath="IsDeleted"/>
-                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="Property" PropertyPath="DeletedAt"/>
                                     <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
                                 </Record>
                             </Collection>
@@ -715,15 +695,15 @@
             <Annotations Target="SAP__self.RecipientType">
                 <Annotation Term="SAP__common.Label" String="Notification Recipient"/>
             </Annotations>
-            <Annotations Target="SAP__self.ActionType/NotificationID">
+            <Annotations Target="SAP__self.ActionType/NotificationId">
                 <Annotation Term="SAP__core.Computed"/>
                 <Annotation Term="SAP__common.Label" String="UUID"/>
                 <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
             </Annotations>
-            <Annotations Target="SAP__self.ActionType/ActionID">
+            <Annotations Target="SAP__self.ActionType/ActionSeq">
                 <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="UUID"/>
-                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
+                <Annotation Term="SAP__common.Label" String="Action Sequence"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Action sequence number"/>
             </Annotations>
             <Annotations Target="SAP__self.Container/Action">
                 <Annotation Term="SAP__capabilities.NavigationRestrictions">
@@ -753,7 +733,7 @@
                         <PropertyValue Property="FilterExpressionRestrictions">
                             <Collection>
                                 <Record>
-                                    <PropertyValue Property="Property" PropertyPath="ActionUrl"/>
+                                    <PropertyValue Property="Property" PropertyPath="Params"/>
                                     <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
                                 </Record>
                             </Collection>
@@ -764,7 +744,7 @@
                     <Record>
                         <PropertyValue Property="NonSortableProperties">
                             <Collection>
-                                <PropertyPath>ActionUrl</PropertyPath>
+                                <PropertyPath>Params</PropertyPath>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -863,10 +843,6 @@
                 <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
             </Annotations>
             <Annotations Target="SAP__self.RecipientType/ArchivedAt">
-                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
-                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/EmailSentAt">
                 <Annotation Term="SAP__common.Label" String="Time Stamp"/>
                 <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
             </Annotations>

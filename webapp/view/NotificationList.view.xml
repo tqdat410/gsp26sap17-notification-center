@@ -150,10 +150,10 @@
                                 </customData>
                                 <cells>
                                     <FormattedText htmlText="{parts: ['IsRead',
-                                        '_Notification/Title', '_Notification/Message'],
+                                        '_Notification/Title', '_Notification/Body'],
                                         formatter: '.formatSubjectHtml'}"/>
                                     <FormattedText htmlText="{parts: ['IsRead',
-                                        '_Notification/Category'],
+                                        '_Notification/CategoryCode'],
                                         formatter: '.formatCategoryHtml'}"/>
                                     <FormattedText htmlText="{parts: ['IsRead',
                                         '_Notification/Priority'],
