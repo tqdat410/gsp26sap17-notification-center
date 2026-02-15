@@ -23,6 +23,16 @@ sap.ui.define([
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationList', {
 
+        // Formatters on prototype so XML template processor finds them at parse time
+        formatSubjectHtml: Formatter.formatSubjectHtml,
+        formatPriorityHtml: Formatter.formatPriorityHtml,
+        formatDateHtml: Formatter.formatDateHtml.bind(Formatter),
+        formatCategoryHtml: function (vIsRead, sCategory) {
+            var oModel = this.getView() ? this.getView().getModel('i18n') : null;
+            var oBundle = oModel ? oModel.getResourceBundle() : null;
+            return Formatter.formatCategoryHtml.call(Formatter, vIsRead, sCategory, oBundle);
+        },
+
         onInit: function () {
             this.getView().setModel(new JSONModel({
                 selectedTab: 'unread', hasSelection: false,
@@ -36,21 +46,8 @@ sap.ui.define([
             this._sCategoryFilter = 'all';
             this._dDateFrom = null;
             this._dDateTo = null;
-            this._bindFormatters();
             this.getOwnerComponent().getRouter().getRoute('main').attachPatternMatched(this._onRouteMatched, this);
             this.getOwnerComponent().getEventBus().subscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
-        },
-
-        _bindFormatters: function () {
-            var that = this;
-            this.formatSubjectHtml = Formatter.formatSubjectHtml;
-            this.formatPriorityHtml = Formatter.formatPriorityHtml;
-            this.formatDateHtml = Formatter.formatDateHtml;
-            this.formatCategoryHtml = function (v, c) {
-                var oModel = that.getView().getModel('i18n');
-                var oBundle = oModel ? oModel.getResourceBundle() : null;
-                return Formatter.formatCategoryHtml(v, c, oBundle);
-            };
         },
 
         onExit: function () {
@@ -129,11 +126,11 @@ sap.ui.define([
 
         _markAsReadAndNavigate: function (oCtx) {
             if (!oCtx) { return; }
-            var that = this, sU = oCtx.getProperty('UserId'), sN = oCtx.getProperty('NotificationId');
+            var that = this, sR = oCtx.getProperty('RecipientID'), sN = oCtx.getProperty('NotificationID');
             if (!oCtx.getProperty('IsRead')) {
                 ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { Log.error('Mark read failed: ' + e.message); });
             }
-            this.getOwnerComponent().getRouter().navTo('detail', { notificationId: sN, userId: sU });
+            this.getOwnerComponent().getRouter().navTo('detail', { notificationId: sN, recipientId: sR });
         },
 
         onSelectionChange: function () { this._updateToolbarButtons(); },
@@ -145,21 +142,36 @@ sap.ui.define([
 
         onDeleteAction: function () {
             var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oM = this.getView().getModel(), that = this;
-            if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () { MessageToast.show(that._getBundle().getText('delete')); oT.removeSelections(true); that._refreshAfterAction(); }); }
+            if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () { MessageToast.show(that._getBundle().getText('delete')); oT.removeSelections(true); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); }
             else { MessageBox.confirm(this._getBundle().getText('deleteAll') + '?', { onClose: function (a) { if (a === MessageBox.Action.OK) { ActionHelper.executeCollectionAction(oM, 'MarkAllAsDeleted').then(function () { that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); } } }); }
         },
 
         onArchiveAction: function () {
             var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), bU = this.getView().getModel('view').getProperty('/archiveButtonText') === oB.getText('unarchive'), sA = bU ? 'Unarchive' : 'Archive', that = this;
-            if (aS.length > 0) { ActionHelper.executeBatchAction(this.getView().getModel(), aS, sA).then(function () { MessageToast.show(oB.getText(bU ? 'unarchive' : 'archive')); oT.removeSelections(true); that._refreshAfterAction(); }); }
+            if (aS.length > 0) { ActionHelper.executeBatchAction(this.getView().getModel(), aS, sA).then(function () { MessageToast.show(oB.getText(bU ? 'unarchive' : 'archive')); oT.removeSelections(true); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); }
         },
 
         onMarkReadAction: function () {
             var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), sT = this.getView().getModel('view').getProperty('/markReadButtonText');
             var bMR = (sT === oB.getText('markRead') || sT === oB.getText('markAllRead')), sA = bMR ? 'MarkAsRead' : 'MarkAsUnread', oM = this.getView().getModel(), that = this;
-            if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, sA).then(function () { oT.removeSelections(true); that._refreshAfterAction(); }); }
-            else if (bMR) { this.onMarkAllAsRead(); }
-            else { ActionHelper.executeBatchAction(oM, oT.getItems(), 'MarkAsUnread').then(function () { that._refreshAfterAction(); }); }
+            if (aS.length > 0) {
+                ActionHelper.executeBatchAction(oM, aS, sA).then(function () {
+                    oT.removeSelections(true);
+                    that._refreshAfterAction();
+                }).catch(function (e) {
+                    MessageBox.error(e.message);
+                });
+            }
+            else if (bMR) {
+                this.onMarkAllAsRead();
+            }
+            else {
+                ActionHelper.executeCollectionAction(oM, 'MarkAllAsUnread').then(function () {
+                    that._refreshAfterAction();
+                }).catch(function (e) {
+                    MessageBox.error(e.message);
+                });
+            }
         },
 
         onMarkAllAsRead: function () {

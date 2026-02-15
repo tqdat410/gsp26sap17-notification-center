@@ -9,7 +9,7 @@
 sap.ui.define([], function () {
     'use strict';
 
-    var ACTION_PREFIX = 'com.sap.gateway.srvd.y17_sd_notification.v0001';
+    var ACTION_PREFIX = 'com.sap.gateway.srvd.z17_sd_notification.v0001';
 
     return {
         buildActionPath: function (sNotificationId, sAction) {
@@ -32,7 +32,7 @@ sap.ui.define([], function () {
             aItems.forEach(function (oItem) {
                 var oCtx = oItem.getBindingContext();
                 if (oCtx) {
-                    var sId = oCtx.getProperty('NotificationId');
+                    var sId = oCtx.getProperty('NotificationID');
                     if (sId) {
                         aPromises.push(that.executeAction(oModel, sId, sAction));
                     }

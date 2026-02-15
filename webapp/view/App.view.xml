@@ -10,7 +10,6 @@
         <f:ShellBar
             id="shellBar"
             title="{i18n>appTitle}"
-            homeIcon="sap-icon://home"
             showMenuButton="true"
             menuButtonPressed=".onMenuPress"
             showNavButton="false"

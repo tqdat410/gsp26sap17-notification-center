@@ -62,9 +62,9 @@
                             selectedKey="all" width="auto" autoAdjustWidth="true">
                             <items>
                                 <core:Item key="all" text="{i18n>allPriorities}"/>
-                                <core:Item key="H" text="{i18n>priorityHigh}"/>
-                                <core:Item key="M" text="{i18n>priorityMedium}"/>
-                                <core:Item key="L" text="{i18n>priorityLow}"/>
+                                <core:Item key="1" text="{i18n>priorityHigh}"/>
+                                <core:Item key="2" text="{i18n>priorityMedium}"/>
+                                <core:Item key="3" text="{i18n>priorityLow}"/>
                             </items>
                             <layoutData>
                                 <OverflowToolbarLayoutData priority="Low" group="1"/>
@@ -90,7 +90,6 @@
                         items="{
                             path: '/Recipient',
                             parameters: {
-                                $expand: '_Notification($expand=_Actions)',
                                 $count: true
                             },
                             sorter: {
@@ -149,17 +148,22 @@
                                     <core:CustomData key="IsArchived" value="{IsArchived}" writeToDom="false"/>
                                 </customData>
                                 <cells>
-                                    <FormattedText htmlText="{parts: ['IsRead',
-                                        '_Notification/Title', '_Notification/Body'],
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/Title', targetType: 'any'},
+                                        {path: '_Notification/Body', targetType: 'any'}],
                                         formatter: '.formatSubjectHtml'}"/>
-                                    <FormattedText htmlText="{parts: ['IsRead',
-                                        '_Notification/CategoryCode'],
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/CategoryCode', targetType: 'any'}],
                                         formatter: '.formatCategoryHtml'}"/>
-                                    <FormattedText htmlText="{parts: ['IsRead',
-                                        '_Notification/Priority'],
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/Priority', targetType: 'any'}],
                                         formatter: '.formatPriorityHtml'}"/>
-                                    <FormattedText htmlText="{parts: ['IsRead',
-                                        '_Notification/CreatedAt'],
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/CreatedAt', targetType: 'any'}],
                                         formatter: '.formatDateHtml'}"/>
                                 </cells>
                             </ColumnListItem>

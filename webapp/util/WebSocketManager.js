@@ -19,11 +19,17 @@ sap.ui.define(['sap/base/Log'], function (Log) {
 
     var _oWebSocket = null;
     var _oEventBus = null;
+    var _sBackendUrl = null;
     var _iReconnectDelay = RECONNECT_BASE_MS;
     var _iReconnectTimer = null;
     var _bIntentionalClose = false;
 
     function _buildUrl() {
+        // Use configured backend URL when running on localhost (dev proxy can't forward WebSocket)
+        if (_sBackendUrl) {
+            var sHost = _sBackendUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+            return 'wss://' + sHost + APC_PATH;
+        }
         var oLocation = window.location;
         var sProtocol = oLocation.protocol === 'https:' ? 'wss:' : 'ws:';
         return sProtocol + '//' + oLocation.host + APC_PATH;
@@ -104,9 +110,11 @@ sap.ui.define(['sap/base/Log'], function (Log) {
         /**
          * Open WebSocket connection and subscribe to notification events.
          * @param {sap.ui.core.EventBus} oEventBus - UI5 EventBus for publishing events
+         * @param {string} [sBackendUrl] - Backend base URL (e.g. "https://host.example.com") for local dev
          */
-        connect: function (oEventBus) {
+        connect: function (oEventBus, sBackendUrl) {
             _oEventBus = oEventBus;
+            _sBackendUrl = sBackendUrl || null;
             _bIntentionalClose = false;
             _doConnect();
         },

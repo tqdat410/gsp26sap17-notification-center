@@ -41,17 +41,20 @@ sap.ui.define([
             return sKey && oBundle ? oBundle.getText(sKey) : sCategory || '';
         },
 
-        formatPriority: function (sPriority) {
-            return { 'H': Priority.High, 'M': Priority.Medium, 'L': Priority.Low }[sPriority] || Priority.None;
+        formatPriority: function (vPriority) {
+            var s = String(vPriority || '');
+            return { '1': Priority.High, '2': Priority.Medium, '3': Priority.Low, 'H': Priority.High, 'M': Priority.Medium, 'L': Priority.Low }[s] || Priority.None;
         },
 
-        formatPriorityState: function (sPriority) {
-            return { 'H': 'Error', 'M': 'Warning', 'L': 'Success' }[sPriority] || 'None';
+        formatPriorityState: function (vPriority) {
+            var s = String(vPriority || '');
+            return { '1': 'Error', '2': 'Warning', '3': 'Success', 'H': 'Error', 'M': 'Warning', 'L': 'Success' }[s] || 'None';
         },
 
-        formatPriorityText: function (sPriority, oBundle) {
-            var sKey = { 'H': 'priorityHigh', 'M': 'priorityMedium', 'L': 'priorityLow' }[sPriority];
-            return sKey && oBundle ? oBundle.getText(sKey) : sPriority || '';
+        formatPriorityText: function (vPriority, oBundle) {
+            var s = String(vPriority || '');
+            var sKey = { '1': 'priorityHigh', '2': 'priorityMedium', '3': 'priorityLow', 'H': 'priorityHigh', 'M': 'priorityMedium', 'L': 'priorityLow' }[s];
+            return sKey && oBundle ? oBundle.getText(sKey) : s || '';
         },
 
         formatSubjectHtml: function (vIsRead, sTitle, sMessage) {
@@ -71,9 +74,10 @@ sap.ui.define([
             return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
         },
 
-        formatPriorityHtml: function (vIsRead, sPriority) {
-            var sText = { 'H': 'High', 'M': 'Medium', 'L': 'Low' }[sPriority] || sPriority || '';
-            var sColor = { 'H': '#bb0000', 'M': '#e9730c', 'L': '#107e3e' }[sPriority] || '#6a6d70';
+        formatPriorityHtml: function (vIsRead, vPriority) {
+            var s = String(vPriority || '');
+            var sText = { '1': 'High', '2': 'Medium', '3': 'Low', 'H': 'High', 'M': 'Medium', 'L': 'Low' }[s] || s;
+            var sColor = { '1': '#bb0000', '2': '#e9730c', '3': '#107e3e', 'H': '#bb0000', 'M': '#e9730c', 'L': '#107e3e' }[s] || '#6a6d70';
             var sEsc = encodeXML(sText);
             var sSpan = '<span style="color:' + sColor + '">' + sEsc + '</span>';
             return BooleanHelper.isTrue(vIsRead) ? sSpan : '<strong>' + sSpan + '</strong>';

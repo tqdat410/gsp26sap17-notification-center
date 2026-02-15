@@ -127,9 +127,11 @@ sap.ui.define([
             if (oList) {
                 oList.bindItems({
                     path: '/Recipient',
-                    parameters: { $expand: '_Notification($expand=_Actions)' },
                     sorter: new Sorter('_Notification/CreatedAt', true),
-                    filters: [new Filter('IsArchived', FilterOperator.EQ, false)],
+                    filters: [
+                        new Filter('IsArchived', FilterOperator.EQ, false),
+                        new Filter('IsDeleted', FilterOperator.EQ, false)
+                    ],
                     template: this._getNotificationItemTemplate()
                 });
             }
@@ -166,8 +168,8 @@ sap.ui.define([
 
             if (!oCtx) { return; }
 
-            var sUserId = oCtx.getProperty('UserId');
-            var sNotificationId = oCtx.getProperty('NotificationId');
+            var sRecipientId = oCtx.getProperty('RecipientID');
+            var sNotificationId = oCtx.getProperty('NotificationID');
 
             if (!oCtx.getProperty('IsRead')) {
                 ActionHelper.executeAction(oCtx.getModel(), sNotificationId, 'MarkAsRead')
@@ -183,7 +185,7 @@ sap.ui.define([
             if (this._oNotificationPopover) { this._oNotificationPopover.close(); }
             this.getOwnerComponent().getRouter().navTo('detail', {
                 notificationId: sNotificationId,
-                userId: sUserId
+                recipientId: sRecipientId
             });
         },
 
