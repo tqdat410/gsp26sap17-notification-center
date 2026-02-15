@@ -103,6 +103,15 @@ span.notificationUnread {
     font-style: normal;
 }
 
+/* Single-line truncation for subject column */
+.notificationSubjectCell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+}
+
 /* Subject column - ensure proper vertical alignment */
 .sapMListTblCell .sapMVBox {
     justify-content: center;

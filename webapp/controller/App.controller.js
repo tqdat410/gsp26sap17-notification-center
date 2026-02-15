@@ -141,9 +141,8 @@ sap.ui.define([
             var that = this;
             return new NotificationListItem({
                 title: '{_Notification/Title}',
-                description: '{_Notification/Body}',
+                description: { path: '_Notification/Body', formatter: Formatter.formatPlainBody },
                 unread: '{= !${IsRead}}',
-                priority: { path: '_Notification/Priority', formatter: Formatter.formatPriority },
                 showCloseButton: false,
                 press: that.onNotificationItemPress.bind(that)
             }).addCustomData(new CustomData({

@@ -126,7 +126,7 @@
                             </OverflowToolbar>
                         </headerToolbar>
                         <columns>
-                            <Column>
+                            <Column width="50%">
                                 <Text text="{i18n>subjectColumn}"/>
                             </Column>
                             <Column width="8rem" minScreenWidth="Tablet" demandPopin="true">
@@ -148,7 +148,8 @@
                                     <core:CustomData key="IsArchived" value="{IsArchived}" writeToDom="false"/>
                                 </customData>
                                 <cells>
-                                    <FormattedText htmlText="{parts: [
+                                    <!-- Formatter uses encodeXML + stripHtml for XSS-safe output -->
+                                    <FormattedText class="notificationSubjectCell" htmlText="{parts: [
                                         {path: 'IsRead', targetType: 'any'},
                                         {path: '_Notification/Title', targetType: 'any'},
                                         {path: '_Notification/Body', targetType: 'any'}],

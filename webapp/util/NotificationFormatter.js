@@ -11,14 +11,27 @@ sap.ui.define([
     'sap/ui/core/format/DateFormat',
     'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
     'sap/ui/core/library',
-    'sap/base/security/encodeXML'
-], function (DateFormat, BooleanHelper, coreLibrary, encodeXML) {
+    'sap/base/security/encodeXML',
+    'sap/base/security/sanitizeHTML'
+], function (DateFormat, BooleanHelper, coreLibrary, encodeXML, sanitizeHTML) {
     'use strict';
 
     var Priority = coreLibrary.Priority;
 
     var oDateTimeFormat = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yy HH:mm:ss' });
     var oRelativeFormat = DateFormat.getDateTimeInstance({ relative: true, relativeScale: 'auto' });
+
+    /**
+     * Extracts plain text from HTML body content.
+     * Uses SAPUI5 sanitizeHTML first, then jQuery to safely extract text content.
+     * Output is always passed through encodeXML before rendering.
+     */
+    function stripHtml(sHtml) {
+        if (!sHtml) { return ''; }
+        var sSafe = sanitizeHTML(sHtml);
+        var sText = jQuery('<span>').html(sSafe).text();
+        return sText.replace(/\s+/g, ' ').trim();
+    }
 
     return {
         formatDateTime: function (sDateTime) {
@@ -59,9 +72,13 @@ sap.ui.define([
 
         formatSubjectHtml: function (vIsRead, sTitle, sMessage) {
             var sT = encodeXML(sTitle || '');
-            var sM = encodeXML(sMessage || '');
+            var sM = encodeXML(stripHtml(sMessage || ''));
             var bRead = BooleanHelper.isTrue(vIsRead);
             return bRead ? sT + ' - <em>' + sM + '</em>' : '<strong>' + sT + '</strong> - <em>' + sM + '</em>';
+        },
+
+        formatPlainBody: function (sBody) {
+            return stripHtml(sBody || '');
         },
 
         formatCategoryHtml: function (vIsRead, sCategory, oBundle) {
