@@ -11,14 +11,27 @@ sap.ui.define([
     'sap/ui/core/format/DateFormat',
     'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
     'sap/ui/core/library',
-    'sap/base/security/encodeXML'
-], function (DateFormat, BooleanHelper, coreLibrary, encodeXML) {
+    'sap/base/security/encodeXML',
+    'sap/base/security/sanitizeHTML'
+], function (DateFormat, BooleanHelper, coreLibrary, encodeXML, sanitizeHTML) {
     'use strict';
 
     var Priority = coreLibrary.Priority;
 
     var oDateTimeFormat = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yy HH:mm:ss' });
     var oRelativeFormat = DateFormat.getDateTimeInstance({ relative: true, relativeScale: 'auto' });
+
+    /**
+     * Extracts plain text from HTML body content.
+     * Uses SAPUI5 sanitizeHTML first, then jQuery to safely extract text content.
+     * Output is always passed through encodeXML before rendering.
+     */
+    function stripHtml(sHtml) {
+        if (!sHtml) { return ''; }
+        var sSafe = sanitizeHTML(sHtml);
+        var sText = jQuery('<span>').html(sSafe).text();
+        return sText.replace(/\s+/g, ' ').trim();
+    }
 
     return {
         formatDateTime: function (sDateTime) {
@@ -41,24 +54,31 @@ sap.ui.define([
             return sKey && oBundle ? oBundle.getText(sKey) : sCategory || '';
         },
 
-        formatPriority: function (sPriority) {
-            return { 'H': Priority.High, 'M': Priority.Medium, 'L': Priority.Low }[sPriority] || Priority.None;
+        formatPriority: function (vPriority) {
+            var s = String(vPriority || '');
+            return { '1': Priority.High, '2': Priority.Medium, '3': Priority.Low, 'H': Priority.High, 'M': Priority.Medium, 'L': Priority.Low }[s] || Priority.None;
         },
 
-        formatPriorityState: function (sPriority) {
-            return { 'H': 'Error', 'M': 'Warning', 'L': 'Success' }[sPriority] || 'None';
+        formatPriorityState: function (vPriority) {
+            var s = String(vPriority || '');
+            return { '1': 'Error', '2': 'Warning', '3': 'Success', 'H': 'Error', 'M': 'Warning', 'L': 'Success' }[s] || 'None';
         },
 
-        formatPriorityText: function (sPriority, oBundle) {
-            var sKey = { 'H': 'priorityHigh', 'M': 'priorityMedium', 'L': 'priorityLow' }[sPriority];
-            return sKey && oBundle ? oBundle.getText(sKey) : sPriority || '';
+        formatPriorityText: function (vPriority, oBundle) {
+            var s = String(vPriority || '');
+            var sKey = { '1': 'priorityHigh', '2': 'priorityMedium', '3': 'priorityLow', 'H': 'priorityHigh', 'M': 'priorityMedium', 'L': 'priorityLow' }[s];
+            return sKey && oBundle ? oBundle.getText(sKey) : s || '';
         },
 
         formatSubjectHtml: function (vIsRead, sTitle, sMessage) {
             var sT = encodeXML(sTitle || '');
-            var sM = encodeXML(sMessage || '');
+            var sM = encodeXML(stripHtml(sMessage || ''));
             var bRead = BooleanHelper.isTrue(vIsRead);
             return bRead ? sT + ' - <em>' + sM + '</em>' : '<strong>' + sT + '</strong> - <em>' + sM + '</em>';
+        },
+
+        formatPlainBody: function (sBody) {
+            return stripHtml(sBody || '');
         },
 
         formatCategoryHtml: function (vIsRead, sCategory, oBundle) {
@@ -71,9 +91,10 @@ sap.ui.define([
             return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
         },
 
-        formatPriorityHtml: function (vIsRead, sPriority) {
-            var sText = { 'H': 'High', 'M': 'Medium', 'L': 'Low' }[sPriority] || sPriority || '';
-            var sColor = { 'H': '#bb0000', 'M': '#e9730c', 'L': '#107e3e' }[sPriority] || '#6a6d70';
+        formatPriorityHtml: function (vIsRead, vPriority) {
+            var s = String(vPriority || '');
+            var sText = { '1': 'High', '2': 'Medium', '3': 'Low', 'H': 'High', 'M': 'Medium', 'L': 'Low' }[s] || s;
+            var sColor = { '1': '#bb0000', '2': '#e9730c', '3': '#107e3e', 'H': '#bb0000', 'M': '#e9730c', 'L': '#107e3e' }[s] || '#6a6d70';
             var sEsc = encodeXML(sText);
             var sSpan = '<span style="color:' + sColor + '">' + sEsc + '</span>';
             return BooleanHelper.isTrue(vIsRead) ? sSpan : '<strong>' + sSpan + '</strong>';

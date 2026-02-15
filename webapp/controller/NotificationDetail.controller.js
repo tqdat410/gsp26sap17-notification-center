@@ -28,35 +28,47 @@ sap.ui.define([
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationDetail', {
 
-        onInit: function () {
-            this.getView().setModel(new JSONModel({ busy: false }), 'view');
-            this._bindFormatters();
-            this.getOwnerComponent().getRouter().getRoute('detail').attachPatternMatched(this._onRouteMatched, this);
+        // Formatters on prototype so XML template processor finds them at parse time
+        formatPriorityText: function (s) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatPriorityText(s, oBundle);
+        },
+        formatPriorityState: Formatter.formatPriorityState,
+        formatCategory: function (s) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatCategory(s, oBundle);
+        },
+        formatReadStatusText: function (v) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatReadStatusText(v, oBundle);
+        },
+        formatReadStatusState: Formatter.formatReadStatusState,
+        formatArchivedStatusVisible: Formatter.formatArchivedStatusVisible,
+        formatFullDateTime: Formatter.formatFullDateTime,
+        formatMarkReadText: function (v) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatMarkReadText(v, oBundle);
+        },
+        formatMarkReadIcon: Formatter.formatMarkReadIcon,
+        formatArchiveText: function (v) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatArchiveText(v, oBundle);
+        },
+        formatArchiveIcon: Formatter.formatArchiveIcon,
+        formatSourceObjectType: function (s) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatSourceObjectType(s, oBundle);
         },
 
-        _bindFormatters: function () {
-            var that = this;
-            var fnGetBundle = function () {
-                return that.getView().getModel('i18n').getResourceBundle();
-            };
-            this.formatPriorityText = function (s) { return Formatter.formatPriorityText(s, fnGetBundle()); };
-            this.formatPriorityState = Formatter.formatPriorityState;
-            this.formatCategory = function (s) { return Formatter.formatCategory(s, fnGetBundle()); };
-            this.formatReadStatusText = function (v) { return Formatter.formatReadStatusText(v, fnGetBundle()); };
-            this.formatReadStatusState = Formatter.formatReadStatusState;
-            this.formatArchivedStatusVisible = Formatter.formatArchivedStatusVisible;
-            this.formatFullDateTime = Formatter.formatFullDateTime;
-            this.formatMarkReadText = function (v) { return Formatter.formatMarkReadText(v, fnGetBundle()); };
-            this.formatMarkReadIcon = Formatter.formatMarkReadIcon;
-            this.formatArchiveText = function (v) { return Formatter.formatArchiveText(v, fnGetBundle()); };
-            this.formatArchiveIcon = Formatter.formatArchiveIcon;
-            this.formatSourceObjectType = function (s) { return Formatter.formatSourceObjectType(s, fnGetBundle()); };
+        onInit: function () {
+            this.getView().setModel(new JSONModel({ busy: false }), 'view');
+            this.getOwnerComponent().getRouter().getRoute('detail').attachPatternMatched(this._onRouteMatched, this);
         },
 
         _onRouteMatched: function (oEvent) {
             var oArgs = oEvent.getParameter('arguments');
-            this._sRecipientId = oArgs.recipientId;
             this._sNotificationId = oArgs.notificationId;
+            this._sRecipientId = oArgs.recipientId;
             this._bAutoMarkReadDone = false;
             this._bindView(this._sRecipientId, this._sNotificationId);
         },
@@ -118,8 +130,8 @@ sap.ui.define([
         onNavigateToSource: function () {
             var oCtx = this.getView().getBindingContext();
             if (!oCtx) { return; }
-            var sSrc = oCtx.getProperty('_Notification/SourceObject');
-            var sKey = oCtx.getProperty('_Notification/SourceKey');
+            var sSrc = oCtx.getProperty('_Notification/SourceType');
+            var sKey = oCtx.getProperty('_Notification/ObjectKey');
             if (sSrc && sKey) {
                 CrossAppNav.navigateToSource(sSrc, sKey);
             } else {
@@ -132,7 +144,7 @@ sap.ui.define([
             if (!oCtx) { return; }
             var that = this;
             var bIsRead = oCtx.getProperty('IsRead');
-            var sAction = bIsRead ? 'MarkAsUnRead' : 'MarkAsRead';
+            var sAction = bIsRead ? 'MarkAsUnread' : 'MarkAsRead';
 
             ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
                 .then(function () {
@@ -148,7 +160,7 @@ sap.ui.define([
             if (!oCtx) { return; }
             var that = this;
             var bArchived = oCtx.getProperty('IsArchived');
-            var sAction = bArchived ? 'UnArchive' : 'Archive';
+            var sAction = bArchived ? 'Unarchive' : 'Archive';
 
             ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
                 .then(function () {

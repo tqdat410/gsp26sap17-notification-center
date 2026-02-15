@@ -12,8 +12,9 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
-    'sap/base/Log'
-], function (UIComponent, Device, JSONModel, Filter, FilterOperator, Log) {
+    'sap/base/Log',
+    'com/gsp26/sap17/notificationcenter/util/WebSocketManager'
+], function (UIComponent, Device, JSONModel, Filter, FilterOperator, Log, WebSocketManager) {
     'use strict';
 
     return UIComponent.extend('com.gsp26.sap17.notificationcenter.Component', {
@@ -37,6 +38,11 @@ sap.ui.define([
 
             this.getRouter().initialize();
             this._loadUnreadCount();
+
+            // Connect WebSocket for real-time notifications
+            // Pass backend URL for local dev (UI5 proxy can't forward WebSocket)
+            var sBackendUrl = window.location.hostname === 'localhost' ? 'https://s40lp1.ucc.cit.tum.de' : null;
+            WebSocketManager.connect(this.getEventBus(), sBackendUrl);
         },
 
         _loadUnreadCount: function () {
@@ -67,6 +73,7 @@ sap.ui.define([
         },
 
         destroy: function () {
+            WebSocketManager.disconnect();
             UIComponent.prototype.destroy.apply(this, arguments);
         }
     });

@@ -9,7 +9,7 @@
 sap.ui.define([], function () {
     'use strict';
 
-    var ACTION_PREFIX = 'com.sap.gateway.srvd.y17_sd_notification.v0001';
+    var ACTION_PREFIX = 'com.sap.gateway.srvd.z17_sd_notification.v0001';
 
     return {
         buildActionPath: function (sNotificationId, sAction) {

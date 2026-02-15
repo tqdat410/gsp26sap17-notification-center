@@ -1,42 +1,60 @@
-## Application Details
-|               |
-| ------------- |
-|**Generation Date and Time**<br>Mon Feb 02 2026 19:32:27 GMT+0700 (Indochina Time)|
-|**App Generator**<br>SAP Fiori Application Generator|
-|**App Generator Version**<br>1.20.0|
-|**Generation Platform**<br>Visual Studio Code|
-|**Template Used**<br>Basic V4|
-|**Service Type**<br>SAP System (ABAP On-Premise)|
-|**Service URL**<br>https://s40lp1.ucc.cit.tum.de/sap/opu/odata4/iwbep/all/srvd/sap/y17_sd_notification/0001/|
-|**Module Name**<br>notification-center|
-|**Application Title**<br>Custom Notification Center Fiori Applicati|
-|**Namespace**<br>com.gsp26.sap17.nc|
-|**UI5 Theme**<br>sap_horizon|
-|**UI5 Version**<br>1.108.33|
-|**Enable Code Assist Libraries**<br>False|
-|**Enable TypeScript**<br>False|
-|**Add Eslint configuration**<br>False|
+# Notification Center
 
-## notification-center
+An SAP Fiori application for managing notifications in real-time.
 
-An SAP Fiori application.
+## Overview
+The Notification Center provides a centralized interface for users to view, manage, and respond to system notifications. Built with SAPUI5 and OData V4, it features real-time updates via WebSockets and a modern "Horizon" theme.
 
-### Starting the generated app
+## Key Features
+- **Real-time Notifications**: Instant updates via SAP APC (WebSockets) with automatic reconnection.
+- **Advanced Filtering**: Filter by category (Task, System, Alert, Info), priority, and date range.
+- **Bulk Actions**: Mark multiple notifications as read, archived, or deleted in one go.
+- **Detailed View**: Access full notification details and context-specific actions with semantic navigation.
+- **Settings & Preferences**: Customize notification behavior and visibility per category.
+- **Adaptive Design**: Fully responsive layout supporting Desktop, Tablet, and Mobile.
+- **Badge Integration**: Real-time unread count displayed on the notification bell icon.
+- **Smart Formatting**: Context-aware formatting for dates, priorities, and categorization.
 
--   This app has been generated using the SAP Fiori tools - App Generator, as part of the SAP Fiori tools suite.  To launch the generated application, run the following from the generated application root folder:
+## Technical Stack
+- **Framework**: SAPUI5 v1.136.0+
+- **Protocol**: OData V4
+- **Real-time**: SAP APC (WebSocket)
+- **Theme**: sap_horizon
+- **Build Tool**: UI5 CLI
+- **Language**: JavaScript (ES6+)
 
-```
-    npm start
-```
+## Getting Started
 
-- It is also possible to run the application using mock data that reflects the OData Service URL supplied during application generation.  In order to run the application with Mock Data, run the following from the generated app root folder:
+### Prerequisites
+- [Node.js](https://nodejs.org/) (LTS version)
+- [UI5 CLI](https://sap.github.io/ui5-tooling/pages/CLI/) (`npm install --global @ui5/cli`)
 
-```
-    npm run start-mock
-```
+### Installation
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-#### Pre-requisites:
+### Running the App
+- **Start with Sandbox**:
+  ```bash
+  npm start
+  ```
+- **Start with Mock Data**:
+  ```bash
+  npm run start-mock
+  ```
+- **Local Development (No FLP)**:
+  ```bash
+  npm run start-noflp
+  ```
 
-1. Active NodeJS LTS (Long Term Support) version and associated supported NPM version.  (See https://nodejs.org)
-
-
+## Project Structure
+- `webapp/`: Source code of the Fiori application.
+  - `controller/`: Logic for views.
+  - `view/`: XML views for the UI.
+  - `util/`: Helper classes (WebSocket, OData Actions).
+  - `manifest.json`: Application configuration.
+- `docs/`: Technical documentation and architecture details.
+- `ui5.yaml`: Build and development server configuration.

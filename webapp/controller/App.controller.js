@@ -34,14 +34,30 @@ sap.ui.define([
         onInit: function () {
             this._oNotificationPopover = null;
             this._oMainMenu = null;
-            this._startPolling();
+
+            // Subscribe to WebSocket notification events
+            this.getOwnerComponent().getEventBus().subscribe(
+                'notification.websocket', 'newNotification',
+                this._onWebSocketMessage, this
+            );
         },
 
-        _startPolling: function () {
-            var that = this;
-            this._pollInterval = setInterval(function () {
-                that.getOwnerComponent().refreshUnreadCount();
-            }, 60000);
+        _onWebSocketMessage: function (sChannel, sEvent, oData) {
+            // Refresh unread count badge
+            this.getOwnerComponent().refreshUnreadCount();
+
+            // Show toast with notification title
+            if (oData && oData.title) {
+                MessageToast.show(oData.title);
+            }
+
+            // Refresh popover if it exists and is open
+            if (this._oNotificationPopover && this._oNotificationPopover.isOpen()) {
+                this._refreshPopoverData();
+            }
+
+            // Notify list controller to refresh
+            this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
         },
 
         onHomePress: function () {
@@ -111,9 +127,11 @@ sap.ui.define([
             if (oList) {
                 oList.bindItems({
                     path: '/Recipient',
-                    parameters: { $expand: '_Notification($expand=_Actions)' },
                     sorter: new Sorter('_Notification/CreatedAt', true),
-                    filters: [new Filter('IsArchived', FilterOperator.EQ, false)],
+                    filters: [
+                        new Filter('IsArchived', FilterOperator.EQ, false),
+                        new Filter('IsDeleted', FilterOperator.EQ, false)
+                    ],
                     template: this._getNotificationItemTemplate()
                 });
             }
@@ -123,9 +141,8 @@ sap.ui.define([
             var that = this;
             return new NotificationListItem({
                 title: '{_Notification/Title}',
-                description: '{_Notification/Message}',
+                description: { path: '_Notification/Body', formatter: Formatter.formatPlainBody },
                 unread: '{= !${IsRead}}',
-                priority: { path: '_Notification/Priority', formatter: Formatter.formatPriority },
                 showCloseButton: false,
                 press: that.onNotificationItemPress.bind(that)
             }).addCustomData(new CustomData({
@@ -166,8 +183,8 @@ sap.ui.define([
 
             if (this._oNotificationPopover) { this._oNotificationPopover.close(); }
             this.getOwnerComponent().getRouter().navTo('detail', {
-                recipientId: sRecipientId,
-                notificationId: sNotificationId
+                notificationId: sNotificationId,
+                recipientId: sRecipientId
             });
         },
 
@@ -187,7 +204,10 @@ sap.ui.define([
         },
 
         onExit: function () {
-            if (this._pollInterval) { clearInterval(this._pollInterval); }
+            this.getOwnerComponent().getEventBus().unsubscribe(
+                'notification.websocket', 'newNotification',
+                this._onWebSocketMessage, this
+            );
             if (this._oNotificationPopover) { this._oNotificationPopover.destroy(); }
             if (this._oMainMenu) { this._oMainMenu.destroy(); }
         }
