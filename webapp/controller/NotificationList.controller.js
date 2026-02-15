@@ -126,7 +126,7 @@ sap.ui.define([
 
         _markAsReadAndNavigate: function (oCtx) {
             if (!oCtx) { return; }
-            var that = this, sR = oCtx.getProperty('RecipientID'), sN = oCtx.getProperty('NotificationID');
+            var that = this, sR = oCtx.getProperty('UserId'), sN = oCtx.getProperty('NotificationId');
             if (!oCtx.getProperty('IsRead')) {
                 ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { Log.error('Mark read failed: ' + e.message); });
             }
@@ -143,7 +143,7 @@ sap.ui.define([
         onDeleteAction: function () {
             var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oM = this.getView().getModel(), that = this;
             if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () { MessageToast.show(that._getBundle().getText('delete')); oT.removeSelections(true); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); }
-            else { MessageBox.confirm(this._getBundle().getText('deleteAll') + '?', { onClose: function (a) { if (a === MessageBox.Action.OK) { ActionHelper.executeCollectionAction(oM, 'MarkAllAsDeleted').then(function () { that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); } } }); }
+            else { MessageBox.confirm(this._getBundle().getText('deleteAll') + '?', { onClose: function (a) { if (a === MessageBox.Action.OK) { ActionHelper.executeCollectionAction(oM, 'MarkAllAsDeleted').then(function () { MessageToast.show(that._getBundle().getText('deleteAll')); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); } } }); }
         },
 
         onArchiveAction: function () {
@@ -167,6 +167,7 @@ sap.ui.define([
             }
             else {
                 ActionHelper.executeCollectionAction(oM, 'MarkAllAsUnread').then(function () {
+                    MessageToast.show(that._getBundle().getText('markAllUnread'));
                     that._refreshAfterAction();
                 }).catch(function (e) {
                     MessageBox.error(e.message);

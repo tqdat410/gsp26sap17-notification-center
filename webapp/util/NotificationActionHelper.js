@@ -32,7 +32,7 @@ sap.ui.define([], function () {
             aItems.forEach(function (oItem) {
                 var oCtx = oItem.getBindingContext();
                 if (oCtx) {
-                    var sId = oCtx.getProperty('NotificationID');
+                    var sId = oCtx.getProperty('NotificationId');
                     if (sId) {
                         aPromises.push(that.executeAction(oModel, sId, sAction));
                     }

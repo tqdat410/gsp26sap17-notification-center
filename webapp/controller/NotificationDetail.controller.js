@@ -79,7 +79,7 @@ sap.ui.define([
             var that = this;
             oVM.setProperty('/busy', true);
 
-            var sPath = '/Recipient(RecipientID=' + sRecipientId + ',NotificationID=' + sNotificationId + ')';
+            var sPath = "/Recipient(NotificationId=" + sNotificationId + ",UserId='" + sRecipientId + "')";
 
             oView.bindElement({
                 path: sPath,
@@ -104,7 +104,7 @@ sap.ui.define([
 
             oCtx.requestObject().then(function (oData) {
                 if (!oData || BooleanHelper.isTrue(oData.IsRead)) { return; }
-                var sId = oData.NotificationID;
+                var sId = oData.NotificationId;
                 if (!sId) { return; }
 
                 ActionHelper.executeAction(oCtx.getModel(), sId, 'MarkAsRead')
@@ -146,7 +146,7 @@ sap.ui.define([
             var bIsRead = oCtx.getProperty('IsRead');
             var sAction = bIsRead ? 'MarkAsUnread' : 'MarkAsRead';
 
-            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
+            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), sAction)
                 .then(function () {
                     MessageToast.show(that._getBundle().getText(bIsRead ? 'markUnread' : 'markRead'));
                     that.getOwnerComponent().refreshUnreadCount();
@@ -162,7 +162,7 @@ sap.ui.define([
             var bArchived = oCtx.getProperty('IsArchived');
             var sAction = bArchived ? 'Unarchive' : 'Archive';
 
-            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
+            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), sAction)
                 .then(function () {
                     MessageToast.show(that._getBundle().getText(bArchived ? 'unarchive' : 'archive'));
                     that.getOwnerComponent().refreshUnreadCount();
@@ -179,7 +179,7 @@ sap.ui.define([
             MessageBox.confirm(this._getBundle().getText('delete') + '?', {
                 onClose: function (sBtn) {
                     if (sBtn === MessageBox.Action.OK) {
-                        ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), 'MarkAsDeleted')
+                        ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), 'MarkAsDeleted')
                             .then(function () {
                                 MessageToast.show(that._getBundle().getText('delete'));
                                 that.getOwnerComponent().refreshUnreadCount();

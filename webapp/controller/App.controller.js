@@ -167,8 +167,8 @@ sap.ui.define([
 
             if (!oCtx) { return; }
 
-            var sRecipientId = oCtx.getProperty('RecipientID');
-            var sNotificationId = oCtx.getProperty('NotificationID');
+            var sRecipientId = oCtx.getProperty('UserId');
+            var sNotificationId = oCtx.getProperty('NotificationId');
 
             if (!oCtx.getProperty('IsRead')) {
                 ActionHelper.executeAction(oCtx.getModel(), sNotificationId, 'MarkAsRead')
