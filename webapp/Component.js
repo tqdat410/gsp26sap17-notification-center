@@ -38,6 +38,7 @@ sap.ui.define([
 
             this.getRouter().initialize();
             this._loadUnreadCount();
+            this._loadCategoryValueHelp();
 
             // Connect WebSocket for real-time notifications
             // Pass backend URL for local dev (UI5 proxy can't forward WebSocket)
@@ -65,6 +66,31 @@ sap.ui.define([
             }).catch(function (oError) {
                 Log.error('Error loading unread count: ' + oError.message);
                 oAppModel.setProperty('/UnreadCount', 0);
+            });
+        },
+
+        _loadCategoryValueHelp: function () {
+            var oModel = this.getModel();
+            var that = this;
+            if (!oModel) { return; }
+
+            // Set empty model immediately so bindings don't fail before data loads
+            this.setModel(new JSONModel({ items: [], map: {} }), 'categoryVH');
+
+            var oListBinding = oModel.bindList('/CategoryValueHelp');
+            oListBinding.requestContexts(0, 100).then(function (aContexts) {
+                var oBundle = that.getModel('i18n').getResourceBundle();
+                var aItems = [{ key: 'all', text: oBundle.getText('allCategories') }];
+                var oMap = {};
+                aContexts.forEach(function (oCtx) {
+                    var sCode = oCtx.getProperty('CategoryCode');
+                    var sName = oCtx.getProperty('CategoryName');
+                    aItems.push({ key: sCode, text: sName });
+                    oMap[sCode] = sName;
+                });
+                that.getModel('categoryVH').setData({ items: aItems, map: oMap });
+            }).catch(function (oError) {
+                Log.error('Error loading CategoryValueHelp: ' + oError.message);
             });
         },
 

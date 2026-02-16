@@ -44,14 +44,9 @@ sap.ui.define([
             return oDateTimeFormat.format(new Date(sDateTime));
         },
 
-        formatCategory: function (sCategory, oBundle) {
-            var sKey = {
-                'TASK': 'categoryTask',
-                'SYTM': 'categorySystem',
-                'INFO': 'categoryInfo',
-                'ALRT': 'categoryAlert'
-            }[sCategory];
-            return sKey && oBundle ? oBundle.getText(sKey) : sCategory || '';
+        formatCategory: function (sCategory, oCategoryMap) {
+            if (!sCategory) { return ''; }
+            return oCategoryMap && oCategoryMap[sCategory] ? oCategoryMap[sCategory] : sCategory;
         },
 
         formatPriority: function (vPriority) {
@@ -81,8 +76,8 @@ sap.ui.define([
             return stripHtml(sBody || '');
         },
 
-        formatCategoryHtml: function (vIsRead, sCategory, oBundle) {
-            var sText = encodeXML(this.formatCategory(sCategory, oBundle));
+        formatCategoryHtml: function (vIsRead, sCategory, oCategoryMap) {
+            var sText = encodeXML(this.formatCategory(sCategory, oCategoryMap));
             return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
         },
 

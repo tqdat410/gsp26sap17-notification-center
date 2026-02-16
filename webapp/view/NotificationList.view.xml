@@ -46,14 +46,9 @@
                         </SearchField>
                         <ToolbarSeparator/>
                         <Select id="categoryFilter" change=".onCategoryFilterChange"
-                            selectedKey="all" width="auto" autoAdjustWidth="true">
-                            <items>
-                                <core:Item key="all" text="{i18n>allCategories}"/>
-                                <core:Item key="TASK" text="{i18n>categoryTask}"/>
-                                <core:Item key="SYTM" text="{i18n>categorySystem}"/>
-                                <core:Item key="INFO" text="{i18n>categoryInfo}"/>
-                                <core:Item key="ALRT" text="{i18n>categoryAlert}"/>
-                            </items>
+                            selectedKey="all" width="auto" autoAdjustWidth="true"
+                            items="{categoryVH>/items}">
+                            <core:Item key="{categoryVH>key}" text="{categoryVH>text}"/>
                             <layoutData>
                                 <OverflowToolbarLayoutData priority="Low" group="1"/>
                             </layoutData>
@@ -93,7 +88,7 @@
                                 $count: true
                             },
                             sorter: {
-                                path: '_Notification/CreatedAt',
+                                path: '_Notification/SentAt',
                                 descending: true
                             }
                         }"
@@ -156,7 +151,8 @@
                                         formatter: '.formatSubjectHtml'}"/>
                                     <FormattedText htmlText="{parts: [
                                         {path: 'IsRead', targetType: 'any'},
-                                        {path: '_Notification/CategoryCode', targetType: 'any'}],
+                                        {path: '_Notification/CategoryCode', targetType: 'any'},
+                                        {path: 'categoryVH>/map', targetType: 'any'}],
                                         formatter: '.formatCategoryHtml'}"/>
                                     <FormattedText htmlText="{parts: [
                                         {path: 'IsRead', targetType: 'any'},
@@ -164,7 +160,7 @@
                                         formatter: '.formatPriorityHtml'}"/>
                                     <FormattedText htmlText="{parts: [
                                         {path: 'IsRead', targetType: 'any'},
-                                        {path: '_Notification/CreatedAt', targetType: 'any'}],
+                                        {path: '_Notification/SentAt', targetType: 'any'}],
                                         formatter: '.formatDateHtml'}"/>
                                 </cells>
                             </ColumnListItem>
