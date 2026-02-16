@@ -34,9 +34,9 @@ sap.ui.define([
             return Formatter.formatPriorityText(s, oBundle);
         },
         formatPriorityState: Formatter.formatPriorityState,
-        formatCategory: function (s) {
-            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
-            return Formatter.formatCategory(s, oBundle);
+        // oCategoryMap bound from categoryVH>/map (pre-loaded with localized names from backend CategoryValueHelp)
+        formatCategory: function (sCategory, oCategoryMap) {
+            return Formatter.formatCategory(sCategory, oCategoryMap);
         },
         formatReadStatusText: function (v) {
             var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;

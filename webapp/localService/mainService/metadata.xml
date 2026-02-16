@@ -56,6 +56,14 @@
                 <Property Name="Version" Type="Edm.String" Nullable="false" MaxLength="4"/>
                 <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="60"/>
             </EntityType>
+            <EntityType Name="CategoryValueHelpType">
+                <Key>
+                    <PropertyRef Name="CategoryCode"/>
+                </Key>
+                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="CategoryName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="CategoryDesc" Type="Edm.String" Nullable="false" MaxLength="255"/>
+            </EntityType>
             <EntityType Name="PriorityVHType">
                 <Key>
                     <PropertyRef Name="Priority"/>
@@ -218,6 +226,7 @@
                     <NavigationPropertyBinding Path="_Actions" Target="Action"/>
                     <NavigationPropertyBinding Path="_Recipients" Target="Recipient"/>
                 </EntitySet>
+                <EntitySet Name="CategoryValueHelp" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.CategoryValueHelpType"/>
                 <EntitySet Name="PriorityVH" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.PriorityVHType"/>
                 <EntitySet Name="Recipient" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.RecipientType">
                     <NavigationPropertyBinding Path="_Notification" Target="Notification"/>
@@ -284,6 +293,52 @@
                             </Collection>
                         </PropertyValue>
                     </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryValueHelpType/CategoryCode">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Category Code"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Unique identifier for notification category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryValueHelpType/CategoryName">
+                <Annotation Term="SAP__common.Label" String="Category Name"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Display name of notification category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryValueHelpType/CategoryDesc">
+                <Annotation Term="SAP__common.Label" String="Category Desc."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Detailed description of category purpose"/>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryValueHelpType">
+                <Annotation Term="SAP__common.Label" String="Value Help for Category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/CategoryValueHelp">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
                 </Annotation>
             </Annotations>
             <Annotations Target="SAP__self.PriorityVHType/Priority">

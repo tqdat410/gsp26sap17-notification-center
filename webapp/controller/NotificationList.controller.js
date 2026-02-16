@@ -27,10 +27,9 @@ sap.ui.define([
         formatSubjectHtml: Formatter.formatSubjectHtml,
         formatPriorityHtml: Formatter.formatPriorityHtml,
         formatDateHtml: Formatter.formatDateHtml.bind(Formatter),
-        formatCategoryHtml: function (vIsRead, sCategory) {
-            var oModel = this.getView() ? this.getView().getModel('i18n') : null;
-            var oBundle = oModel ? oModel.getResourceBundle() : null;
-            return Formatter.formatCategoryHtml.call(Formatter, vIsRead, sCategory, oBundle);
+        // oCategoryMap is bound from categoryVH>/map model (pre-loaded with localized names from backend CategoryValueHelp)
+        formatCategoryHtml: function (vIsRead, sCategory, oCategoryMap) {
+            return Formatter.formatCategoryHtml.call(Formatter, vIsRead, sCategory, oCategoryMap);
         },
 
         onInit: function () {

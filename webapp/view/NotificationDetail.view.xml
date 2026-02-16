@@ -45,7 +45,7 @@
                             state="{path: '_Notification/Priority', formatter: '.formatPriorityState'}"/>
                         <ObjectStatus
                             title="{i18n>categoryLabel}"
-                            text="{path: '_Notification/CategoryCode', formatter: '.formatCategory'}"
+                            text="{parts: [{path: '_Notification/CategoryCode'}, {path: 'categoryVH>/map'}], formatter: '.formatCategory'}"
                             state="Information"/>
                         <ObjectStatus
                             title="{i18n>status}"
