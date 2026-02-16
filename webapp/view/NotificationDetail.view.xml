@@ -58,8 +58,8 @@
                     </statuses>
                     <attributes>
                         <ObjectAttribute
-                            title="{i18n>createdAt}"
-                            text="{path: '_Notification/CreatedAt', formatter: '.formatFullDateTime'}"/>
+                            title="{i18n>sentAt}"
+                            text="{path: '_Notification/SentAt', formatter: '.formatFullDateTime'}"/>
                     </attributes>
                 </ObjectHeader>
 

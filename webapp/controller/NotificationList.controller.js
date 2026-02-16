@@ -91,8 +91,17 @@ sap.ui.define([
             }
             if (this._sPriorityFilter !== 'all') { a.push(new Filter('_Notification/Priority', FilterOperator.EQ, this._sPriorityFilter)); }
             if (this._sCategoryFilter !== 'all') { a.push(new Filter('_Notification/CategoryCode', FilterOperator.EQ, this._sCategoryFilter)); }
-            if (this._dDateFrom) { var d = new Date(this._dDateFrom); d.setHours(0,0,0,0); a.push(new Filter('_Notification/CreatedAt', FilterOperator.GE, d)); }
-            if (this._dDateTo) { var t = new Date(this._dDateTo); t.setHours(23,59,59,999); a.push(new Filter('_Notification/CreatedAt', FilterOperator.LE, t)); }
+            if (this._dDateFrom && this._dDateTo) {
+                var dF = new Date(this._dDateFrom); dF.setHours(0,0,0,0);
+                var dT = new Date(this._dDateTo); dT.setHours(23,59,59,999);
+                a.push(new Filter('_Notification/SentAt', FilterOperator.BT, dF.toISOString(), dT.toISOString()));
+            } else if (this._dDateFrom) {
+                var d = new Date(this._dDateFrom); d.setHours(0,0,0,0);
+                a.push(new Filter('_Notification/SentAt', FilterOperator.GE, d.toISOString()));
+            } else if (this._dDateTo) {
+                var t = new Date(this._dDateTo); t.setHours(23,59,59,999);
+                a.push(new Filter('_Notification/SentAt', FilterOperator.LE, t.toISOString()));
+            }
             if (this._sSearchQuery) { a.push(new Filter({ filters: [new Filter('_Notification/Title', FilterOperator.Contains, this._sSearchQuery), new Filter('_Notification/Body', FilterOperator.Contains, this._sSearchQuery)], and: false })); }
             return a;
         },

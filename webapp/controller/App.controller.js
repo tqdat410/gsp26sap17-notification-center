@@ -127,7 +127,7 @@ sap.ui.define([
             if (oList) {
                 oList.bindItems({
                     path: '/Recipient',
-                    sorter: new Sorter('_Notification/CreatedAt', true),
+                    sorter: new Sorter('_Notification/SentAt', true),
                     filters: [
                         new Filter('IsArchived', FilterOperator.EQ, false),
                         new Filter('IsDeleted', FilterOperator.EQ, false)
@@ -147,7 +147,7 @@ sap.ui.define([
                 press: that.onNotificationItemPress.bind(that)
             }).addCustomData(new CustomData({
                 key: 'datetime',
-                value: { path: '_Notification/CreatedAt', formatter: Formatter.formatDateTime },
+                value: { path: '_Notification/SentAt', formatter: Formatter.formatDateTime },
                 writeToDom: true
             }));
         },

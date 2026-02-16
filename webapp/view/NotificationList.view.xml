@@ -93,7 +93,7 @@
                                 $count: true
                             },
                             sorter: {
-                                path: '_Notification/CreatedAt',
+                                path: '_Notification/SentAt',
                                 descending: true
                             }
                         }"
@@ -164,7 +164,7 @@
                                         formatter: '.formatPriorityHtml'}"/>
                                     <FormattedText htmlText="{parts: [
                                         {path: 'IsRead', targetType: 'any'},
-                                        {path: '_Notification/CreatedAt', targetType: 'any'}],
+                                        {path: '_Notification/SentAt', targetType: 'any'}],
                                         formatter: '.formatDateHtml'}"/>
                                 </cells>
                             </ColumnListItem>
