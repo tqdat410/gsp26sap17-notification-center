@@ -147,7 +147,7 @@
                 <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
                 <Property Name="ActionSeq" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="ActionLabel" Type="Edm.String" Nullable="false" MaxLength="50"/>
-                <Property Name="SematicObject" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="SematicObject" Type="Edm.String" Nullable="false" MaxLength="100"/>
                 <Property Name="SematicAction" Type="Edm.String" Nullable="false" MaxLength="60"/>
                 <Property Name="Params" Type="Edm.String" Nullable="false"/>
                 <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
@@ -214,6 +214,14 @@
                 <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
             </Action>
             <Action Name="CustomCreate" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="Approve" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="Reject" EntitySetPath="_it" IsBound="true">
                 <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
                 <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
             </Action>

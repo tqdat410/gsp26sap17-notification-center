@@ -182,9 +182,17 @@ sap.ui.define([
             }
 
             if (this._oNotificationPopover) { this._oNotificationPopover.close(); }
+            
+            // Popover always shows unread notifications, so pass tab=unread
             this.getOwnerComponent().getRouter().navTo('detail', {
                 notificationId: sNotificationId,
-                recipientId: sRecipientId
+                recipientId: sRecipientId,
+                '?query': {
+                    tab: 'unread',
+                    search: '',
+                    priority: 'all',
+                    category: 'all'
+                }
             });
         },
 
