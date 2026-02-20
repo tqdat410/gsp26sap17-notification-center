@@ -54,17 +54,6 @@ sap.ui.define([
         },
         formatReadStatusCombinedState: Formatter.formatReadStatusCombinedState,
         formatReadStatusState: Formatter.formatReadStatusState,
-        formatReadStatusText: function (vIsRead) {
-            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
-            return Formatter.formatReadStatusText(vIsRead, oBundle);
-        },
-        formatArchivedStatusVisible: Formatter.formatArchivedStatusVisible,
-        formatArchivedStatusText: function (vIsArchived) {
-            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
-            return Formatter.formatArchivedStatusText(vIsArchived, oBundle);
-        },
-        formatArchivedState: Formatter.formatArchivedState,
-        formatFullDateTime: Formatter.formatFullDateTime,
         formatDateTimeWithRelative: Formatter.formatDateTimeWithRelative,
         formatMarkReadText: function (v) {
             var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
@@ -144,7 +133,14 @@ sap.ui.define([
             if (!oCtx) { return; }
 
             oCtx.requestObject().then(function (oData) {
-                if (!oData || BooleanHelper.isTrue(oData.IsRead)) { return; }
+                if (!oData) { return; }
+
+                // Already read (e.g. list marked before navigation) – just refresh list
+                if (BooleanHelper.isTrue(oData.IsRead)) {
+                    that._publishRefresh();
+                    return;
+                }
+
                 var sId = oData.NotificationId;
                 if (!sId) { return; }
 
@@ -181,6 +177,10 @@ sap.ui.define([
 
             var oNextNotification = aNotifications[iNewIndex];
             oAppModel.setProperty('/navigationContext/currentIndex', iNewIndex);
+
+            // Fire-and-forget mark as read so detail page loads with IsRead=true (no flicker)
+            ActionHelper.executeAction(this.getView().getModel(), oNextNotification.notificationId, 'MarkAsRead')
+                .catch(function () {});
 
             this.getOwnerComponent().getRouter().navTo('detail', {
                 notificationId: oNextNotification.notificationId,
@@ -292,7 +292,15 @@ sap.ui.define([
                 that.getView().getModel('view').setProperty('/hasActions', aActions.length > 0);
                 aActions.forEach(function (oAct, index) {
                     var sIcon = that._getActionIcon(oAct.SematicObject, oAct.ActionLabel);
-                    var sType = index === 0 ? 'Emphasized' : 'Transparent';
+                    var sSematicActionLower = (oAct.SematicAction || '').toLowerCase();
+                    var sType;
+                    if (sSematicActionLower === 'approve') {
+                        sType = 'Accept';
+                    } else if (sSematicActionLower === 'reject') {
+                        sType = 'Reject';
+                    } else {
+                        sType = index === 0 ? 'Emphasized' : 'Default';
+                    }
                     var oBtn = new MButton({
                         text: oAct.ActionLabel,
                         type: sType,

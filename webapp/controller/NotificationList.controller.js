@@ -139,11 +139,11 @@ sap.ui.define([
             
             // Fetch and save FULL navigation context for current tab (without search/filters)
             this._fetchAndSaveNavigationContext(sN, function() {
+                // Fire-and-forget mark as read so detail page loads with IsRead=true (no flicker)
                 if (!oCtx.getProperty('IsRead')) {
-                    ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { Log.error('Mark read failed: ' + e.message); });
+                    ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').catch(function (e) { Log.error('Mark read failed: ' + e.message); });
                 }
-                
-                // Navigate with only tab parameter
+                // Navigate with only tab parameter (detail page handles list refresh via _publishRefresh)
                 that.getOwnerComponent().getRouter().navTo('detail', {
                     notificationId: sN,
                     recipientId: sR,
