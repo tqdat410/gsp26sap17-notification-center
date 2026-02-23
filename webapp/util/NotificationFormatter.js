@@ -44,6 +44,13 @@ sap.ui.define([
             return oDateTimeFormat.format(new Date(sDateTime));
         },
 
+        formatDateTimeWithRelative: function (sDateTime) {
+            if (!sDateTime) { return ''; }
+            var sRelative = oRelativeFormat.format(new Date(sDateTime));
+            var sFull = oDateTimeFormat.format(new Date(sDateTime));
+            return sRelative + ' (' + sFull + ')';
+        },
+
         formatCategory: function (sCategory, oCategoryMap) {
             if (!sCategory) { return ''; }
             return oCategoryMap && oCategoryMap[sCategory] ? oCategoryMap[sCategory] : sCategory;
@@ -100,12 +107,41 @@ sap.ui.define([
             return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
         },
 
+        formatReadStatusCombined: function (vIsRead, vIsArchived, oBundle) {
+            if (BooleanHelper.isTrue(vIsArchived)) {
+                var sArchived = oBundle ? oBundle.getText('archived') : 'Archived';
+                return sArchived;
+            }
+            var sKey = BooleanHelper.isTrue(vIsRead) ? 'read' : 'unreadStatus';
+            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
+        },
+
         formatReadStatusState: function (vIsRead) {
+            return BooleanHelper.isTrue(vIsRead) ? 'Success' : 'Warning';
+        },
+
+        formatReadStatusCombinedState: function (vIsRead, vIsArchived) {
+            if (BooleanHelper.isTrue(vIsArchived)) { return 'Warning'; }
             return BooleanHelper.isTrue(vIsRead) ? 'Success' : 'Warning';
         },
 
         formatArchivedStatusVisible: function (vIsArchived) {
             return BooleanHelper.isTrue(vIsArchived);
+        },
+
+        formatReadStatusText: function (vIsRead, oBundle) {
+            var sKey = BooleanHelper.isTrue(vIsRead) ? 'read' : 'unreadStatus';
+            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
+        },
+
+        formatArchivedStatusText: function (vIsArchived, oBundle) {
+            if (!BooleanHelper.isTrue(vIsArchived)) { return ''; }
+            var sArchived = oBundle ? oBundle.getText('archived') : 'Archived';
+            return sArchived;
+        },
+
+        formatArchivedState: function (vIsArchived) {
+            return BooleanHelper.isTrue(vIsArchived) ? 'Warning' : 'None';
         },
 
         formatMarkReadText: function (vIsRead, oBundle) {
@@ -126,11 +162,9 @@ sap.ui.define([
             return BooleanHelper.isTrue(vIsArchived) ? 'sap-icon://folder-blank' : 'sap-icon://folder';
         },
 
-        formatSourceObjectType: function (sSourceObject, oBundle) {
-            if (sSourceObject === 'LEAVE_REQUEST') {
-                return oBundle ? oBundle.getText('sourceLeaveRequest') : 'Leave Request';
-            }
-            return sSourceObject || '';
+        formatBodyHtml: function (sBody) {
+            if (!sBody) { return '<p></p>'; }
+            return /<[a-z][\s\S]*>/i.test(sBody) ? sBody : '<p>' + encodeXML(sBody) + '</p>';
         }
     };
 });

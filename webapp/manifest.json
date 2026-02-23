@@ -124,7 +124,7 @@
         },
         {
           "name": "detail",
-          "pattern": "detail/{notificationId}/{recipientId}",
+          "pattern": "detail/{notificationId}/{recipientId}:query:",
           "target": ["notificationDetail"]
         },
         {

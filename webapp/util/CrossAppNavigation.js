@@ -6,29 +6,35 @@
  */
 sap.ui.define([
     'sap/m/MessageToast',
+    'sap/m/MessageBox',
     'sap/ushell/Container'
-], function (MessageToast, Container) {
+], function (MessageToast, MessageBox, Container) {
     'use strict';
 
     return {
-        navigateToSource: function (sObject, sKey) {
-            var oCrossAppNav = Container && Container.getServiceAsync('CrossApplicationNavigation');
-
+        navigateWithAction: function (sSematicObject, sSematicAction, oParams) {
+            var oCrossAppNav;
+            try {
+                oCrossAppNav = Container && Container.getServiceAsync('CrossApplicationNavigation');
+            } catch (e) {
+                MessageToast.show('Navigate: ' + sSematicObject + '#' + sSematicAction);
+                return;
+            }
             if (oCrossAppNav) {
                 oCrossAppNav.then(function (oService) {
-                    switch (sObject) {
-                        case 'LEAVE_REQUEST':
-                            oService.toExternal({
-                                target: { semanticObject: 'Y17LeaveRequest', action: 'display' },
-                                params: { RequestId: sKey }
-                            });
-                            break;
-                        default:
-                            MessageToast.show('Navigate to: ' + sObject + ' - ' + sKey);
+                    if (!oService) {
+                        MessageBox.error('Navigation service is not available.');
+                        return;
                     }
+                    oService.toExternal({
+                        target: { semanticObject: sSematicObject, action: sSematicAction },
+                        params: oParams || {}
+                    });
+                }).catch(function (oError) {
+                    MessageBox.error('Navigation failed: ' + (oError && oError.message ? oError.message : String(oError)));
                 });
             } else {
-                MessageToast.show('Source: ' + sObject + ' - ' + sKey);
+                MessageToast.show('Navigate: ' + sSematicObject + '#' + sSematicAction);
             }
         }
     };

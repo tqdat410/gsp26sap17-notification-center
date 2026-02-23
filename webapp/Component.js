@@ -32,7 +32,11 @@ sap.ui.define([
             var oAppModel = new JSONModel({
                 UnreadCount: 0,
                 busy: false,
-                lastRefresh: null
+                lastRefresh: null,
+                navigationContext: {
+                    notifications: [],
+                    currentIndex: -1
+                }
             });
             this.setModel(oAppModel, 'app');
 

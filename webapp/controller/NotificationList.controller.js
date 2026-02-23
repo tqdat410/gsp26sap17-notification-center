@@ -7,6 +7,7 @@ sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
+    'sap/ui/model/Sorter',
     'sap/ui/model/json/JSONModel',
     'sap/m/MessageToast',
     'sap/m/MessageBox',
@@ -14,7 +15,7 @@ sap.ui.define([
     'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
     'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper',
     'com/gsp26/sap17/notificationcenter/util/ToolbarStateHelper'
-], function (Controller, Filter, FilterOperator, JSONModel, MessageToast,
+], function (Controller, Filter, FilterOperator, Sorter, JSONModel, MessageToast,
              MessageBox, Log, Formatter, ActionHelper, ToolbarHelper) {
     'use strict';
 
@@ -34,12 +35,12 @@ sap.ui.define([
 
         onInit: function () {
             this.getView().setModel(new JSONModel({
-                selectedTab: 'unread', hasSelection: false,
+                selectedTab: 'all', hasSelection: false,
                 deleteButtonText: 'Delete', archiveButtonText: 'Archive',
                 archiveButtonIcon: 'sap-icon://folder',
                 markReadButtonText: 'Mark All as Read', markReadButtonIcon: 'sap-icon://email-read'
             }), 'view');
-            this._sCurrentTab = 'unread';
+            this._sCurrentTab = 'all';
             this._sSearchQuery = '';
             this._sPriorityFilter = 'all';
             this._sCategoryFilter = 'all';
@@ -135,10 +136,78 @@ sap.ui.define([
         _markAsReadAndNavigate: function (oCtx) {
             if (!oCtx) { return; }
             var that = this, sR = oCtx.getProperty('UserId'), sN = oCtx.getProperty('NotificationId');
-            if (!oCtx.getProperty('IsRead')) {
-                ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { Log.error('Mark read failed: ' + e.message); });
+            
+            // Fetch and save FULL navigation context for current tab (without search/filters)
+            this._fetchAndSaveNavigationContext(sN, function() {
+                // Fire-and-forget mark as read so detail page loads with IsRead=true (no flicker)
+                if (!oCtx.getProperty('IsRead')) {
+                    ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').catch(function (e) { Log.error('Mark read failed: ' + e.message); });
+                }
+                // Navigate with only tab parameter (detail page handles list refresh via _publishRefresh)
+                that.getOwnerComponent().getRouter().navTo('detail', {
+                    notificationId: sN,
+                    recipientId: sR,
+                    '?query': { tab: that._sCurrentTab || 'all' }
+                });
+            });
+        },
+
+        _fetchAndSaveNavigationContext: function (sNotificationId, fnCallback) {
+            var oModel = this.getView().getModel();
+            if (!oModel) {
+                if (fnCallback) { fnCallback(); }
+                return;
             }
-            this.getOwnerComponent().getRouter().navTo('detail', { notificationId: sN, recipientId: sR });
+            
+            // Build filters for FULL tab (no search, no priority, no category, no date)
+            var aFilters = [new Filter('IsDeleted', FilterOperator.EQ, false)];
+            var sTab = this._sCurrentTab || 'all';
+            
+            switch (sTab) {
+                case 'unread':
+                    aFilters.push(new Filter('IsRead', FilterOperator.EQ, false));
+                    aFilters.push(new Filter('IsArchived', FilterOperator.EQ, false));
+                    break;
+                case 'archived':
+                    aFilters.push(new Filter('IsArchived', FilterOperator.EQ, true));
+                    break;
+                default:
+                    aFilters.push(new Filter('IsArchived', FilterOperator.EQ, false));
+            }
+            
+            var oSorter = new Sorter('_Notification/SentAt', true);
+            var that = this;
+            
+            var oBinding = oModel.bindList('/Recipient', null, oSorter, aFilters);
+            oBinding.requestContexts(0, 1000).then(function (aContexts) {
+                var aNotifications = [];
+                var iCurrentIndex = -1;
+                
+                if (aContexts) {
+                    aContexts.forEach(function (oCtx, index) {
+                        var sNId = oCtx.getProperty('NotificationId');
+                        var sRId = oCtx.getProperty('UserId');
+                        aNotifications.push({
+                            notificationId: sNId,
+                            recipientId: sRId
+                        });
+                        if (sNId === sNotificationId) {
+                            iCurrentIndex = index;
+                        }
+                    });
+                }
+                
+                var oAppModel = that.getOwnerComponent().getModel('app');
+                oAppModel.setProperty('/navigationContext', {
+                    notifications: aNotifications,
+                    currentIndex: iCurrentIndex >= 0 ? iCurrentIndex : 0
+                });
+                
+                if (fnCallback) { fnCallback(); }
+            }).catch(function (oError) {
+                Log.error('Failed to fetch navigation context: ' + oError.message);
+                if (fnCallback) { fnCallback(); }
+            });
         },
 
         onSelectionChange: function () { this._updateToolbarButtons(); },
