@@ -94,7 +94,7 @@
                         }"
                         mode="MultiSelect"
                         noDataText="{i18n>noNotifications}"
-                        growing="true" growingThreshold="20"
+                        growing="true" growingThreshold="30"
                         growingScrollToLoad="true"
                         itemPress=".onNotificationPress"
                         selectionChange=".onSelectionChange"

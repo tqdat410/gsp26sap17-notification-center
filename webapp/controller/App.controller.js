@@ -27,12 +27,14 @@ sap.ui.define([
 
     var EVENT_CHANNEL = 'notification.center';
     var EVENT_REFRESH = 'refreshList';
+    var POPOVER_REFRESH_DELAY_MS = 250;
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.App', {
 
         onInit: function () {
             this._oNotificationPopover = null;
             this._oMainMenu = null;
+            this._iPopoverRefreshTimer = null;
 
             // Subscribe to WebSocket notification events
             this.getOwnerComponent().getEventBus().subscribe(
@@ -42,21 +44,28 @@ sap.ui.define([
         },
 
         _onWebSocketMessage: function (sChannel, sEvent, oData) {
-            // Refresh unread count badge
-            this.getOwnerComponent().refreshUnreadCount();
+            var oPayload = oData || {};
+            var oComponent = this.getOwnerComponent();
+
+            // Optimistically update badge, then reconcile async
+            oComponent.incrementUnreadCount();
+            oComponent.refreshUnreadCount();
 
             // Show toast with notification title
-            if (oData && oData.title) {
-                MessageToast.show(oData.title);
+            if (oPayload.title) {
+                MessageToast.show(oPayload.title);
             }
 
             // Refresh popover if it exists and is open
             if (this._oNotificationPopover && this._oNotificationPopover.isOpen()) {
-                this._refreshPopoverData();
+                this._schedulePopoverRefresh();
             }
 
             // Notify list controller to refresh
-            this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
+            this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH, {
+                source: 'websocket',
+                notificationId: oPayload.notificationId || ''
+            });
         },
 
         onHomePress: function () {
@@ -116,9 +125,22 @@ sap.ui.define([
                     oPopover.openBy(oSource);
                 });
             } else {
-                this._refreshPopoverData();
+                this._schedulePopoverRefresh();
                 this._oNotificationPopover.openBy(oSource);
             }
+        },
+
+        _schedulePopoverRefresh: function () {
+            var that = this;
+
+            if (this._iPopoverRefreshTimer) {
+                return;
+            }
+
+            this._iPopoverRefreshTimer = setTimeout(function () {
+                that._iPopoverRefreshTimer = null;
+                that._refreshPopoverData();
+            }, POPOVER_REFRESH_DELAY_MS);
         },
 
         _bindPopoverList: function () {
@@ -168,32 +190,61 @@ sap.ui.define([
         onNotificationItemPress: function (oEvent) {
             var oItem = oEvent.getSource();
             var oCtx = oItem.getBindingContext();
-            var that = this;
+            var bIsUnread;
 
             if (!oCtx) { return; }
 
-            var sRecipientId = oCtx.getProperty('UserId');
-            var sNotificationId = oCtx.getProperty('NotificationId');
+            bIsUnread = !oCtx.getProperty('IsRead');
 
-            if (!oCtx.getProperty('IsRead')) {
-                ActionHelper.executeAction(oCtx.getModel(), sNotificationId, 'MarkAsRead')
-                    .then(function () {
-                        that.getOwnerComponent().refreshUnreadCount();
-                        that._refreshPopoverData();
-                        that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
-                    }).catch(function (oError) {
-                        Log.error('Failed to mark as read: ' + oError.message);
-                    });
+            if (bIsUnread) {
+                this._markAsReadThenNavigate(oCtx, true);
+                return;
             }
 
+            this._navigateToDetail(oCtx, false);
+        },
+
+        _markAsReadThenNavigate: function (oCtx, bFromPopover) {
+            var that = this;
+            var sNotificationId;
+
+            if (!oCtx) { return; }
+
+            sNotificationId = oCtx.getProperty('NotificationId');
+
+            ActionHelper.executeAction(oCtx.getModel(), sNotificationId, 'MarkAsRead')
+                .then(function () {
+                    that.getOwnerComponent().decrementUnreadCount();
+                    that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH, {
+                        source: 'action',
+                        type: 'notification_read',
+                        notificationId: sNotificationId
+                    });
+                    that._navigateToDetail(oCtx, bFromPopover);
+                }).catch(function (oError) {
+                    Log.error('Failed to mark as read: ' + oError.message);
+                    that._navigateToDetail(oCtx, bFromPopover);
+                });
+        },
+
+        _navigateToDetail: function (oCtx, bPreMarked) {
+            var sRecipientId;
+            var sNotificationId;
+
+            if (!oCtx) { return; }
+
+            sRecipientId = oCtx.getProperty('UserId');
+            sNotificationId = oCtx.getProperty('NotificationId');
+
             if (this._oNotificationPopover) { this._oNotificationPopover.close(); }
-            
+
             // Popover always shows unread notifications, so pass tab=unread
             this.getOwnerComponent().getRouter().navTo('detail', {
                 notificationId: sNotificationId,
                 recipientId: sRecipientId,
                 '?query': {
                     tab: 'unread',
+                    preMarked: bPreMarked ? '1' : '0',
                     search: '',
                     priority: 'all',
                     category: 'all'
@@ -209,8 +260,11 @@ sap.ui.define([
                 .then(function () {
                     MessageToast.show(that.getView().getModel('i18n').getResourceBundle().getText('markAllRead'));
                     that.getOwnerComponent().refreshUnreadCount();
-                    that._refreshPopoverData();
-                    that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
+                    that._schedulePopoverRefresh();
+                    that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH, {
+                        source: 'action',
+                        notificationId: ''
+                    });
                 }).catch(function (oError) {
                     MessageBox.error('Failed to mark all as read: ' + oError.message);
                 });
@@ -221,6 +275,10 @@ sap.ui.define([
                 'notification.websocket', 'newNotification',
                 this._onWebSocketMessage, this
             );
+            if (this._iPopoverRefreshTimer) {
+                clearTimeout(this._iPopoverRefreshTimer);
+                this._iPopoverRefreshTimer = null;
+            }
             if (this._oNotificationPopover) { this._oNotificationPopover.destroy(); }
             if (this._oMainMenu) { this._oMainMenu.destroy(); }
         }
