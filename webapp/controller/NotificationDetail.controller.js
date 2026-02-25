@@ -35,6 +35,7 @@ sap.ui.define([
 
     var EVENT_CHANNEL = 'notification.center';
     var EVENT_REFRESH = 'refreshList';
+    var NAV_CONTEXT_WINDOW_SIZE = 100;
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationDetail', {
 
@@ -86,6 +87,7 @@ sap.ui.define([
             // Parse only tab parameter
             var oQuery = oArgs['?query'] || {};
             this._sCurrentTab = oQuery.tab || 'all';
+            this._bPreMarked = oQuery.preMarked === '1';
             
             // Check if navigation context already exists (from list navigation)
             var oAppModel = this.getOwnerComponent().getModel('app');
@@ -128,6 +130,10 @@ sap.ui.define([
             if (this._bAutoMarkReadDone) { return; }
             this._bAutoMarkReadDone = true;
 
+            if (this._bPreMarked) {
+                return;
+            }
+
             var oCtx = this.getView().getBindingContext();
             var that = this;
             if (!oCtx) { return; }
@@ -137,7 +143,6 @@ sap.ui.define([
 
                 // Already read (e.g. list marked before navigation) – just refresh list
                 if (BooleanHelper.isTrue(oData.IsRead)) {
-                    that._publishRefresh();
                     return;
                 }
 
@@ -146,9 +151,13 @@ sap.ui.define([
 
                 ActionHelper.executeAction(oCtx.getModel(), sId, 'MarkAsRead')
                     .then(function () {
+                        that.getOwnerComponent().decrementUnreadCount();
                         that.getOwnerComponent().refreshUnreadCount();
                         oCtx.refresh();
-                        that._publishRefresh();
+                        that._publishRefresh({
+                            source: 'action',
+                            notificationId: sId
+                        });
                     }).catch(function (oErr) {
                         Log.error('Auto mark-as-read failed: ' + oErr.message);
                     });
@@ -200,9 +209,17 @@ sap.ui.define([
             ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), sAction)
                 .then(function () {
                     MessageToast.show(that._getBundle().getText(bIsRead ? 'markUnread' : 'markRead'));
+                    if (bIsRead) {
+                        that.getOwnerComponent().incrementUnreadCount();
+                    } else {
+                        that.getOwnerComponent().decrementUnreadCount();
+                    }
                     that.getOwnerComponent().refreshUnreadCount();
                     oCtx.refresh();
-                    that._publishRefresh();
+                    that._publishRefresh({
+                        source: 'action',
+                        notificationId: oCtx.getProperty('NotificationId')
+                    });
                 }).catch(function (oErr) { MessageBox.error(oErr.message); });
         },
 
@@ -221,7 +238,10 @@ sap.ui.define([
                             .then(function () {
                                 MessageToast.show(that._getBundle().getText(bArchived ? 'unarchive' : 'archive'));
                                 that.getOwnerComponent().refreshUnreadCount();
-                                that._publishRefresh();
+                                that._publishRefresh({
+                                    source: 'action',
+                                    notificationId: oCtx.getProperty('NotificationId')
+                                });
                                 that._handleArchiveNavigation();
                             }).catch(function (oErr) { MessageBox.error(oErr.message); });
                     }
@@ -273,7 +293,10 @@ sap.ui.define([
                             .then(function () {
                                 MessageToast.show(that._getBundle().getText('delete'));
                                 that.getOwnerComponent().refreshUnreadCount();
-                                that._publishRefresh();
+                                that._publishRefresh({
+                                    source: 'action',
+                                    notificationId: oCtx.getProperty('NotificationId')
+                                });
                                 that._handleArchiveNavigation();
                             }).catch(function (oErr) { MessageBox.error(oErr.message); });
                     }
@@ -364,7 +387,10 @@ sap.ui.define([
                                         var oCtx = that.getView().getBindingContext();
                                         if (oCtx) { oCtx.refresh(); }
                                         that.getOwnerComponent().refreshUnreadCount();
-                                        that._publishRefresh();
+                                        that._publishRefresh({
+                                            source: 'action',
+                                            notificationId: oCtx ? oCtx.getProperty('NotificationId') : ''
+                                        });
                                     })
                                     .catch(function (oErr) { MessageBox.error(oErr.message); });
                             }
@@ -430,7 +456,10 @@ sap.ui.define([
                                     var oCtx = that.getView().getBindingContext();
                                     if (oCtx) { oCtx.refresh(); }
                                     that.getOwnerComponent().refreshUnreadCount();
-                                    that._publishRefresh();
+                                    that._publishRefresh({
+                                        source: 'action',
+                                        notificationId: oCtx ? oCtx.getProperty('NotificationId') : ''
+                                    });
                                 })
                                 .catch(function (oErr) { MessageBox.error(oErr.message); });
                         }
@@ -456,7 +485,7 @@ sap.ui.define([
             var that = this;
             
             var oBinding = oModel.bindList('/Recipient', null, oSorter, aFilters);
-            oBinding.requestContexts(0, 1000).then(function (aContexts) {
+            oBinding.requestContexts(0, NAV_CONTEXT_WINDOW_SIZE).then(function (aContexts) {
                 if (!aContexts || aContexts.length === 0) {
                     return;
                 }
@@ -488,8 +517,11 @@ sap.ui.define([
                     // If still not found, just show notification without counter
                     var oAppModel = that.getOwnerComponent().getModel('app');
                     oAppModel.setProperty('/navigationContext', {
-                        notifications: [],
-                        currentIndex: -1
+                        notifications: [{
+                            notificationId: that._sNotificationId,
+                            recipientId: that._sRecipientId
+                        }],
+                        currentIndex: 0
                     });
                     return;
                 }
@@ -525,6 +557,8 @@ sap.ui.define([
         },
 
         _getBundle: function () { return this.getView().getModel('i18n').getResourceBundle(); },
-        _publishRefresh: function () { this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH); }
+        _publishRefresh: function (oData) {
+            this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH, oData || {});
+        }
     });
 });

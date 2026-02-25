@@ -28,7 +28,7 @@
                 id="popoverNotificationList"
                 noDataText="{i18n>noNotifications}"
                 growing="true"
-                growingThreshold="10"
+                growingThreshold="15"
                 growingScrollToLoad="true">
             </List>
         </content>

@@ -21,6 +21,8 @@ sap.ui.define([
 
     var EVENT_CHANNEL = 'notification.center';
     var EVENT_REFRESH = 'refreshList';
+    var NAV_CONTEXT_WINDOW_SIZE = 100;
+    var NAV_CONTEXT_WINDOW_MARGIN = 30;
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationList', {
 
@@ -46,6 +48,7 @@ sap.ui.define([
             this._sCategoryFilter = 'all';
             this._dDateFrom = null;
             this._dDateTo = null;
+            this._bPendingRefresh = false;
             this.getOwnerComponent().getRouter().getRoute('main').attachPatternMatched(this._onRouteMatched, this);
             this.getOwnerComponent().getEventBus().subscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
         },
@@ -54,13 +57,29 @@ sap.ui.define([
             this.getOwnerComponent().getEventBus().unsubscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
         },
 
-        _onRefreshList: function () {
-            var oBinding = this.byId('notificationTable').getBinding('items');
-            if (oBinding) { oBinding.refresh(); }
-            this.getOwnerComponent().refreshUnreadCount();
+        _onRefreshList: function (sChannel, sEvent, oData) {
+            var oTable = this.byId('notificationTable');
+            var oBinding = oTable ? oTable.getBinding('items') : null;
+            var bTableVisible = !!(oTable && oTable.getDomRef());
+
+            if (oBinding && bTableVisible) {
+                oBinding.refresh();
+                this._bPendingRefresh = false;
+            } else if (oBinding) {
+                this._bPendingRefresh = true;
+            }
+
+            if (!oData || oData.source !== 'websocket') {
+                this.getOwnerComponent().refreshUnreadCount();
+            }
         },
 
         _onRouteMatched: function () {
+            var oBinding = this.byId('notificationTable').getBinding('items');
+            if (oBinding && this._bPendingRefresh) {
+                oBinding.refresh();
+                this._bPendingRefresh = false;
+            }
             this._applyFilters();
             this._updateTableTitleCount();
         },
@@ -136,23 +155,44 @@ sap.ui.define([
         _markAsReadAndNavigate: function (oCtx) {
             if (!oCtx) { return; }
             var that = this, sR = oCtx.getProperty('UserId'), sN = oCtx.getProperty('NotificationId');
+            var iAnchorIndex = typeof oCtx.getIndex === 'function' ? oCtx.getIndex() : 0;
+            var bUnread = !oCtx.getProperty('IsRead');
             
-            // Fetch and save FULL navigation context for current tab (without search/filters)
-            this._fetchAndSaveNavigationContext(sN, function() {
-                // Fire-and-forget mark as read so detail page loads with IsRead=true (no flicker)
-                if (!oCtx.getProperty('IsRead')) {
-                    ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').catch(function (e) { Log.error('Mark read failed: ' + e.message); });
-                }
-                // Navigate with only tab parameter (detail page handles list refresh via _publishRefresh)
+            if (bUnread) {
+                ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () {
+                    that.getOwnerComponent().decrementUnreadCount();
+                    that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH, {
+                        source: 'action',
+                        type: 'notification_read',
+                        notificationId: sN
+                    });
+                    that._navigateToDetailWithContext(sN, sR, iAnchorIndex, true);
+                }).catch(function (e) {
+                    Log.error('Mark read failed: ' + e.message);
+                    that._navigateToDetailWithContext(sN, sR, iAnchorIndex, false);
+                });
+                return;
+            }
+
+            this._navigateToDetailWithContext(sN, sR, iAnchorIndex, true);
+        },
+
+        _navigateToDetailWithContext: function (sNotificationId, sRecipientId, iAnchorIndex, bPreMarked) {
+            var that = this;
+
+            this._fetchAndSaveNavigationContext(sNotificationId, sRecipientId, iAnchorIndex, function () {
                 that.getOwnerComponent().getRouter().navTo('detail', {
-                    notificationId: sN,
-                    recipientId: sR,
-                    '?query': { tab: that._sCurrentTab || 'all' }
+                    notificationId: sNotificationId,
+                    recipientId: sRecipientId,
+                    '?query': {
+                        tab: that._sCurrentTab || 'all',
+                        preMarked: bPreMarked ? '1' : '0'
+                    }
                 });
             });
         },
 
-        _fetchAndSaveNavigationContext: function (sNotificationId, fnCallback) {
+        _fetchAndSaveNavigationContext: function (sNotificationId, sRecipientId, iAnchorIndex, fnCallback) {
             var oModel = this.getView().getModel();
             if (!oModel) {
                 if (fnCallback) { fnCallback(); }
@@ -177,9 +217,11 @@ sap.ui.define([
             
             var oSorter = new Sorter('_Notification/SentAt', true);
             var that = this;
+            var iWindowStart = Math.max(0, (iAnchorIndex || 0) - NAV_CONTEXT_WINDOW_MARGIN);
+            var iWindowLength = NAV_CONTEXT_WINDOW_SIZE;
             
             var oBinding = oModel.bindList('/Recipient', null, oSorter, aFilters);
-            oBinding.requestContexts(0, 1000).then(function (aContexts) {
+            oBinding.requestContexts(iWindowStart, iWindowLength).then(function (aContexts) {
                 var aNotifications = [];
                 var iCurrentIndex = -1;
                 
@@ -198,9 +240,15 @@ sap.ui.define([
                 }
                 
                 var oAppModel = that.getOwnerComponent().getModel('app');
+
+                if (iCurrentIndex < 0) {
+                    aNotifications = [{ notificationId: sNotificationId, recipientId: sRecipientId }];
+                    iCurrentIndex = 0;
+                }
+
                 oAppModel.setProperty('/navigationContext', {
                     notifications: aNotifications,
-                    currentIndex: iCurrentIndex >= 0 ? iCurrentIndex : 0
+                    currentIndex: iCurrentIndex
                 });
                 
                 if (fnCallback) { fnCallback(); }
