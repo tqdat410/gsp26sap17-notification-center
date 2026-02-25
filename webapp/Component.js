@@ -24,6 +24,9 @@ sap.ui.define([
 
         init: function () {
             UIComponent.prototype.init.apply(this, arguments);
+            this._iUnreadRefreshTimer = null;
+            this._bUnreadRefreshInFlight = false;
+            this._bUnreadRefreshPending = false;
 
             var oDeviceModel = new JSONModel(Device);
             oDeviceModel.setDefaultBindingMode('OneWay');
@@ -54,10 +57,18 @@ sap.ui.define([
         _loadUnreadCount: function () {
             var oModel = this.getModel();
             var oAppModel = this.getModel('app');
+            var that = this;
 
             if (!oModel) {
                 return;
             }
+
+            if (this._bUnreadRefreshInFlight) {
+                this._bUnreadRefreshPending = true;
+                return;
+            }
+
+            this._bUnreadRefreshInFlight = true;
 
             var oListBinding = oModel.bindList('/Recipient', null, null, [
                 new Filter({ path: 'IsRead', operator: FilterOperator.EQ, value1: false }),
@@ -71,6 +82,12 @@ sap.ui.define([
             }).catch(function (oError) {
                 Log.error('Error loading unread count: ' + oError.message);
                 oAppModel.setProperty('/UnreadCount', 0);
+            }).finally(function () {
+                that._bUnreadRefreshInFlight = false;
+                if (that._bUnreadRefreshPending) {
+                    that._bUnreadRefreshPending = false;
+                    that._loadUnreadCount();
+                }
             });
         },
 
@@ -99,11 +116,63 @@ sap.ui.define([
             });
         },
 
-        refreshUnreadCount: function () {
-            this._loadUnreadCount();
+        refreshUnreadCount: function (bImmediate) {
+            var that = this;
+
+            if (bImmediate === true) {
+                if (this._iUnreadRefreshTimer) {
+                    clearTimeout(this._iUnreadRefreshTimer);
+                    this._iUnreadRefreshTimer = null;
+                }
+                this._loadUnreadCount();
+                return;
+            }
+
+            if (this._iUnreadRefreshTimer) {
+                return;
+            }
+
+            this._iUnreadRefreshTimer = setTimeout(function () {
+                that._iUnreadRefreshTimer = null;
+                that._loadUnreadCount();
+            }, 500);
+        },
+
+        adjustUnreadCount: function (iDelta) {
+            var oAppModel = this.getModel('app');
+            var iCurrent;
+            var iNext;
+
+            if (!oAppModel || !iDelta) {
+                return;
+            }
+
+            iCurrent = parseInt(oAppModel.getProperty('/UnreadCount'), 10);
+            if (isNaN(iCurrent)) {
+                iCurrent = 0;
+            }
+
+            iNext = iCurrent + iDelta;
+            if (iNext < 0) {
+                iNext = 0;
+            }
+
+            oAppModel.setProperty('/UnreadCount', iNext);
+        },
+
+        decrementUnreadCount: function () {
+            this.adjustUnreadCount(-1);
+        },
+
+        incrementUnreadCount: function () {
+            this.adjustUnreadCount(1);
         },
 
         destroy: function () {
+            if (this._iUnreadRefreshTimer) {
+                clearTimeout(this._iUnreadRefreshTimer);
+                this._iUnreadRefreshTimer = null;
+            }
             WebSocketManager.disconnect();
             UIComponent.prototype.destroy.apply(this, arguments);
         }
