@@ -19,11 +19,10 @@ sap.ui.define([
     'sap/m/MessageBox',
     'sap/m/NotificationListItem',
     'sap/base/Log',
-    'sap/ui/core/CustomData',
     'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
     'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper'
 ], function (Controller, Fragment, Menu, MenuItem, Filter, FilterOperator, Sorter,
-             MessageToast, MessageBox, NotificationListItem, Log, CustomData, Formatter, ActionHelper) {
+             MessageToast, MessageBox, NotificationListItem, Log, Formatter, ActionHelper) {
     'use strict';
 
     var EVENT_CHANNEL = 'notification.center';
@@ -139,17 +138,23 @@ sap.ui.define([
 
         _getNotificationItemTemplate: function () {
             var that = this;
+            var oBundle = this.getView().getModel('i18n').getResourceBundle();
             return new NotificationListItem({
                 title: '{_Notification/Title}',
                 description: { path: '_Notification/Body', formatter: Formatter.formatPlainBody },
+                authorName: {
+                    path: '_Notification/Priority',
+                    formatter: function (vPriority) {
+                        var sPriority = Formatter.formatPriorityText(vPriority, oBundle);
+                        return sPriority ? (oBundle.getText('priorityLabel') + ': ' + sPriority) : '';
+                    }
+                },
                 unread: '{= !${IsRead}}',
+                showButtons: false,
+                hideShowMoreButton: true,
                 showCloseButton: false,
                 press: that.onNotificationItemPress.bind(that)
-            }).addCustomData(new CustomData({
-                key: 'datetime',
-                value: { path: '_Notification/SentAt', formatter: Formatter.formatDateTime },
-                writeToDom: true
-            }));
+            });
         },
 
         _refreshPopoverData: function () {

@@ -83,6 +83,19 @@ sap.ui.define([
             return stripHtml(sBody || '');
         },
 
+        formatPopoverDescriptionWithPrioritySuffix: function (sBody, vPriority, oBundle) {
+            var sBodyText = stripHtml(sBody || '');
+            var s = String(vPriority || '');
+            var sPriorityKey = { '1': 'priorityHigh', '2': 'priorityMedium', '3': 'priorityLow', 'H': 'priorityHigh', 'M': 'priorityMedium', 'L': 'priorityLow' }[s];
+            var sPriorityText = sPriorityKey && oBundle ? oBundle.getText(sPriorityKey) : '';
+            var sPriorityLabel = oBundle ? oBundle.getText('priorityLabel') : 'Priority';
+
+            if (!sBodyText && !sPriorityText) { return ''; }
+            if (!sBodyText) { return sPriorityLabel + ': ' + sPriorityText; }
+            if (!sPriorityText) { return sBodyText; }
+            return sBodyText + ' - ' + sPriorityLabel + ': ' + sPriorityText;
+        },
+
         formatCategoryHtml: function (vIsRead, sCategory, oCategoryMap) {
             var sText = encodeXML(this.formatCategory(sCategory, oCategoryMap));
             return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
