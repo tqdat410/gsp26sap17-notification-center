@@ -29,7 +29,7 @@
         </f:title>
 
         <f:content>
-            <VBox id="idSettingsContentVBox" class="sapUiSmallMargin">
+            <VBox id="idSettingsContentVBox" class="notificationPageContainer">
 
                 <!-- Category Preferences with GridContainer -->
                 <VBox id="idCategoryPreferencesVBox">

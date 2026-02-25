@@ -61,7 +61,25 @@ sap.ui.define([
         },
 
         _onRouteMatched: function () {
-            this._applyFilters();
+            var oAppModel = this.getOwnerComponent().getModel('app');
+            var sDeletedId = oAppModel.getProperty('/deletedNotificationId');
+
+            if (sDeletedId) {
+                oAppModel.setProperty('/deletedNotificationId', null);
+                // Optimistic UI: ẩn item đã xoá ngay lập tức
+                var aItems = this.byId('notificationTable').getItems();
+                for (var i = 0; i < aItems.length; i++) {
+                    var oItemCtx = aItems[i].getBindingContext();
+                    if (oItemCtx && String(oItemCtx.getProperty('NotificationId')) === String(sDeletedId)) {
+                        aItems[i].setVisible(false);
+                        break;
+                    }
+                }
+                // Background refresh để đồng bộ data từ server
+                this._applyFilters();
+            } else {
+                this._applyFilters();
+            }
             this._updateTableTitleCount();
         },
 

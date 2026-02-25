@@ -25,33 +25,11 @@
                         <Title id="idNotificationDetailsTitle" text="{i18n>notificationDetails}"/>
                     </HBox>
                 </f:heading>
-                <f:actions>
-                    <HBox id="idNavigationHBox" alignItems="Center" visible="{= ${app>/navigationContext/notifications}.length > 1 }">
-                        <Button
-                            id="idPreviousButton"
-                            icon="sap-icon://navigation-left-arrow"
-                            type="Transparent"
-                            press=".onPreviousPress"
-                            tooltip="{i18n>previous}"
-                            enabled="{= ${app>/navigationContext/currentIndex} > 0 }"/>
-                        <Text
-                            id="idNavigationCounter"
-                            text="{parts: [{path: 'app>/navigationContext/currentIndex'}, {path: 'app>/navigationContext/notifications'}], formatter: '.formatNavigationCounter'}"
-                            class="sapUiSmallMarginBegin sapUiSmallMarginEnd"/>
-                        <Button
-                            id="idNextButton"
-                            icon="sap-icon://navigation-right-arrow"
-                            type="Transparent"
-                            press=".onNextPress"
-                            tooltip="{i18n>next}"
-                            enabled="{= ${app>/navigationContext/currentIndex} &lt; ${app>/navigationContext/notifications}.length - 1 }"/>
-                    </HBox>
-                </f:actions>
             </f:DynamicPageTitle>
         </f:title>
 
         <f:content>
-            <VBox id="idDetailContentVBox">
+            <VBox id="idDetailContentVBox" class="notificationPageContainer">
                 <ObjectHeader
                     id="idNotificationObjectHeader"
                     class="notificationDetailCard"

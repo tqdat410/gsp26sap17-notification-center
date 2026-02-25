@@ -33,6 +33,7 @@ sap.ui.define([
                 UnreadCount: 0,
                 busy: false,
                 lastRefresh: null,
+                deletedNotificationId: null,
                 navigationContext: {
                     notifications: [],
                     currentIndex: -1

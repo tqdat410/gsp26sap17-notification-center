@@ -231,6 +231,13 @@ span.notificationUnread {
 }
 
 
+/* Container cho Detail & Settings - đồng bộ với List */
+.notificationPageContainer {
+    margin: 1.5rem;
+    width: auto;
+    box-sizing: border-box;
+}
+
 /* Detail Page Card Styling */
 .notificationDetailCard {
     border: 1px solid #e5e5e5 !important;
@@ -238,7 +245,7 @@ span.notificationUnread {
     overflow: hidden;
     background-color: white;
     box-sizing: border-box;
-    margin: 1rem !important;
+    margin-bottom: 1rem;
     width: auto !important;
     max-width: none !important;
 }
