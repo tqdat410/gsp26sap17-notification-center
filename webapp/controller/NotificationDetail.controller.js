@@ -238,11 +238,8 @@ sap.ui.define([
                             .then(function () {
                                 MessageToast.show(that._getBundle().getText(bArchived ? 'unarchive' : 'archive'));
                                 that.getOwnerComponent().refreshUnreadCount();
-                                that._publishRefresh({
-                                    source: 'action',
-                                    notificationId: oCtx.getProperty('NotificationId')
-                                });
-                                that._handleArchiveNavigation();
+                                oCtx.refresh();
+                                that._publishRefresh();
                             }).catch(function (oErr) { MessageBox.error(oErr.message); });
                     }
                 }
@@ -293,11 +290,9 @@ sap.ui.define([
                             .then(function () {
                                 MessageToast.show(that._getBundle().getText('delete'));
                                 that.getOwnerComponent().refreshUnreadCount();
-                                that._publishRefresh({
-                                    source: 'action',
-                                    notificationId: oCtx.getProperty('NotificationId')
-                                });
-                                that._handleArchiveNavigation();
+                                // Lưu ID để list ẩn item ngay (optimistic UI)
+                                that.getOwnerComponent().getModel('app').setProperty('/deletedNotificationId', oCtx.getProperty('NotificationId'));
+                                that.onButtonNavBackPress();
                             }).catch(function (oErr) { MessageBox.error(oErr.message); });
                     }
                 }

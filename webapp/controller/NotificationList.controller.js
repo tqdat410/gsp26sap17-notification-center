@@ -74,12 +74,30 @@ sap.ui.define([
             }
         },
 
-        _onRouteMatched: function () {
+          _onRouteMatched: function () {
+            // Optimistic UI: hide deleted item immediately before server refresh
+            var oAppModel = this.getOwnerComponent().getModel('app');
+            var sDeletedId = oAppModel.getProperty('/deletedNotificationId');
+
+            if (sDeletedId) {
+                oAppModel.setProperty('/deletedNotificationId', null);
+                var aItems = this.byId('notificationTable').getItems();
+                for (var i = 0; i < aItems.length; i++) {
+                    var oItemCtx = aItems[i].getBindingContext();
+                    if (oItemCtx && String(oItemCtx.getProperty('NotificationId')) === String(sDeletedId)) {
+                        aItems[i].setVisible(false);
+                        break;
+                    }
+                }
+            }
+
+            // Flush pending refresh from EventBus (when table was not visible)
             var oBinding = this.byId('notificationTable').getBinding('items');
             if (oBinding && this._bPendingRefresh) {
                 oBinding.refresh();
                 this._bPendingRefresh = false;
             }
+
             this._applyFilters();
             this._updateTableTitleCount();
         },

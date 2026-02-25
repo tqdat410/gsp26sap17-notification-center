@@ -1,123 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="SAP__common"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="Org.OData.Measures.V1" Alias="SAP__measures"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CORE',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CORE',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="Org.OData.Core.V1" Alias="SAP__core"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="SAP__capabilities"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="SAP__aggregation"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.CodeList.v1" Alias="SAP__CodeList"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="SAP__UI"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.HTML5.v1" Alias="SAP__HTML5"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PDF',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PDF',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.PDF.v1" Alias="SAP__PDF"/>
     </edmx:Reference>
-    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_SESSION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_SESSION',Version='0001',SAP__Origin='LOCAL')/$value">
         <edmx:Include Namespace="com.sap.vocabularies.Session.v1" Alias="SAP__session"/>
     </edmx:Reference>
     <edmx:DataServices>
         <Schema Namespace="com.sap.gateway.srvd.z17_sd_notification.v0001" Alias="SAP__self">
             <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
-            <EntityType Name="CategoryVHType">
-                <Key>
-                    <PropertyRef Name="Category"/>
-                    <PropertyRef Name="ValuePosition"/>
-                    <PropertyRef Name="Version"/>
-                </Key>
-                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <Property Name="ValuePosition" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="Version" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="60"/>
-            </EntityType>
-            <EntityType Name="CategoryValueHelpType">
-                <Key>
-                    <PropertyRef Name="CategoryCode"/>
-                </Key>
-                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
-                <Property Name="CategoryName" Type="Edm.String" Nullable="false" MaxLength="100"/>
-                <Property Name="CategoryDesc" Type="Edm.String" Nullable="false" MaxLength="255"/>
-            </EntityType>
-            <EntityType Name="PriorityVHType">
-                <Key>
-                    <PropertyRef Name="Priority"/>
-                    <PropertyRef Name="ValuePosition"/>
-                    <PropertyRef Name="Version"/>
-                </Key>
-                <Property Name="Priority" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <Property Name="ValuePosition" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="Version" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="60"/>
-            </EntityType>
-            <EntityType Name="NotificationType">
-                <Key>
-                    <PropertyRef Name="NotificationId"/>
-                </Key>
-                <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
-                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="100"/>
-                <Property Name="Body" Type="Edm.String" Nullable="false"/>
-                <Property Name="Priority" Type="Edm.String" Nullable="false" MaxLength="1"/>
-                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="EventCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="SourceType" Type="Edm.String" Nullable="false" MaxLength="30"/>
-                <Property Name="SourceName" Type="Edm.String" Nullable="false" MaxLength="30"/>
-                <Property Name="ObjectKey" Type="Edm.String" Nullable="false" MaxLength="50"/>
-                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="1"/>
-                <Property Name="ScheduledAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="ExpiresAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
-                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
-                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="__CreateByAssociationControl" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationCbAControl"/>
-                <Property Name="__OperationControl" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationOperationControl"/>
-                <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.SAP__Message)" Nullable="false"/>
-                <NavigationProperty Name="_Actions" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.ActionType)" Partner="_Notification">
-                    <OnDelete Action="Cascade"/>
-                </NavigationProperty>
-                <NavigationProperty Name="_Recipients" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.RecipientType)" Partner="_Notification">
-                    <OnDelete Action="Cascade"/>
-                </NavigationProperty>
-            </EntityType>
-            <EntityType Name="SubcriptionType">
-                <Key>
-                    <PropertyRef Name="UserID"/>
-                    <PropertyRef Name="Category"/>
-                </Key>
-                <Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="12"/>
-                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="InAppEnabled" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="EmailEnabled" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-                <Property Name="__EntityControl" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.EntityControl"/>
-            </EntityType>
             <EntityType Name="RecipientType">
                 <Key>
                     <PropertyRef Name="NotificationId"/>
@@ -145,17 +72,77 @@
                     <PropertyRef Name="ActionSeq"/>
                 </Key>
                 <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
-                <Property Name="ActionSeq" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="ActionSeq" Type="Edm.Byte" Nullable="false"/>
                 <Property Name="ActionLabel" Type="Edm.String" Nullable="false" MaxLength="50"/>
                 <Property Name="SematicObject" Type="Edm.String" Nullable="false" MaxLength="100"/>
-                <Property Name="SematicAction" Type="Edm.String" Nullable="false" MaxLength="60"/>
-                <Property Name="Params" Type="Edm.String" Nullable="false"/>
+                <Property Name="SematicAction" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="Params" Type="Edm.String" Nullable="false" MaxLength="255"/>
                 <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
                 <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
                 <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
                 <NavigationProperty Name="_Notification" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false" Partner="_Actions">
                     <ReferentialConstraint Property="NotificationId" ReferencedProperty="NotificationId"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="SettingType">
+                <Key>
+                    <PropertyRef Name="CategoryCode"/>
+                </Key>
+                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="UserId" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="CategoryName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="CategoryDesc" Type="Edm.String" Nullable="false" MaxLength="255"/>
+                <Property Name="Obligatory" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="DefaultEnabled" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="IsEnabled" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="EmailEnabled" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="__EntityControl" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.EntityControl"/>
+                <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.SAP__Message)" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="CategoryValueHelpType">
+                <Key>
+                    <PropertyRef Name="CategoryCode"/>
+                </Key>
+                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="CategoryName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="CategoryDesc" Type="Edm.String" Nullable="false" MaxLength="255"/>
+            </EntityType>
+            <EntityType Name="NotificationType">
+                <Key>
+                    <PropertyRef Name="NotificationId"/>
+                </Key>
+                <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="EventCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="Priority" Type="Edm.Byte" Nullable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="120"/>
+                <Property Name="Body" Type="Edm.String" Nullable="false" MaxLength="5000"/>
+                <Property Name="SourceType" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="SourceName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="ObjectKey" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="ScheduledAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="ExpiresAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="SentAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="__CreateByAssociationControl" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationCbAControl"/>
+                <Property Name="__OperationControl" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationOperationControl"/>
+                <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.SAP__Message)" Nullable="false"/>
+                <NavigationProperty Name="_Actions" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.ActionType)" Partner="_Notification">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="_Recipients" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.RecipientType)" Partner="_Notification">
+                    <OnDelete Action="Cascade"/>
                 </NavigationProperty>
             </EntityType>
             <ComplexType Name="NotificationCbAControl">
@@ -169,6 +156,24 @@
                 <Property Name="MarkAsUnread" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="Unarchive" Type="Edm.Boolean" Nullable="false"/>
             </ComplexType>
+            <ComplexType Name="Z17_A_USER_RECEIVE">
+                <Property Name="UserId" Type="Edm.String" Nullable="false" MaxLength="12"/>
+            </ComplexType>
+            <ComplexType Name="Z17_A_ACTION_CREATE">
+                <Property Name="Sequence" Type="Edm.Byte" Nullable="false"/>
+                <Property Name="ActionLabel" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="SematicObject" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="SematicAction" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="Params" Type="Edm.String" Nullable="false" MaxLength="255"/>
+            </ComplexType>
+            <ComplexType Name="Z17_A_ROLE_RECEIVE">
+                <Property Name="RoleId" Type="Edm.String" Nullable="false" MaxLength="50"/>
+            </ComplexType>
+            <ComplexType Name="Z17_A_TEMPLATE_USE">
+                <Property Name="Languague" Type="Edm.String" Nullable="false" MaxLength="2"/>
+                <Property Name="Version" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="Params" Type="Edm.String" Nullable="false" MaxLength="255"/>
+            </ComplexType>
             <ComplexType Name="EntityControl">
                 <Property Name="Updatable" Type="Edm.Boolean" Nullable="false"/>
             </ComplexType>
@@ -181,31 +186,7 @@
                 <Property Name="numericSeverity" Type="Edm.Byte" Nullable="false"/>
                 <Property Name="longtextUrl" Type="Edm.String"/>
             </ComplexType>
-            <Action Name="MarkAsDeleted" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-            </Action>
-            <Action Name="MarkAsRead" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-            </Action>
-            <Action Name="MarkAsUnread" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-            </Action>
             <Action Name="MarkAllAsRead" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="false"/>
-                <ReturnType Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="true"/>
-            </Action>
-            <Action Name="Archive" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-            </Action>
-            <Action Name="MarkAllAsDeleted" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="false"/>
-                <ReturnType Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="true"/>
-            </Action>
-            <Action Name="MarkAllAsUnread" EntitySetPath="_it" IsBound="true">
                 <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="false"/>
                 <ReturnType Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="true"/>
             </Action>
@@ -213,55 +194,118 @@
                 <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
                 <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
             </Action>
+            <Action Name="MarkAsDeleted" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="MarkAsUnread" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="MarkAsRead" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="MarkAllAsDeleted" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="false"/>
+                <ReturnType Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="true"/>
+            </Action>
+            <Action Name="Archive" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
             <Action Name="CustomCreate" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="false"/>
+                <Parameter Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Parameter Name="EventCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Parameter Name="UsingTemplate" Type="Edm.Boolean" Nullable="false"/>
+                <Parameter Name="Title" Type="Edm.String" Nullable="false" MaxLength="120"/>
+                <Parameter Name="Body" Type="Edm.String" Nullable="false" MaxLength="5000"/>
+                <Parameter Name="Priority" Type="Edm.Byte" Nullable="false"/>
+                <Parameter Name="SourceType" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Parameter Name="SourceName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Parameter Name="ObjectKey" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Parameter Name="scheduledAt" Type="Edm.DateTimeOffset" Nullable="true" Precision="7"/>
+                <Parameter Name="_Action" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.Z17_A_ACTION_CREATE)" Nullable="false"/>
+                <Parameter Name="_RoleReceivers" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.Z17_A_ROLE_RECEIVE)" Nullable="false"/>
+                <Parameter Name="_Template" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.Z17_A_TEMPLATE_USE" Nullable="false"/>
+                <Parameter Name="_UserReceivers" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.Z17_A_USER_RECEIVE)" Nullable="false"/>
                 <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
             </Action>
-            <Action Name="Approve" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            <Action Name="MarkAllAsUnread" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="false"/>
+                <ReturnType Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="true"/>
             </Action>
-            <Action Name="Reject" EntitySetPath="_it" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
-                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            <Action Name="Upsert" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.z17_sd_notification.v0001.SettingType" Nullable="false"/>
+                <Parameter Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Parameter Name="IsEnabled" Type="Edm.Boolean" Nullable="false"/>
+                <Parameter Name="EmailEnabled" Type="Edm.Boolean" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.z17_sd_notification.v0001.SettingType" Nullable="false"/>
             </Action>
             <EntityContainer Name="Container">
                 <EntitySet Name="Action" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.ActionType">
                     <NavigationPropertyBinding Path="_Notification" Target="Notification"/>
                 </EntitySet>
-                <EntitySet Name="CategoryVH" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.CategoryVHType"/>
+                <EntitySet Name="CategoryValueHelp" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.CategoryValueHelpType"/>
                 <EntitySet Name="Notification" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType">
                     <NavigationPropertyBinding Path="_Actions" Target="Action"/>
                     <NavigationPropertyBinding Path="_Recipients" Target="Recipient"/>
                 </EntitySet>
-                <EntitySet Name="CategoryValueHelp" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.CategoryValueHelpType"/>
-                <EntitySet Name="PriorityVH" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.PriorityVHType"/>
                 <EntitySet Name="Recipient" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.RecipientType">
                     <NavigationPropertyBinding Path="_Notification" Target="Notification"/>
                 </EntitySet>
-                <EntitySet Name="Subcription" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.SubcriptionType"/>
+                <EntitySet Name="Setting" EntityType="com.sap.gateway.srvd.z17_sd_notification.v0001.SettingType"/>
             </EntityContainer>
-            <Annotations Target="SAP__self.CategoryVHType/Category">
+            <Annotations Target="SAP__self.RecipientType/NotificationId">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="UUID"/>
+                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/UserId">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Lower Value"/>
-                <Annotation Term="SAP__common.Heading" String="Fixed"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Values for Domains: Single Value/Lower Limit"/>
+                <Annotation Term="SAP__common.Label" String="User Name"/>
+                <Annotation Term="SAP__common.Heading" String="User"/>
             </Annotations>
-            <Annotations Target="SAP__self.CategoryVHType/ValuePosition">
-                <Annotation Term="SAP__common.IsDigitSequence"/>
-                <Annotation Term="SAP__common.Label" String="Value key"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Domain value key"/>
+            <Annotations Target="SAP__self.RecipientType/IsRead">
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
             </Annotations>
-            <Annotations Target="SAP__self.CategoryVHType/Version">
-                <Annotation Term="SAP__common.IsDigitSequence"/>
-                <Annotation Term="SAP__common.Label" String="Version"/>
-                <Annotation Term="SAP__common.Heading" String="Vers"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Version of the entry (not used)"/>
+            <Annotations Target="SAP__self.RecipientType/IsArchived">
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
             </Annotations>
-            <Annotations Target="SAP__self.CategoryVHType">
-                <Annotation Term="SAP__common.Label" String="Category Value Help"/>
+            <Annotations Target="SAP__self.RecipientType/IsDeleted">
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
             </Annotations>
-            <Annotations Target="SAP__self.Container/CategoryVH">
+            <Annotations Target="SAP__self.RecipientType/CreatedBy">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Created By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Created By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/LocalLastChangedBy">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Changed By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Changed By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/Recipient">
+                <Annotation Term="SAP__capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Notification"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
                 <Annotation Term="SAP__capabilities.SearchRestrictions">
                     <Record>
                         <PropertyValue Property="Searchable" Bool="false"/>
@@ -295,12 +339,250 @@
                         <PropertyValue Property="FilterExpressionRestrictions">
                             <Collection>
                                 <Record>
-                                    <PropertyValue Property="Property" PropertyPath="Category"/>
+                                    <PropertyValue Property="Property" PropertyPath="UserId"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="IsRead"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="IsArchived"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="IsDeleted"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="CreatedBy"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="LocalLastChangedBy"/>
                                     <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
                     </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType">
+                <Annotation Term="SAP__common.Label" String="Recipient Consumption View"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/NotificationId">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="UUID"/>
+                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/SematicObject">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Character 100"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/Params">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Char255"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/CreatedBy">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Created By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Created By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/LocalLastChangedBy">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Changed By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Changed By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/Action">
+                <Annotation Term="SAP__capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Notification"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="SematicObject"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Params"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="CreatedBy"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="LocalLastChangedBy"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType">
+                <Annotation Term="SAP__common.Label" String="Action Consumption View"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/CategoryCode">
+                <Annotation Term="SAP__core.Immutable"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Category Code"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Unique identifier for notification category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/UserId">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="User ID"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Current session user (set by $session.user)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/CategoryName">
+                <Annotation Term="SAP__common.Label" String="Category Name"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Display name of notification category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/CategoryDesc">
+                <Annotation Term="SAP__common.Label" String="Category Desc."/>
+                <Annotation Term="SAP__common.Heading" String="Category Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Detailed description of category purpose"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/Obligatory">
+                <Annotation Term="SAP__common.Label" String="Obligatory"/>
+                <Annotation Term="SAP__common.Heading" String="Obligatory Indicator"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Category obligatory indicator"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/DefaultEnabled">
+                <Annotation Term="SAP__common.Label" String="Default Enabled"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Default enabled state from category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/IsEnabled">
+                <Annotation Term="SAP__common.Label" String="In-App Enabled"/>
+                <Annotation Term="SAP__common.Heading" String="Enabled Indicator"/>
+                <Annotation Term="SAP__common.QuickInfo" String="In-app notification enabled"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/EmailEnabled">
+                <Annotation Term="SAP__common.Label" String="Email Enabled"/>
+                <Annotation Term="SAP__common.Heading" String="Enabled Indicator"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Email notification enabled"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/CreatedBy">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Created By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Created By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/CreatedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Created On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Creation Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/LocalLastChangedBy">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Changed By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Changed By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/LocalLastChangedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Changed On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Change Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/LastChangedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Changed On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Last Change Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType/__EntityControl">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__UI.HiddenFilter"/>
+                <Annotation Term="SAP__UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettingType">
+                <Annotation Term="SAP__common.Label" String="Setting Consumption View"/>
+                <Annotation Term="SAP__common.Messages" Path="SAP__Messages"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/Setting">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>__EntityControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>__EntityControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Path="__EntityControl/Updatable"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
                 </Annotation>
             </Annotations>
             <Annotations Target="SAP__self.CategoryValueHelpType/CategoryCode">
@@ -309,15 +591,18 @@
                 <Annotation Term="SAP__common.QuickInfo" String="Unique identifier for notification category"/>
             </Annotations>
             <Annotations Target="SAP__self.CategoryValueHelpType/CategoryName">
+                <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.Label" String="Category Name"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Display name of notification category"/>
             </Annotations>
             <Annotations Target="SAP__self.CategoryValueHelpType/CategoryDesc">
+                <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.Label" String="Category Desc."/>
+                <Annotation Term="SAP__common.Heading" String="Category Description"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Detailed description of category purpose"/>
             </Annotations>
             <Annotations Target="SAP__self.CategoryValueHelpType">
-                <Annotation Term="SAP__common.Label" String="Value Help for Category"/>
+                <Annotation Term="SAP__common.Label" String="Value Help for Cateogry"/>
             </Annotations>
             <Annotations Target="SAP__self.Container/CategoryValueHelp">
                 <Annotation Term="SAP__capabilities.SearchRestrictions">
@@ -348,62 +633,20 @@
                 <Annotation Term="SAP__core.OptimisticConcurrency">
                     <Collection/>
                 </Annotation>
-            </Annotations>
-            <Annotations Target="SAP__self.PriorityVHType/Priority">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Lower Value"/>
-                <Annotation Term="SAP__common.Heading" String="Fixed"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Values for Domains: Single Value/Lower Limit"/>
-            </Annotations>
-            <Annotations Target="SAP__self.PriorityVHType/ValuePosition">
-                <Annotation Term="SAP__common.IsDigitSequence"/>
-                <Annotation Term="SAP__common.Label" String="Value key"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Domain value key"/>
-            </Annotations>
-            <Annotations Target="SAP__self.PriorityVHType/Version">
-                <Annotation Term="SAP__common.IsDigitSequence"/>
-                <Annotation Term="SAP__common.Label" String="Version"/>
-                <Annotation Term="SAP__common.Heading" String="Vers"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Version of the entry (not used)"/>
-            </Annotations>
-            <Annotations Target="SAP__self.PriorityVHType">
-                <Annotation Term="SAP__common.Label" String="Priority Value Help"/>
-            </Annotations>
-            <Annotations Target="SAP__self.Container/PriorityVH">
-                <Annotation Term="SAP__capabilities.SearchRestrictions">
-                    <Record>
-                        <PropertyValue Property="Searchable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.InsertRestrictions">
-                    <Record>
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.DeleteRestrictions">
-                    <Record>
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.UpdateRestrictions">
-                    <Record>
-                        <PropertyValue Property="Updatable" Bool="false"/>
-                        <PropertyValue Property="QueryOptions">
-                            <Record>
-                                <PropertyValue Property="SelectSupported" Bool="true"/>
-                            </Record>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__core.OptimisticConcurrency">
-                    <Collection/>
-                </Annotation>
                 <Annotation Term="SAP__capabilities.FilterRestrictions">
                     <Record>
                         <PropertyValue Property="FilterExpressionRestrictions">
                             <Collection>
                                 <Record>
-                                    <PropertyValue Property="Property" PropertyPath="Priority"/>
+                                    <PropertyValue Property="Property" PropertyPath="CategoryCode"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="CategoryName"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="CategoryDesc"/>
                                     <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
                                 </Record>
                             </Collection>
@@ -416,51 +659,80 @@
                 <Annotation Term="SAP__common.Label" String="UUID"/>
                 <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
             </Annotations>
-            <Annotations Target="SAP__self.NotificationType/Title">
-                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
-            </Annotations>
-            <Annotations Target="SAP__self.NotificationType/Body">
-                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
-            </Annotations>
-            <Annotations Target="SAP__self.NotificationType/Priority">
-                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.ValueListReferences">
-                    <Collection>
-                        <String>../../../../srvd_f4/sap/z17_i_priority_vh/0001;ps='srvd-z17_sd_notification-0001';va='com.sap.gateway.srvd.z17_sd_notification.v0001.et-z17_c_notification.priority'/$metadata</String>
-                    </Collection>
-                </Annotation>
-                <Annotation Term="SAP__common.Label" String="Priority Level"/>
-                <Annotation Term="SAP__common.Heading" String="Priority"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Notification Priority Level"/>
-            </Annotations>
             <Annotations Target="SAP__self.NotificationType/CategoryCode">
                 <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.ValueListReferences">
-                    <Collection>
-                        <String>../../../../srvd_f4/sap/z17_i_category_vh/0001;ps='srvd-z17_sd_notification-0001';va='com.sap.gateway.srvd.z17_sd_notification.v0001.et-z17_c_notification.category'/$metadata</String>
-                    </Collection>
-                </Annotation>
-                <Annotation Term="SAP__common.Label" String="Notif. Category"/>
-                <Annotation Term="SAP__common.Heading" String="Category"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Notification Business Category"/>
+                <Annotation Term="SAP__common.Label" String="Category Code"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Unique identifier for notification category"/>
             </Annotations>
-            <Annotations Target="SAP__self.NotificationType/CreatedAt">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
-                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+            <Annotations Target="SAP__self.NotificationType/EventCode">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Event Code"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Unique identifier for business event"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/Title">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Notification Title"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Rendered notification title text"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/Body">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.Label" String="Notification Body"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Rendered notification body content"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/SourceType">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Source Type"/>
+                <Annotation Term="SAP__common.Heading" String="Event Source Type"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Origin system type"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/SourceName">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Source Object Name"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Name of triggering source object"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/ObjectKey">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Object Key"/>
+                <Annotation Term="SAP__common.Heading" String="Business Object Key"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Source Object Key"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/Status">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Notification Status"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Current processing status of notification"/>
             </Annotations>
             <Annotations Target="SAP__self.NotificationType/CreatedBy">
                 <Annotation Term="SAP__core.Computed"/>
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="User Name"/>
-                <Annotation Term="SAP__common.Heading" String="User"/>
+                <Annotation Term="SAP__common.Label" String="Created By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Created By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/CreatedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Created On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Creation Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/LocalLastChangedBy">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Changed By"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Changed By User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/LocalLastChangedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Changed On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Change Date Time"/>
             </Annotations>
             <Annotations Target="SAP__self.NotificationType/LastChangedAt">
                 <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
-                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+                <Annotation Term="SAP__common.Label" String="Changed On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Last Change Date Time"/>
             </Annotations>
             <Annotations Target="SAP__self.NotificationType/__CreateByAssociationControl">
                 <Annotation Term="SAP__core.Computed"/>
@@ -535,6 +807,11 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
                 <Annotation Term="SAP__capabilities.DeleteRestrictions">
                     <Record>
                         <PropertyValue Property="Deletable" Bool="false"/>
@@ -557,287 +834,24 @@
             <Annotations Target="SAP__self.NotificationType/_Recipients">
                 <Annotation Term="SAP__common.Composition"/>
             </Annotations>
+            <Annotations Target="SAP__self.Unarchive(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/Unarchive"/>
+            </Annotations>
             <Annotations Target="SAP__self.MarkAsDeleted(SAP__self.NotificationType)">
                 <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsDeleted"/>
-            </Annotations>
-            <Annotations Target="SAP__self.MarkAsRead(SAP__self.NotificationType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsRead"/>
             </Annotations>
             <Annotations Target="SAP__self.MarkAsUnread(SAP__self.NotificationType)">
                 <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsUnread"/>
             </Annotations>
+            <Annotations Target="SAP__self.MarkAsRead(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsRead"/>
+            </Annotations>
             <Annotations Target="SAP__self.Archive(SAP__self.NotificationType)">
                 <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/Archive"/>
             </Annotations>
-            <Annotations Target="SAP__self.Unarchive(SAP__self.NotificationType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/Unarchive"/>
-            </Annotations>
             <Annotations Target="SAP__self.NotificationType">
-                <Annotation Term="SAP__common.Label" String="Notification"/>
+                <Annotation Term="SAP__common.Label" String="Notification Consumption View"/>
                 <Annotation Term="SAP__common.Messages" Path="SAP__Messages"/>
-            </Annotations>
-            <Annotations Target="SAP__self.SubcriptionType/UserID">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="User Name"/>
-                <Annotation Term="SAP__common.Heading" String="User"/>
-            </Annotations>
-            <Annotations Target="SAP__self.SubcriptionType/Category">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Notif. Category"/>
-                <Annotation Term="SAP__common.Heading" String="Category"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Notification Business Category"/>
-            </Annotations>
-            <Annotations Target="SAP__self.SubcriptionType/InAppEnabled">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Truth Value"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
-            </Annotations>
-            <Annotations Target="SAP__self.SubcriptionType/EmailEnabled">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Truth Value"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
-            </Annotations>
-            <Annotations Target="SAP__self.SubcriptionType/ChangedAt">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
-                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
-            </Annotations>
-            <Annotations Target="SAP__self.SubcriptionType/__EntityControl">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__UI.HiddenFilter"/>
-                <Annotation Term="SAP__UI.Hidden"/>
-            </Annotations>
-            <Annotations Target="SAP__self.SubcriptionType">
-                <Annotation Term="SAP__common.Label" String="Notification Subscription"/>
-            </Annotations>
-            <Annotations Target="SAP__self.Container/Subcription">
-                <Annotation Term="SAP__capabilities.SearchRestrictions">
-                    <Record>
-                        <PropertyValue Property="Searchable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.FilterRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonFilterableProperties">
-                            <Collection>
-                                <PropertyPath>__EntityControl</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.SortRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonSortableProperties">
-                            <Collection>
-                                <PropertyPath>__EntityControl</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.InsertRestrictions">
-                    <Record>
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.DeleteRestrictions">
-                    <Record>
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.UpdateRestrictions">
-                    <Record>
-                        <PropertyValue Property="Updatable" Path="__EntityControl/Updatable"/>
-                        <PropertyValue Property="QueryOptions">
-                            <Record>
-                                <PropertyValue Property="SelectSupported" Bool="true"/>
-                            </Record>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__core.OptimisticConcurrency">
-                    <Collection/>
-                </Annotation>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/NotificationId">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="UUID"/>
-                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/UserId">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="User Name"/>
-                <Annotation Term="SAP__common.Heading" String="User"/>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/IsRead">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Truth Value"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/IsArchived">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Truth Value"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType/IsDeleted">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Truth Value"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
-            </Annotations>
-            <Annotations Target="SAP__self.Container/Recipient">
-                <Annotation Term="SAP__capabilities.NavigationRestrictions">
-                    <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Notification"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.SearchRestrictions">
-                    <Record>
-                        <PropertyValue Property="Searchable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.InsertRestrictions">
-                    <Record>
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.DeleteRestrictions">
-                    <Record>
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.UpdateRestrictions">
-                    <Record>
-                        <PropertyValue Property="Updatable" Bool="false"/>
-                        <PropertyValue Property="QueryOptions">
-                            <Record>
-                                <PropertyValue Property="SelectSupported" Bool="true"/>
-                            </Record>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__core.OptimisticConcurrency">
-                    <Collection/>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.FilterRestrictions">
-                    <Record>
-                        <PropertyValue Property="FilterExpressionRestrictions">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="Property" PropertyPath="UserID"/>
-                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="Property" PropertyPath="IsRead"/>
-                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="Property" PropertyPath="IsArchived"/>
-                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="Property" PropertyPath="IsDeleted"/>
-                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-            </Annotations>
-            <Annotations Target="SAP__self.RecipientType">
-                <Annotation Term="SAP__common.Label" String="Notification Recipient"/>
-            </Annotations>
-            <Annotations Target="SAP__self.ActionType/NotificationId">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="UUID"/>
-                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
-            </Annotations>
-            <Annotations Target="SAP__self.ActionType/ActionSeq">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.Label" String="Action Sequence"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Action sequence number"/>
-            </Annotations>
-            <Annotations Target="SAP__self.Container/Action">
-                <Annotation Term="SAP__capabilities.NavigationRestrictions">
-                    <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Notification"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.SearchRestrictions">
-                    <Record>
-                        <PropertyValue Property="Searchable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.FilterRestrictions">
-                    <Record>
-                        <PropertyValue Property="Filterable" Bool="true"/>
-                        <PropertyValue Property="FilterExpressionRestrictions">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="Property" PropertyPath="Params"/>
-                                    <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.SortRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonSortableProperties">
-                            <Collection>
-                                <PropertyPath>Params</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.InsertRestrictions">
-                    <Record>
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.DeleteRestrictions">
-                    <Record>
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.UpdateRestrictions">
-                    <Record>
-                        <PropertyValue Property="Updatable" Bool="false"/>
-                        <PropertyValue Property="QueryOptions">
-                            <Record>
-                                <PropertyValue Property="SelectSupported" Bool="true"/>
-                            </Record>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__core.OptimisticConcurrency">
-                    <Collection/>
-                </Annotation>
-            </Annotations>
-            <Annotations Target="SAP__self.ActionType">
-                <Annotation Term="SAP__common.Label" String="Notification Action"/>
             </Annotations>
             <Annotations Target="SAP__self.Container">
                 <Annotation Term="SAP__aggregation.ApplySupported">
@@ -893,21 +907,62 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.CategoryVHType/Description">
-                <Annotation Term="SAP__common.Label" String="Short Description"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Short Text for Fixed Values"/>
-            </Annotations>
-            <Annotations Target="SAP__self.PriorityVHType/Description">
-                <Annotation Term="SAP__common.Label" String="Short Description"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Short Text for Fixed Values"/>
-            </Annotations>
             <Annotations Target="SAP__self.RecipientType/ReadAt">
-                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
-                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+                <Annotation Term="SAP__common.Label" String="UTCL"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Time Stamp"/>
             </Annotations>
             <Annotations Target="SAP__self.RecipientType/ArchivedAt">
-                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
-                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+                <Annotation Term="SAP__common.Label" String="UTCL"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Time Stamp"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/DeletedAt">
+                <Annotation Term="SAP__common.Label" String="UTCL"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Time Stamp"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/CreatedAt">
+                <Annotation Term="SAP__common.Label" String="Created On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Creation Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/LocalLastChangedAt">
+                <Annotation Term="SAP__common.Label" String="Changed On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Change Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/ActionSeq">
+                <Annotation Term="SAP__common.Label" String="INT1"/>
+                <Annotation Term="SAP__common.QuickInfo" String="1 Byte Unsigned Integer"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/ActionLabel">
+                <Annotation Term="SAP__common.Label" String="c"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Comment"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/SematicAction">
+                <Annotation Term="SAP__common.Label" String="c"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Comment"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/CreatedAt">
+                <Annotation Term="SAP__common.Label" String="Created On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Creation Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/LocalLastChangedAt">
+                <Annotation Term="SAP__common.Label" String="Changed On"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Local Instance Last Change Date Time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/Priority">
+                <Annotation Term="SAP__common.Label" String="Priority"/>
+                <Annotation Term="SAP__common.Heading" String="Notification Priority"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Priority level"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/ScheduledAt">
+                <Annotation Term="SAP__common.Label" String="Scheduled At"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Scheduled send time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/ExpiresAt">
+                <Annotation Term="SAP__common.Label" String="Expires At"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Auto-archive after this time"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/SentAt">
+                <Annotation Term="SAP__common.Label" String="Sent At"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Notification Sent Time"/>
             </Annotations>
         </Schema>
     </edmx:DataServices>
