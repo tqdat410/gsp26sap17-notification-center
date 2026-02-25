@@ -2,19 +2,126 @@
     controllerName="com.gsp26.sap17.notificationcenter.controller.Settings"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:semantic="sap.f.semantic">
-    <semantic:SemanticPage
-        id="settingsPage"
-        headerPinnable="false"
-        showNavButton="true"
-        navButtonPress=".onNavBack">
-        <semantic:titleHeading>
-            <Title text="{i18n>notificationSettings}"/>
-        </semantic:titleHeading>
-        <semantic:content>
-            <VBox class="sapUiMediumMargin">
-                <Text text="Settings page - To be implemented"/>
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core">
+
+    <f:DynamicPage
+        id="idSettingsDynamicPage"
+        showFooter="true"
+        busy="{settingsModel>/busy}"
+        busyIndicatorDelay="0">
+
+        <f:title>
+            <f:DynamicPageTitle id="idSettingsDynamicPageTitle">
+                <f:heading>
+                    <HBox id="idSettingsHeadingHBox" alignItems="Center">
+                        <Button
+                            id="idSettingsNavBackButton"
+                            icon="sap-icon://nav-back"
+                            type="Transparent"
+                            press=".onButtonNavBackPress"
+                            tooltip="{i18n>back}"
+                            class="sapUiTinyMarginEnd"/>
+                        <Title id="idNotificationSettingsTitle" text="{i18n>notificationSettings}"/>
+                    </HBox>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <f:content>
+            <VBox id="idSettingsContentVBox" class="sapUiSmallMargin">
+
+                <!-- Category Preferences with GridContainer -->
+                <VBox id="idCategoryPreferencesVBox">
+
+                    <!-- Category list header + search -->
+                    <!-- <Toolbar id="idCategoryToolbar">
+                        <Title id="idCategoryPreferencesTitle" text="{i18n>categoryPreferences}" level="H4"/>
+                        <ToolbarSpacer id="idCategoryToolbarSpacer"/>
+                        <Select
+                            id="idStatusFilter"
+                            width="110px"
+                            selectedKey="all"
+                            change=".onFilterChange"
+                            class="sapUiTinyMarginBegin">
+                            <core:Item key="all" text="{i18n>filterAll}"/>
+                            <core:Item key="enabled" text="{i18n>filterEnabled}"/>
+                            <core:Item key="disabled" text="{i18n>filterDisabled}"/>
+                        </Select>
+                        <Select
+                            id="idRequiredFilter"
+                            width="110px"
+                            selectedKey="all"
+                            change=".onFilterChange"
+                            class="sapUiTinyMarginBegin">
+                            <core:Item key="all" text="{i18n>filterAll}"/>
+                            <core:Item key="required" text="{i18n>filterRequired}"/>
+                            <core:Item key="optional" text="{i18n>filterOptional}"/>
+                        </Select>
+                        <SearchField
+                            id="idCategorySearchField"
+                            width="15rem"
+                            placeholder="{i18n>searchCategories}"
+                            liveChange=".onSearchFieldCategoryLiveChange"/>
+                    </Toolbar> -->
+
+                    <!-- Category GridContainer for responsive cards -->
+                    <VBox
+                        id="idCategoryGridContainer"
+                        class="settingsCardGridContainer"
+                        items="{settingsModel>/categories}">
+                        <items>
+                            <f:Card class="settingsCategoryCard">
+                                <f:content>
+                                    <HBox class="sapUiSmallMargin settingsCardContent" justifyContent="SpaceBetween" alignItems="FlexStart">
+                                        <VBox class="settingsCardInfo">
+                                            <Title text="{settingsModel>categoryName}" level="H5"/>
+                                            <Text text="{settingsModel>categoryDesc}" class="sapUiTinyMarginTop settingsCategoryDesc"/>
+                                        </VBox>
+                                        <VBox class="settingsCardSwitches">
+                                            <HBox justifyContent="SpaceBetween" alignItems="Center">
+                                                <Label text="{i18n>inAppLabel}" class="sapUiTinyMarginEnd"/>
+                                                <Switch
+                                                    state="{settingsModel>isEnabled}"
+                                                    enabled="{= !${settingsModel>obligatory} }"
+                                                    tooltip="{= ${settingsModel>obligatory} ? ${i18n>required} : '' }"
+                                                    change=".onSwitchInAppChange"/>
+                                            </HBox>
+                                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiTinyMarginTop">
+                                                <Label text="{i18n>emailLabel}" class="sapUiTinyMarginEnd"/>
+                                                <Switch
+                                                    state="{settingsModel>emailEnabled}"
+                                                    change=".onSwitchEmailChange"/>
+                                            </HBox>
+                                        </VBox>
+                                    </HBox>
+                                </f:content>
+                            </f:Card>
+                        </items>
+                    </VBox>
+
+                </VBox>
+
             </VBox>
-        </semantic:content>
-    </semantic:SemanticPage>
+        </f:content>
+
+        <!-- Footer toolbar -->
+        <f:footer>
+            <OverflowToolbar id="idSettingsFooterOverflowToolbar">
+                <ToolbarSpacer id="idSettingsFooterToolbarSpacer"/>
+                <Button
+                    id="idCancelButton"
+                    text="{i18n>cancel}"
+                    type="Transparent"
+                    press=".onCancel"/>
+                <Button
+                    id="idSaveButton"
+                    text="{i18n>save}"
+                    type="Emphasized"
+                    press=".onSave"
+                    enabled="{settingsModel>/isDirty}"/>
+            </OverflowToolbar>
+        </f:footer>
+
+    </f:DynamicPage>
 </mvc:View>

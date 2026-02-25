@@ -243,12 +243,145 @@ span.notificationUnread {
     max-width: none !important;
 }
 
-/* Settings page styling */
-.sapUiForm .sapUiFormCL {
+/* ================================
+   Settings Page Styles
+   ================================ */
+
+/* Category description - secondary text */
+.settingsCategoryDesc {
+    color: #6a6d70;
+    font-size: 0.875rem;
+}
+
+/* Category list item spacing */
+.settingsCategoryItem .sapMLIBContent {
+    padding: 0.75rem 0;
+}
+
+/* Settings DynamicPage - remove default header border */
+.settingsDynamicPage .sapFDynamicPageTitleMainInner {
+    padding-bottom: 0;
+}
+
+/* ================================
+   Settings Card Layout - Clean Card
+    ================================ */
+
+.settingsCategoryCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+/* Responsive Grid Container for Settings Cards */
+.settingsCardGridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.settingsCategoryCard {
+    min-width: 280px;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background-color: #fff;
+}
+
+.settingsCategoryCard:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.settingsCategoryCard .sapFCardContent {
     padding: 1rem;
 }
 
-/* Checkbox alignment in settings */
-.sapMCb {
-    margin-right: 1rem;
+.settingsCategoryCard .sapMTitle {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1f1f1f;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.settingsCategoryDesc {
+    color: #6a6d70;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.settingsCategoryCard .sapMLabel {
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: #32363a;
+}
+
+.settingsCardContent {
+    width: 100%;
+}
+
+.settingsCardInfo {
+    flex: 1;
+    padding-right: 2rem;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.settingsCardSwitches {
+    min-width: 160px;
+    max-width: 160px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.settingsCardSwitches > .sapMHBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+
+.settingsCardSwitches > .sapMHBox:last-child {
+    margin-bottom: 0;
+}
+
+.settingsCardSwitches .sapMLabel {
+    min-width: 50px;
+    margin-right: 0.75rem;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.settingsCardSwitches .sapMSwitch {
+    flex-shrink: 0;
+}
+
+/* Responsive Breakpoints */
+@media (min-width: 1200px) {
+    .settingsCardGridContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1199px) {
+    .settingsCardGridContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .settingsCardGridContainer {
+        grid-template-columns: 1fr;
+    }
 }
