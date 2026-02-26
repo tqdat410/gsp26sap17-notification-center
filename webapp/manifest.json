@@ -154,6 +154,7 @@
     "rootView": {
       "viewName": "com.gsp26.sap17.notificationcenter.view.App",
       "type": "XML",
+      "async": true,
       "id": "App"
     }
   }
