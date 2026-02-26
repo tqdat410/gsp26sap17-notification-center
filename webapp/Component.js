@@ -55,7 +55,7 @@ sap.ui.define([
             this._loadUnreadCount();
             this._loadCategoryValueHelp();
 
-            // Connect APC WebSocket for real-time notifications (auto-skips on localhost)
+            // Connect APC WebSocket for real-time notifications (fixed SAP host)
             WebSocketManager.connect(this.getEventBus());
             Log.info('Component init completed', null, LOG_COMPONENT);
         },
