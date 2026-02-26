@@ -1,16 +1,21 @@
 /**
  * WebSocketManager.js
  *
- * Manages WebSocket connection to SAP APC endpoint for real-time notifications.
- * - Connects to /sap/bc/apc/sap/z17_apc_notification
- * - Parses incoming JSON messages and fires UI5 EventBus events
+ * Manages SAP APC WebSocket connection for real-time notifications.
+ * Uses sap.ui.core.ws.SapPcpWebSocket (SAP standard PCP protocol).
+ * - Connects to /sap/bc/apc/sap/z17_apc_notification via relative URL
+ * - Parses incoming PCP messages and fires UI5 EventBus events
  * - Auto-reconnects with exponential backoff (2s to 30s cap)
- * - Graceful disconnect on app destroy
+ * - Skips connection on localhost (UI5 dev proxy can't forward WebSocket)
  */
-sap.ui.define(['sap/base/Log'], function (Log) {
+sap.ui.define([
+    'sap/ui/core/ws/SapPcpWebSocket',
+    'sap/base/Log'
+], function (SapPcpWebSocket, Log) {
     'use strict';
 
     var APC_PATH = '/sap/bc/apc/sap/z17_apc_notification';
+    var SAP_CLIENT = '324';
     var EVENT_CHANNEL = 'notification.websocket';
     var EVENT_MESSAGE = 'newNotification';
     var RECONNECT_BASE_MS = 2000;
@@ -19,31 +24,24 @@ sap.ui.define(['sap/base/Log'], function (Log) {
 
     var _oWebSocket = null;
     var _oEventBus = null;
-    var _sBackendUrl = null;
     var _iReconnectDelay = RECONNECT_BASE_MS;
     var _iReconnectTimer = null;
     var _bIntentionalClose = false;
 
     function _buildUrl() {
-        // Use configured backend URL when running on localhost (dev proxy can't forward WebSocket)
-        if (_sBackendUrl) {
-            var sHost = _sBackendUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
-            return 'wss://' + sHost + APC_PATH;
-        }
-        var oLocation = window.location;
-        var sProtocol = oLocation.protocol === 'https:' ? 'wss:' : 'ws:';
-        return sProtocol + '//' + oLocation.host + APC_PATH;
+        return APC_PATH + '?sap-client=' + SAP_CLIENT;
     }
 
     function _onOpen() {
-        Log.info('WebSocket connected', _buildUrl(), LOG_COMPONENT);
+        Log.info('APC WebSocket connected', _buildUrl(), LOG_COMPONENT);
         _iReconnectDelay = RECONNECT_BASE_MS;
     }
 
     function _onMessage(oEvent) {
         if (!_oEventBus) { return; }
         try {
-            var oData = JSON.parse(oEvent.data);
+            var sData = oEvent.getParameter('data');
+            var oData = JSON.parse(sData);
             if (!oData || oData.type !== 'NOTIFICATION') { return; }
 
             _oEventBus.publish(EVENT_CHANNEL, EVENT_MESSAGE, {
@@ -56,51 +54,52 @@ sap.ui.define(['sap/base/Log'], function (Log) {
                 userId: oData.userId
             });
         } catch (e) {
-            Log.warning('WebSocket message parse error: ' + e.message, null, LOG_COMPONENT);
+            Log.warning('APC message parse error: ' + e.message, null, LOG_COMPONENT);
         }
     }
 
     function _onClose() {
-        Log.info('WebSocket closed', null, LOG_COMPONENT);
+        Log.info('APC WebSocket closed', null, LOG_COMPONENT);
         _oWebSocket = null;
         if (!_bIntentionalClose) {
             _scheduleReconnect();
         }
     }
 
-    function _onError(oError) {
-        Log.warning('WebSocket error', oError, LOG_COMPONENT);
+    function _onError(oEvent) {
+        Log.warning('APC WebSocket error', oEvent, LOG_COMPONENT);
     }
 
     function _scheduleReconnect() {
         if (_iReconnectTimer) { return; }
-        Log.info('WebSocket reconnecting in ' + _iReconnectDelay + 'ms', null, LOG_COMPONENT);
+        Log.info('APC WebSocket reconnecting in ' + _iReconnectDelay + 'ms', null, LOG_COMPONENT);
 
         _iReconnectTimer = setTimeout(function () {
             _iReconnectTimer = null;
             _doConnect();
         }, _iReconnectDelay);
 
-        // Exponential backoff with cap
         _iReconnectDelay = Math.min(_iReconnectDelay * 2, RECONNECT_MAX_MS);
     }
 
     function _doConnect() {
         if (_oWebSocket) { return; }
-        if (typeof WebSocket === 'undefined') {
-            Log.warning('WebSocket not supported in this browser', null, LOG_COMPONENT);
+
+        // Skip WebSocket on localhost — UI5 dev proxy can't forward WebSocket
+        if (window.location.hostname === 'localhost') {
+            Log.info('Skipping APC WebSocket on localhost (dev proxy limitation)', null, LOG_COMPONENT);
             return;
         }
 
         try {
             var sUrl = _buildUrl();
-            _oWebSocket = new WebSocket(sUrl);
-            _oWebSocket.onopen = _onOpen;
-            _oWebSocket.onmessage = _onMessage;
-            _oWebSocket.onclose = _onClose;
-            _oWebSocket.onerror = _onError;
+            _oWebSocket = new SapPcpWebSocket(sUrl, SapPcpWebSocket.SUPPORTED_PROTOCOLS.v10);
+            _oWebSocket.attachOpen(_onOpen);
+            _oWebSocket.attachMessage(_onMessage);
+            _oWebSocket.attachClose(_onClose);
+            _oWebSocket.attachError(_onError);
         } catch (e) {
-            Log.warning('WebSocket connection failed: ' + e.message, null, LOG_COMPONENT);
+            Log.warning('APC WebSocket connection failed: ' + e.message, null, LOG_COMPONENT);
             _oWebSocket = null;
             _scheduleReconnect();
         }
@@ -108,13 +107,12 @@ sap.ui.define(['sap/base/Log'], function (Log) {
 
     return {
         /**
-         * Open WebSocket connection and subscribe to notification events.
+         * Open APC WebSocket connection and subscribe to notification events.
+         * Automatically skips on localhost (dev proxy can't forward WebSocket).
          * @param {sap.ui.core.EventBus} oEventBus - UI5 EventBus for publishing events
-         * @param {string} [sBackendUrl] - Backend base URL (e.g. "https://host.example.com") for local dev
          */
-        connect: function (oEventBus, sBackendUrl) {
+        connect: function (oEventBus) {
             _oEventBus = oEventBus;
-            _sBackendUrl = sBackendUrl || null;
             _bIntentionalClose = false;
             _doConnect();
         },
@@ -141,7 +139,7 @@ sap.ui.define(['sap/base/Log'], function (Log) {
          * @returns {boolean} true if connected
          */
         isConnected: function () {
-            return _oWebSocket !== null && _oWebSocket.readyState === WebSocket.OPEN;
+            return _oWebSocket !== null && _oWebSocket.getReadyState() === SapPcpWebSocket.ReadyState.OPEN;
         }
     };
 });

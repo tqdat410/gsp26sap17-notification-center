@@ -28,6 +28,7 @@ sap.ui.define([
     var EVENT_CHANNEL = 'notification.center';
     var EVENT_REFRESH = 'refreshList';
     var POPOVER_REFRESH_DELAY_MS = 250;
+    var LOG_COMPONENT = 'notification.AppController';
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.App', {
 
@@ -35,6 +36,12 @@ sap.ui.define([
             this._oNotificationPopover = null;
             this._oMainMenu = null;
             this._iPopoverRefreshTimer = null;
+            if (!this.byId('app')) {
+                Log.error('Root container "app" not found in App view', null, LOG_COMPONENT);
+            }
+            if (!this.getOwnerComponent() || !this.getOwnerComponent().getRouter()) {
+                Log.error('Router unavailable in App controller init', null, LOG_COMPONENT);
+            }
 
             // Subscribe to WebSocket notification events
             this.getOwnerComponent().getEventBus().subscribe(
@@ -69,11 +76,21 @@ sap.ui.define([
         },
 
         onHomePress: function () {
-            this.getOwnerComponent().getRouter().navTo('main');
+            var oRouter = this.getOwnerComponent() && this.getOwnerComponent().getRouter();
+            if (!oRouter) {
+                Log.error('Cannot navigate to main: router unavailable', null, LOG_COMPONENT);
+                return;
+            }
+            oRouter.navTo('main');
         },
 
         onSettingsPress: function () {
-            this.getOwnerComponent().getRouter().navTo('settings');
+            var oRouter = this.getOwnerComponent() && this.getOwnerComponent().getRouter();
+            if (!oRouter) {
+                Log.error('Cannot navigate to settings: router unavailable', null, LOG_COMPONENT);
+                return;
+            }
+            oRouter.navTo('settings');
         },
 
         onMenuPress: function (oEvent) {
@@ -123,6 +140,9 @@ sap.ui.define([
                     that.getView().addDependent(oPopover);
                     that._bindPopoverList();
                     oPopover.openBy(oSource);
+                }).catch(function (oError) {
+                    Log.error('Failed to load NotificationPopover fragment: ' + oError.message, null, LOG_COMPONENT);
+                    MessageBox.error('Cannot open notification popover right now.');
                 });
             } else {
                 this._schedulePopoverRefresh();
