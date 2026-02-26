@@ -48,10 +48,8 @@ sap.ui.define([
             this._loadUnreadCount();
             this._loadCategoryValueHelp();
 
-            // Connect WebSocket for real-time notifications
-            // Pass backend URL for local dev (UI5 proxy can't forward WebSocket)
-            var sBackendUrl = window.location.hostname === 'localhost' ? 'https://s40lp1.ucc.cit.tum.de' : null;
-            WebSocketManager.connect(this.getEventBus(), sBackendUrl);
+            // Connect APC WebSocket for real-time notifications (auto-skips on localhost)
+            WebSocketManager.connect(this.getEventBus());
         },
 
         _loadUnreadCount: function () {
