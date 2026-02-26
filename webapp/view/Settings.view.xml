@@ -85,12 +85,16 @@
                                                     state="{settingsModel>isEnabled}"
                                                     enabled="{= !${settingsModel>obligatory} }"
                                                     tooltip="{= ${settingsModel>obligatory} ? ${i18n>required} : '' }"
+                                                    customTextOn="On"
+                                                    customTextOff="Off"
                                                     change=".onSwitchInAppChange"/>
                                             </HBox>
                                             <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiTinyMarginTop">
                                                 <Label text="{i18n>emailLabel}" class="sapUiTinyMarginEnd"/>
                                                 <Switch
                                                     state="{settingsModel>emailEnabled}"
+                                                    customTextOn="On"
+                                                    customTextOff="Off"
                                                     change=".onSwitchEmailChange"/>
                                             </HBox>
                                         </VBox>
