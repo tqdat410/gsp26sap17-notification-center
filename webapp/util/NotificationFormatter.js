@@ -9,17 +9,19 @@
  */
 sap.ui.define([
     'sap/ui/core/format/DateFormat',
+    'sap/ui/core/Locale',
     'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
     'sap/ui/core/library',
     'sap/base/security/encodeXML',
     'sap/base/security/sanitizeHTML'
-], function (DateFormat, BooleanHelper, coreLibrary, encodeXML, sanitizeHTML) {
+], function (DateFormat, Locale, BooleanHelper, coreLibrary, encodeXML, sanitizeHTML) {
     'use strict';
 
     var Priority = coreLibrary.Priority;
+    var oEnLocale = new Locale('en');
 
-    var oDateTimeFormat = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yy HH:mm:ss' });
-    var oRelativeFormat = DateFormat.getDateTimeInstance({ relative: true, relativeScale: 'auto' });
+    var oDateTimeFormat = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yy HH:mm:ss' }, oEnLocale);
+    var oRelativeFormat = DateFormat.getDateTimeInstance({ relative: true, relativeScale: 'auto' }, oEnLocale);
 
     /**
      * Extracts plain text from HTML body content.
