@@ -60,7 +60,7 @@
   "sap.ui5": {
     "flexEnabled": true,
     "dependencies": {
-      "minUI5Version": "1.136.0",
+      "minUI5Version": "1.108.33",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
@@ -109,9 +109,9 @@
     "routing": {
       "config": {
         "routerClass": "sap.m.routing.Router",
-        "type": "View",
         "viewType": "XML",
-        "path": "com.gsp26.sap17.notificationcenter.view",
+        "viewPath": "com.gsp26.sap17.notificationcenter.view",
+        "async": true,
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
@@ -135,25 +135,19 @@
       ],
       "targets": {
         "notificationList": {
-          "type": "View",
-          "viewType": "XML",
           "transition": "slide",
-          "id": "notificationList",
-          "name": "NotificationList"
+          "viewId": "notificationList",
+          "viewName": "NotificationList"
         },
         "notificationDetail": {
-          "type": "View",
-          "viewType": "XML",
           "transition": "slide",
-          "id": "notificationDetail",
-          "name": "NotificationDetail"
+          "viewId": "notificationDetail",
+          "viewName": "NotificationDetail"
         },
         "settings": {
-          "type": "View",
-          "viewType": "XML",
           "transition": "slide",
-          "id": "settings",
-          "name": "Settings"
+          "viewId": "settings",
+          "viewName": "Settings"
         }
       }
     },

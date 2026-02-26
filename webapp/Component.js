@@ -16,6 +16,7 @@ sap.ui.define([
     'com/gsp26/sap17/notificationcenter/util/WebSocketManager'
 ], function (UIComponent, Device, JSONModel, Filter, FilterOperator, Log, WebSocketManager) {
     'use strict';
+    var LOG_COMPONENT = 'notification.Component';
 
     return UIComponent.extend('com.gsp26.sap17.notificationcenter.Component', {
         metadata: {
@@ -23,6 +24,7 @@ sap.ui.define([
         },
 
         init: function () {
+            Log.info('Component init start', null, LOG_COMPONENT);
             UIComponent.prototype.init.apply(this, arguments);
             this._iUnreadRefreshTimer = null;
             this._bUnreadRefreshInFlight = false;
@@ -44,12 +46,18 @@ sap.ui.define([
             });
             this.setModel(oAppModel, 'app');
 
-            this.getRouter().initialize();
+            if (this.getRouter()) {
+                this.getRouter().initialize();
+                Log.info('Router initialized', null, LOG_COMPONENT);
+            } else {
+                Log.error('Router unavailable during component init', null, LOG_COMPONENT);
+            }
             this._loadUnreadCount();
             this._loadCategoryValueHelp();
 
             // Connect APC WebSocket for real-time notifications (auto-skips on localhost)
             WebSocketManager.connect(this.getEventBus());
+            Log.info('Component init completed', null, LOG_COMPONENT);
         },
 
         _loadUnreadCount: function () {
@@ -58,6 +66,7 @@ sap.ui.define([
             var that = this;
 
             if (!oModel) {
+                Log.warning('Default model unavailable while loading unread count', null, LOG_COMPONENT);
                 return;
             }
 
@@ -92,7 +101,10 @@ sap.ui.define([
         _loadCategoryValueHelp: function () {
             var oModel = this.getModel();
             var that = this;
-            if (!oModel) { return; }
+            if (!oModel) {
+                Log.warning('Default model unavailable while loading category value help', null, LOG_COMPONENT);
+                return;
+            }
 
             // Set empty model immediately so bindings don't fail before data loads
             this.setModel(new JSONModel({ items: [], map: {} }), 'categoryVH');
