@@ -7,6 +7,7 @@
 
     <f:DynamicPage
         id="idSettingsDynamicPage"
+        class="sapUiNoContentPadding"
         showFooter="true"
         busy="{settingsModel>/busy}"
         busyIndicatorDelay="0">
@@ -93,6 +94,7 @@
                                                 <Label text="{i18n>emailLabel}" class="sapUiTinyMarginEnd"/>
                                                 <Switch
                                                     state="{settingsModel>emailEnabled}"
+                                                    enabled="{settingsModel>isEnabled}"
                                                     customTextOn="On"
                                                     customTextOff="Off"
                                                     change=".onSwitchEmailChange"/>
@@ -112,6 +114,12 @@
         <!-- Footer toolbar -->
         <f:footer>
             <OverflowToolbar id="idSettingsFooterOverflowToolbar">
+                <Button
+                    id="idResetToDefaultButton"
+                    text="{i18n>resetDefault}"
+                    icon="sap-icon://undo"
+                    type="Transparent"
+                    press=".onResetToDefault"/>
                 <ToolbarSpacer id="idSettingsFooterToolbarSpacer"/>
                 <Button
                     id="idCancelButton"

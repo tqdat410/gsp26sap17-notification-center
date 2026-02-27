@@ -134,6 +134,10 @@ sap.ui.define([
 
             oModel.setProperty(sPath + '/isEnabled', bState);
 
+            if (!bState) {
+                oModel.setProperty(sPath + '/emailEnabled', false);
+            }
+
             this._checkDirty();
         },
 
@@ -148,6 +152,44 @@ sap.ui.define([
         },
 
         onSave: function () {
+            this._saveSettings();
+        },
+
+        onCancel: function () {
+            var oModel = this.getView().getModel('settingsModel');
+            if (oModel.getProperty('/isDirty')) {
+                var that = this;
+                MessageBox.confirm(this._getBundle().getText('confirmCancelDirty'), {
+                    onClose: function (sAction) {
+                        if (sAction === MessageBox.Action.OK) {
+                            that.onButtonNavBackPress();
+                        }
+                    }
+                });
+            } else {
+                this.onButtonNavBackPress();
+            }
+        },
+
+        onResetToDefault: function () {
+            var that = this;
+            MessageBox.confirm(this._getBundle().getText('confirmResetDefault'), {
+                onClose: function (sAction) {
+                    if (sAction === MessageBox.Action.OK) {
+                        var oModel = that.getView().getModel('settingsModel');
+                        var aCategories = that._aAllCategories;
+                        
+                        if (aCategories) {
+                            SettingsUtil.resetToDefaults(aCategories);
+                            oModel.setProperty('/categories', aCategories.slice());
+                            that._saveSettings();
+                        }
+                    }
+                }
+            });
+        },
+
+        _saveSettings: function () {
             var oModel = this.getView().getModel('settingsModel');
             var aAll = this._aAllCategories || oModel.getProperty('/categories') || [];
             var aChanged = SettingsUtil.getChangedItems(aAll);
@@ -173,22 +215,6 @@ sap.ui.define([
                     Log.error('Settings: Save failed - ' + oError.message);
                     MessageBox.error(that._getBundle().getText('saveError'));
                 });
-        },
-
-        onCancel: function () {
-            var oModel = this.getView().getModel('settingsModel');
-            if (oModel.getProperty('/isDirty')) {
-                var that = this;
-                MessageBox.confirm(this._getBundle().getText('confirmCancelDirty'), {
-                    onClose: function (sAction) {
-                        if (sAction === MessageBox.Action.OK) {
-                            that.onButtonNavBackPress();
-                        }
-                    }
-                });
-            } else {
-                this.onButtonNavBackPress();
-            }
         },
 
         onButtonNavBackPress: function () {

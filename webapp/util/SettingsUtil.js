@@ -111,6 +111,20 @@ sap.ui.define([
                     emailEnabled: oItem.emailEnabled
                 };
             });
+        },
+
+        /**
+         * Resets all categories to their default values.
+         * - In-App: reset to defaultEnabled
+         * - Email: always reset to false
+         *
+         * @param {Object[]} aCategories - mutated in place
+         */
+        resetToDefaults: function (aCategories) {
+            (aCategories || []).forEach(function (oItem) {
+                oItem.isEnabled = oItem.defaultEnabled;
+                oItem.emailEnabled = false;
+            });
         }
     };
 });
