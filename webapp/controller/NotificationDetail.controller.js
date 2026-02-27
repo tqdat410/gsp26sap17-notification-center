@@ -77,6 +77,8 @@ sap.ui.define([
         onInit: function () {
             this.getView().setModel(new JSONModel({ busy: false, hasActions: false }), 'view');
             this.getOwnerComponent().getRouter().getRoute('detail').attachPatternMatched(this._onRouteMatched, this);
+            this._oRejectDialog = null;
+            this._sCurrentRequestId = null;
         },
 
         _onRouteMatched: function (oEvent) {
@@ -240,7 +242,7 @@ sap.ui.define([
                                 MessageToast.show(that._getBundle().getText(bArchived ? 'unarchive' : 'archive'));
                                 that.getOwnerComponent().refreshUnreadCount();
                                 oCtx.refresh();
-                                that._publishRefresh();
+                                that._publishRefresh({ source: 'action', notificationId: oCtx.getProperty('NotificationId') });
                             }).catch(function (oErr) { MessageBox.error(oErr.message); });
                     }
                 }
@@ -311,6 +313,7 @@ sap.ui.define([
                 that.getView().getModel('view').setProperty('/hasActions', aActions.length > 0);
 
                 aActions.forEach(function (oAct, index) {
+                    Log.info('[Actions] Action ' + index + ':', JSON.stringify(oAct));
                     var sIcon = that._getActionIcon(oAct.SematicObject, oAct.ActionLabel);
                     var sSematicActionLower = (oAct.SematicAction || '').toLowerCase();
                     var sType;
@@ -427,7 +430,7 @@ sap.ui.define([
                 var sLabelLower = sActionLabel.toLowerCase();
                 if (sLabelLower.indexOf('approve') !== -1) { return 'sap-icon://accept'; }
                 if (sLabelLower.indexOf('reject') !== -1) { return 'sap-icon://decline'; }
-                if (sLabelLower.indexOf('view') !== -1 || sLabelLower.indexOf('display') !== -1) { return 'sap-icon://detail-view'; }
+                if (sLabelLower.indexOf('view') !== -1 || sLabelLower.indexOf('display') !== -1) { return 'sap-icon://arrow-right'; }
                 if (sLabelLower.indexOf('edit') !== -1) { return 'sap-icon://edit'; }
             }
             if (!sSemanticObject) { return 'sap-icon://action'; }

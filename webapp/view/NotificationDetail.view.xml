@@ -7,6 +7,7 @@
 
     <f:DynamicPage
         id="idNotificationDetailDynamicPage"
+        class="sapUiNoContentPadding"
         showFooter="true"
         busy="{view>/busy}"
         busyIndicatorDelay="0">
