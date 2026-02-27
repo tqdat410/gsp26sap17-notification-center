@@ -10,6 +10,7 @@
  */
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
+    'sap/ui/core/Fragment',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
@@ -28,7 +29,7 @@ sap.ui.define([
     'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
     'com/gsp26/sap17/notificationcenter/util/CrossAppNavigation',
     'com/gsp26/sap17/notificationcenter/util/LeaveRequestActionHelper'
-], function (Controller, JSONModel, Filter, FilterOperator, Sorter, MessageToast, MessageBox, MButton,
+], function (Controller, Fragment, JSONModel, Filter, FilterOperator, Sorter, MessageToast, MessageBox, MButton,
              MDialog, MTextArea, MLabel, MVBox, History, Log,
              Formatter, ActionHelper, BooleanHelper, CrossAppNav, LeaveRequestHelper) {
     'use strict';
@@ -308,6 +309,7 @@ sap.ui.define([
             oCtx.requestObject().then(function (oData) {
                 var aActions = (oData && oData._Notification && oData._Notification._Actions) || [];
                 that.getView().getModel('view').setProperty('/hasActions', aActions.length > 0);
+
                 aActions.forEach(function (oAct, index) {
                     var sIcon = that._getActionIcon(oAct.SematicObject, oAct.ActionLabel);
                     var sSematicActionLower = (oAct.SematicAction || '').toLowerCase();
@@ -356,6 +358,17 @@ sap.ui.define([
             });
         },
 
+        _disableInlineActionButtons: function () {
+            var oHBox = this.byId('idActionsHBox');
+            if (!oHBox) { return; }
+            oHBox.getItems().forEach(function (oBtn) {
+                var sType = oBtn.getType ? oBtn.getType() : '';
+                if (sType === 'Accept' || sType === 'Reject') {
+                    oBtn.setEnabled(false);
+                }
+            });
+        },
+
         _executeInlineAction: function (sSematicAction, sActionLabel, sRawParams) {
             var that = this;
             var oBundle = this._getBundle();
@@ -376,9 +389,13 @@ sap.ui.define([
                     {
                         onClose: function (sAction) {
                             if (sAction === MessageBox.Action.OK) {
+                                var oVM = that.getView().getModel('view');
+                                oVM.setProperty('/busy', true);
                                 LeaveRequestHelper.approve(sRequestId)
                                     .then(function () {
+                                        oVM.setProperty('/busy', false);
                                         MessageToast.show(oBundle.getText('approveSuccess'));
+                                        that._disableInlineActionButtons();
                                         var oCtx = that.getView().getBindingContext();
                                         if (oCtx) { oCtx.refresh(); }
                                         that.getOwnerComponent().refreshUnreadCount();
@@ -387,7 +404,15 @@ sap.ui.define([
                                             notificationId: oCtx ? oCtx.getProperty('NotificationId') : ''
                                         });
                                     })
-                                    .catch(function (oErr) { MessageBox.error(oErr.message); });
+                                    .catch(function (oErr) {
+                                        oVM.setProperty('/busy', false);
+                                        var sMsg = oErr && oErr.message || '';
+                                        if (sMsg.toLowerCase().indexOf('operation is not enabled') !== -1) {
+                                            MessageBox.error(oBundle.getText('actionNotAvailable'));
+                                        } else {
+                                            MessageBox.error(sMsg);
+                                        }
+                                    });
                             }
                         }
                     }
@@ -402,7 +427,7 @@ sap.ui.define([
                 var sLabelLower = sActionLabel.toLowerCase();
                 if (sLabelLower.indexOf('approve') !== -1) { return 'sap-icon://accept'; }
                 if (sLabelLower.indexOf('reject') !== -1) { return 'sap-icon://decline'; }
-                if (sLabelLower.indexOf('view') !== -1 || sLabelLower.indexOf('display') !== -1) { return 'sap-icon://display'; }
+                if (sLabelLower.indexOf('view') !== -1 || sLabelLower.indexOf('display') !== -1) { return 'sap-icon://detail-view'; }
                 if (sLabelLower.indexOf('edit') !== -1) { return 'sap-icon://edit'; }
             }
             if (!sSemanticObject) { return 'sap-icon://action'; }
@@ -415,60 +440,77 @@ sap.ui.define([
 
         _openRejectDialog: function (sRequestId) {
             var that = this;
+            this._sCurrentRequestId = sRequestId;
+
+            if (!this._oRejectDialog) {
+                Fragment.load({
+                    id: this.getView().getId(),
+                    name: 'com.gsp26.sap17.notificationcenter.fragment.RejectDialog',
+                    controller: this
+                }).then(function (oDialog) {
+                    that._oRejectDialog = oDialog;
+                    that.getView().addDependent(oDialog);
+                    that._oRejectDialog.open();
+                });
+            } else {
+                this._oRejectDialog.open();
+            }
+        },
+
+        onRejectDialogBeforeOpen: function () {
+            var oTextArea = this.getView().byId('idRejectReasonTextArea');
+            if (oTextArea) {
+                oTextArea.setValue('');
+            }
+        },
+
+        onRejectDialogAfterClose: function () {
+            this._sCurrentRequestId = null;
+        },
+
+        onRejectDialogSubmit: function () {
+            var that = this;
             var oBundle = this._getBundle();
+            var oTextArea = this.getView().byId('idRejectReasonTextArea');
+            var sReason = oTextArea.getValue().trim();
 
-            var oTextArea = new MTextArea({
-                width: '100%',
-                rows: 4,
-                placeholder: oBundle.getText('rejectReasonPlaceholder')
-            });
+            if (!sReason) {
+                MessageBox.warning(oBundle.getText('rejectReasonRequired'));
+                return;
+            }
 
-            var oDialog = new MDialog({
-                title: oBundle.getText('rejectDialogTitle'),
-                content: [
-                    new MVBox({
-                        class: 'sapUiSmallMargin',
-                        items: [
-                            new MLabel({ text: oBundle.getText('rejectReasonLabel'), required: true }),
-                            oTextArea
-                        ]
-                    })
-                ],
-                buttons: [
-                    new MButton({
-                        text: oBundle.getText('submit'),
-                        type: 'Emphasized',
-                        press: function () {
-                            var sReason = oTextArea.getValue().trim();
-                            if (!sReason) {
-                                MessageBox.warning(oBundle.getText('rejectReasonRequired'));
-                                return;
-                            }
-                            oDialog.close();
-                            LeaveRequestHelper.reject(sRequestId, sReason)
-                                .then(function () {
-                                    MessageToast.show(oBundle.getText('rejectSuccess'));
-                                    var oCtx = that.getView().getBindingContext();
-                                    if (oCtx) { oCtx.refresh(); }
-                                    that.getOwnerComponent().refreshUnreadCount();
-                                    that._publishRefresh({
-                                        source: 'action',
-                                        notificationId: oCtx ? oCtx.getProperty('NotificationId') : ''
-                                    });
-                                })
-                                .catch(function (oErr) { MessageBox.error(oErr.message); });
-                        }
-                    }),
-                    new MButton({
-                        text: oBundle.getText('cancel'),
-                        press: function () { oDialog.close(); }
-                    })
-                ],
-                afterClose: function () { oDialog.destroy(); }
-            });
+            this._oRejectDialog.close();
+            var oVM = this.getView().getModel('view');
+            oVM.setProperty('/busy', true);
 
-            this.getView().addDependent(oDialog);
-            oDialog.open();
+            LeaveRequestHelper.reject(this._sCurrentRequestId, sReason)
+                .then(function () {
+                    oVM.setProperty('/busy', false);
+                    MessageToast.show(oBundle.getText('rejectSuccess'));
+                    that._disableInlineActionButtons();
+                    var oCtx = that.getView().getBindingContext();
+                    if (oCtx) { oCtx.refresh(); }
+                    that.getOwnerComponent().refreshUnreadCount();
+                    that._publishRefresh({
+                        source: 'action',
+                        notificationId: oCtx ? oCtx.getProperty('NotificationId') : ''
+                    });
+                })
+                .catch(function (oErr) {
+                    oVM.setProperty('/busy', false);
+                    var sMsg = oErr && oErr.message || '';
+                    if (sMsg.toLowerCase().indexOf('operation is not enabled') !== -1) {
+                        MessageBox.error(oBundle.getText('actionNotAvailable'));
+                    } else {
+                        MessageBox.error(sMsg);
+                    }
+                });
+        },
+
+        onRejectDialogCancel: function () {
+            if (this._oRejectDialog) {
+                this._oRejectDialog.close();
+            }
         },
 
         _fetchNavigationContext: function () {

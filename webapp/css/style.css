@@ -194,6 +194,24 @@ span.notificationUnread {
     border-bottom: none !important;
 }
 
+/* Reject reason dialog - content padding */
+.rejectReasonDialog .sapMDialogScrollCont {
+    padding: 0.5rem;
+}
+
+
+
+.rejectReasonLabel {
+    display: block;
+    
+    font-weight: 600;
+}
+
+.rejectReasonTextArea {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
 /* Notification HTML body content area */
 .notificationDetailBody {
     padding: 1rem;
