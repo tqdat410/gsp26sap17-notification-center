@@ -120,6 +120,18 @@
                     icon="sap-icon://undo"
                     type="Transparent"
                     press=".onResetToDefault"/>
+                <Button
+                    id="idEnableAllButton"
+                    text="{i18n>enableAll}"
+                    type="Transparent"
+                    visible="{= !${settingsModel>/allEnabled} }"
+                    press=".onToggleAll"/>
+                <Button
+                    id="idDisableAllButton"
+                    text="{i18n>disableAll}"
+                    type="Transparent"
+                    visible="{= ${settingsModel>/allEnabled} }"
+                    press=".onToggleAll"/>
                 <ToolbarSpacer id="idSettingsFooterToolbarSpacer"/>
                 <Button
                     id="idCancelButton"

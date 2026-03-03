@@ -16,6 +16,7 @@ sap.ui.define([
                 masterEnabled: true,
                 isDirty: false,
                 busy: false,
+                allEnabled: false,
                 categories: []
             });
             this.getView().setModel(oSettingsModel, 'settingsModel');
@@ -62,6 +63,7 @@ sap.ui.define([
                 that._aAllCategories = aCategories;
                 oModel.setProperty('/categories', aCategories.slice());
                 oModel.setProperty('/busy', false);
+                that._computeAllEnabled();
             }).catch(function (oError) {
                 Log.error('Settings: Failed to load - ' + oError.message);
                 oModel.setProperty('/busy', false);
@@ -138,6 +140,7 @@ sap.ui.define([
                 oModel.setProperty(sPath + '/emailEnabled', false);
             }
 
+            this._computeAllEnabled();
             this._checkDirty();
         },
 
@@ -148,6 +151,30 @@ sap.ui.define([
             var oModel = this.getView().getModel('settingsModel');
 
             oModel.setProperty(sPath + '/emailEnabled', bState);
+            this._computeAllEnabled();
+            this._checkDirty();
+        },
+
+        onToggleAll: function () {
+            var oModel = this.getView().getModel('settingsModel');
+            var bEnable = !oModel.getProperty('/allEnabled');
+
+            (this._aAllCategories || []).forEach(function (oItem) {
+                if (bEnable) {
+                    if (!oItem.obligatory) {
+                        oItem.isEnabled = true;
+                    }
+                    oItem.emailEnabled = true;
+                } else {
+                    if (!oItem.obligatory) {
+                        oItem.isEnabled = false;
+                    }
+                    oItem.emailEnabled = false;
+                }
+            });
+
+            this._applyFilters();
+            this._computeAllEnabled();
             this._checkDirty();
         },
 
@@ -173,17 +200,38 @@ sap.ui.define([
 
         onResetToDefault: function () {
             var that = this;
+            var aCategories = this._aAllCategories;
+
+            if (!aCategories) return;
+
+            var aNonDefault = aCategories.filter(function (oItem) {
+                return oItem.isEnabled !== oItem.defaultEnabled || oItem.emailEnabled !== false;
+            });
+
+            if (aNonDefault.length === 0) {
+                MessageToast.show(this._getBundle().getText('alreadyDefault'));
+                return;
+            }
+
             MessageBox.confirm(this._getBundle().getText('confirmResetDefault'), {
                 onClose: function (sAction) {
                     if (sAction === MessageBox.Action.OK) {
                         var oModel = that.getView().getModel('settingsModel');
-                        var aCategories = that._aAllCategories;
-                        
-                        if (aCategories) {
-                            SettingsUtil.resetToDefaults(aCategories);
-                            oModel.setProperty('/categories', aCategories.slice());
-                            that._saveSettings();
-                        }
+                        var oODataModel = that.getView().getModel();
+
+                        oModel.setProperty('/busy', true);
+                        SettingsUtil.resetToDefaultViaAction(oODataModel)
+                            .then(function () {
+                                oModel.setProperty('/isDirty', false);
+                                oModel.setProperty('/busy', false);
+                                MessageToast.show(that._getBundle().getText('settingsSaved'));
+                                that._loadSettings();
+                            })
+                            .catch(function (oError) {
+                                oModel.setProperty('/busy', false);
+                                Log.error('Settings: Reset to default failed - ' + oError.message);
+                                MessageBox.error(that._getBundle().getText('saveError'));
+                            });
                     }
                 }
             });
@@ -224,6 +272,14 @@ sap.ui.define([
             } else {
                 this.getOwnerComponent().getRouter().navTo('main', {}, {replace: true});
             }
+        },
+
+        _computeAllEnabled: function () {
+            var aAll = this._aAllCategories || [];
+            var bAllEnabled = aAll.length > 0 && aAll.every(function (oItem) {
+                return oItem.isEnabled === true && oItem.emailEnabled === true;
+            });
+            this.getView().getModel('settingsModel').setProperty('/allEnabled', bAllEnabled);
         },
 
         _checkDirty: function () {
