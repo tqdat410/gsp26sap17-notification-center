@@ -114,16 +114,21 @@ sap.ui.define([
         },
 
         /**
-         * Resets all categories to their default values.
-         * - In-App: reset to defaultEnabled
-         * - Email: always reset to false
+         * Resets all settings to default via a single static action ResetToDefault.
+         * The backend deletes all user setting records in one DELETE statement.
          *
-         * @param {Object[]} aCategories - mutated in place
+         * @param {sap.ui.model.odata.v4.ODataModel} oODataModel
+         * @returns {Promise}
          */
-        resetToDefaults: function (aCategories) {
-            (aCategories || []).forEach(function (oItem) {
-                oItem.isEnabled = oItem.defaultEnabled;
-                oItem.emailEnabled = false;
+        resetToDefaultViaAction: function (oODataModel) {
+            var sNamespace = 'com.sap.gateway.srvd.z17_sd_notification.v0001';
+            var sActionPath = '/Setting/' + sNamespace + '.ResetToDefault(...)';
+            var oActionBinding = oODataModel.bindContext(sActionPath);
+            return oActionBinding.execute('$auto').then(function () {
+                Log.debug('SettingsUtil: ResetToDefault succeeded');
+            }).catch(function (oError) {
+                Log.error('SettingsUtil: ResetToDefault failed - ' + oError.message);
+                throw oError;
             });
         }
     };
