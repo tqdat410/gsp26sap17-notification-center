@@ -198,43 +198,104 @@ sap.ui.define([
             }
         },
 
+        // onResetToDefault: function () {
+        //     var that = this;
+        //     var aCategories = this._aAllCategories;
+
+        //     if (!aCategories) return;
+
+        //     var aNonDefault = aCategories.filter(function (oItem) {
+        //         return oItem.isEnabled !== oItem.defaultEnabled || oItem.emailEnabled !== false;
+        //     });
+
+        //     if (aNonDefault.length === 0) {
+        //         MessageToast.show(this._getBundle().getText('alreadyDefault'));
+        //         return;
+        //     }
+
+        //     MessageBox.confirm(this._getBundle().getText('confirmResetDefault'), {
+        //         onClose: function (sAction) {
+        //             if (sAction === MessageBox.Action.OK) {
+        //                 var oModel = that.getView().getModel('settingsModel');
+        //                 var oODataModel = that.getView().getModel();
+
+        //                 oModel.setProperty('/busy', true);
+        //                 SettingsUtil.resetToDefaultViaAction(oODataModel)
+        //                     .then(function () {
+        //                         oModel.setProperty('/isDirty', false);
+        //                         oModel.setProperty('/busy', false);
+        //                         MessageToast.show(that._getBundle().getText('settingsSaved'));
+        //                         that._loadSettings();
+        //                     })
+        //                     .catch(function (oError) {
+        //                         oModel.setProperty('/busy', false);
+        //                         Log.error('Settings: Reset to default failed - ' + oError.message);
+        //                         MessageBox.error(that._getBundle().getText('saveError'));
+        //                     });
+        //             }
+        //         }
+        //     });
+        // },
+
         onResetToDefault: function () {
             var that = this;
-            var aCategories = this._aAllCategories;
+            var oODataModel = this.getView().getModel();
+            var oSettingsModel = this.getView().getModel('settingsModel');
 
-            if (!aCategories) return;
-
-            var aNonDefault = aCategories.filter(function (oItem) {
-                return oItem.isEnabled !== oItem.defaultEnabled || oItem.emailEnabled !== false;
-            });
-
-            if (aNonDefault.length === 0) {
-                MessageToast.show(this._getBundle().getText('alreadyDefault'));
+            if (!oODataModel) {
+                Log.error('Settings: OData model not available');
                 return;
             }
 
-            MessageBox.confirm(this._getBundle().getText('confirmResetDefault'), {
-                onClose: function (sAction) {
-                    if (sAction === MessageBox.Action.OK) {
-                        var oModel = that.getView().getModel('settingsModel');
-                        var oODataModel = that.getView().getModel();
+            oSettingsModel.setProperty('/busy', true);
+            
+            SettingsUtil.getDefaultSettings(oODataModel)
+                .then(function (aDefaults) {
+                    var aNonDefault = (that._aAllCategories || []).filter(function (oItem) {
+                        var oDefault = aDefaults.find(function (d) { 
+                            return d.categoryCode === oItem.categoryCode; 
+                        });
+                        if (!oDefault) return false;
+                        return oItem.isEnabled !== oDefault.isEnabled || 
+                               oItem.emailEnabled !== oDefault.emailEnabled;
+                    });
 
-                        oModel.setProperty('/busy', true);
-                        SettingsUtil.resetToDefaultViaAction(oODataModel)
-                            .then(function () {
-                                oModel.setProperty('/isDirty', false);
-                                oModel.setProperty('/busy', false);
-                                MessageToast.show(that._getBundle().getText('settingsSaved'));
-                                that._loadSettings();
-                            })
-                            .catch(function (oError) {
-                                oModel.setProperty('/busy', false);
-                                Log.error('Settings: Reset to default failed - ' + oError.message);
-                                MessageBox.error(that._getBundle().getText('saveError'));
-                            });
+                    if (aNonDefault.length === 0) {
+                        oSettingsModel.setProperty('/busy', false);
+                        MessageToast.show(that._getBundle().getText('alreadyDefault'));
+                        return;
                     }
-                }
-            });
+
+                    MessageBox.confirm(that._getBundle().getText('confirmResetDefault'), {
+                        onClose: function (sAction) {
+                            if (sAction === MessageBox.Action.OK) {
+                                (that._aAllCategories || []).forEach(function (oItem) {
+                                    var oDefault = aDefaults.find(function (d) { 
+                                        return d.categoryCode === oItem.categoryCode; 
+                                    });
+                                    if (oDefault) {
+                                        oItem.isEnabled = oDefault.isEnabled;
+                                        oItem.emailEnabled = oDefault.emailEnabled;
+                                    }
+                                });
+
+                                that._applyFilters();
+                                that._computeAllEnabled();
+                                that._checkDirty();
+
+                                oSettingsModel.setProperty('/busy', false);
+                                MessageToast.show(that._getBundle().getText('resetToDefaultSuccess'));
+                            } else {
+                                oSettingsModel.setProperty('/busy', false);
+                            }
+                        }
+                    });
+                })
+                .catch(function (oError) {
+                    oSettingsModel.setProperty('/busy', false);
+                    Log.error('Settings: Get default settings failed - ' + oError.message);
+                    MessageBox.error(that._getBundle().getText('loadError'));
+                });
         },
 
         _saveSettings: function () {
