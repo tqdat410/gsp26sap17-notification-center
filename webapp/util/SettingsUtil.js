@@ -120,15 +120,35 @@ sap.ui.define([
          * @param {sap.ui.model.odata.v4.ODataModel} oODataModel
          * @returns {Promise}
          */
-        resetToDefaultViaAction: function (oODataModel) {
-            var sNamespace = 'com.sap.gateway.srvd.z17_sd_notification.v0001';
-            var sActionPath = '/Setting/' + sNamespace + '.ResetToDefault(...)';
-            var oActionBinding = oODataModel.bindContext(sActionPath);
-            return oActionBinding.execute('$auto').then(function () {
-                Log.debug('SettingsUtil: ResetToDefault succeeded');
-            }).catch(function (oError) {
-                Log.error('SettingsUtil: ResetToDefault failed - ' + oError.message);
-                throw oError;
+        // resetToDefaultViaAction: function (oODataModel) {
+        //     var sNamespace = 'com.sap.gateway.srvd.z17_sd_notification.v0001';
+        //     var sActionPath = '/Setting/' + sNamespace + '.ResetToDefault(...)';
+        //     var oActionBinding = oODataModel.bindContext(sActionPath);
+        //     return oActionBinding.execute('$auto').then(function () {
+        //         Log.debug('SettingsUtil: ResetToDefault succeeded');
+        //     }).catch(function (oError) {
+        //         Log.error('SettingsUtil: ResetToDefault failed - ' + oError.message);
+        //         throw oError;
+        //     });
+        // },
+
+        /**
+         * Fetches default settings from the Z17_C_SETTING_DEFAULT view.
+         * Returns default values for each category (IsEnabled = DefaultEnabled, EmailEnabled = '').
+         *
+         * @param {sap.ui.model.odata.v4.ODataModel} oODataModel
+         * @returns {Promise<Object[]>} array of {categoryCode, isEnabled, emailEnabled}
+         */
+        getDefaultSettings: function (oODataModel) {
+            var oBinding = oODataModel.bindList('/SettingDefault');
+            return oBinding.requestContexts(0, 500).then(function (aContexts) {
+                return aContexts.map(function (oCtx) {
+                    return {
+                        categoryCode: oCtx.getProperty('CategoryCode'),
+                        isEnabled: oCtx.getProperty('IsEnabled'),
+                        emailEnabled: oCtx.getProperty('EmailEnabled')
+                    };
+                });
             });
         }
     };
