@@ -145,8 +145,8 @@ sap.ui.define([
                 return aContexts.map(function (oCtx) {
                     return {
                         categoryCode: oCtx.getProperty('CategoryCode'),
-                        isEnabled: oCtx.getProperty('IsEnabled'),
-                        emailEnabled: oCtx.getProperty('EmailEnabled')
+                        isEnabled: oCtx.getProperty('IsEnabled') === true,
+                        emailEnabled: oCtx.getProperty('EmailEnabled') === true
                     };
                 });
             });
