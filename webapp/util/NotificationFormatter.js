@@ -179,7 +179,37 @@ sap.ui.define([
 
         formatBodyHtml: function (sBody) {
             if (!sBody) { return '<p></p>'; }
-            return /<[a-z][\s\S]*>/i.test(sBody) ? sBody : '<p>' + encodeXML(sBody) + '</p>';
+            var sHtml = /<[a-z][\s\S]*>/i.test(sBody) ? sBody : '<p>' + encodeXML(sBody) + '</p>';
+
+            try {
+                var oParser = new DOMParser();
+                var oDoc = oParser.parseFromString(sHtml, 'text/html');
+                var aNodes = oDoc.querySelectorAll('table, tr, td, th');
+
+                aNodes.forEach(function (oEl) {
+                    if (oEl.hasAttribute('bgcolor')) {
+                        oEl.removeAttribute('bgcolor');
+                    }
+                    if (oEl.hasAttribute('style')) {
+                        var sStyle = oEl.getAttribute('style');
+                        sStyle = sStyle.replace(/background(-color)?\s*:\s*[^;]+;?/gi, '');
+                        sStyle = sStyle.replace(/font-family\s*:\s*[^;]+;?/gi, '');
+                        sStyle = sStyle.replace(/font-size\s*:\s*[^;]+;?/gi, '');
+                        if (oEl.tagName !== 'STRONG') {
+                            sStyle = sStyle.replace(/color\s*:\s*[^;]+;?/gi, '');
+                        }
+                        if (sStyle && sStyle.trim()) {
+                            oEl.setAttribute('style', sStyle.trim());
+                        } else {
+                            oEl.removeAttribute('style');
+                        }
+                    }
+                });
+
+                return oDoc.body ? oDoc.body.innerHTML : sHtml;
+            } catch (oError) {
+                return sHtml;
+            }
         }
     };
 });

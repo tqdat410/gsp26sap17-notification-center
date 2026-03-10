@@ -12,9 +12,10 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
+    'sap/ui/core/theming/Parameters',
     'sap/base/Log',
     'com/gsp26/sap17/notificationcenter/util/WebSocketManager'
-], function (UIComponent, Device, JSONModel, Filter, FilterOperator, Log, WebSocketManager) {
+], function (UIComponent, Device, JSONModel, Filter, FilterOperator, Parameters, Log, WebSocketManager) {
     'use strict';
     var LOG_COMPONENT = 'notification.Component';
 
@@ -46,6 +47,9 @@ sap.ui.define([
             });
             this.setModel(oAppModel, 'app');
 
+            this._applyThemeVars();
+            sap.ui.getCore().attachThemeChanged(this._applyThemeVars, this);
+
             if (this.getRouter()) {
                 this.getRouter().initialize();
                 Log.info('Router initialized', null, LOG_COMPONENT);
@@ -58,6 +62,33 @@ sap.ui.define([
             // Connect APC WebSocket for real-time notifications (fixed SAP host)
             WebSocketManager.connect(this.getEventBus());
             Log.info('Component init completed', null, LOG_COMPONENT);
+        },
+
+
+        _applyThemeVars: function () {
+            var aKeys = [
+                'sapGroup_ContentBackground',
+                'sapGroup_ContentBorderColor',
+                'sapList_BorderColor',
+                'sapList_AlternatingBackground',
+                'sapTextColor',
+                'sapContent_LabelColor',
+                'sapTile_Background',
+                'sapContent_Shadow1',
+                'sapContent_Shadow2'
+            ];
+            var oRoot = document && document.documentElement;
+            if (!oRoot) {
+                return;
+            }
+            aKeys.forEach(function (sKey) {
+                var sValue = Parameters.get(sKey);
+                if (sValue) {
+                    oRoot.style.setProperty('--' + sKey, sValue);
+                } else {
+                    oRoot.style.removeProperty('--' + sKey);
+                }
+            });
         },
 
         _loadUnreadCount: function () {
@@ -179,6 +210,7 @@ sap.ui.define([
         },
 
         destroy: function () {
+            sap.ui.getCore().detachThemeChanged(this._applyThemeVars, this);
             if (this._iUnreadRefreshTimer) {
                 clearTimeout(this._iUnreadRefreshTimer);
                 this._iUnreadRefreshTimer = null;
