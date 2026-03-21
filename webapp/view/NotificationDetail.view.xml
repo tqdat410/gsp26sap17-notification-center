@@ -1,0 +1,115 @@
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.NotificationDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f">
+
+    <f:DynamicPage
+        id="idNotificationDetailDynamicPage"
+        class="sapUiNoContentPadding"
+        showFooter="true"
+        busy="{view>/busy}"
+        busyIndicatorDelay="0">
+
+        <f:title>
+            <f:DynamicPageTitle id="idNotificationDetailDynamicPageTitle">
+                <f:heading>
+                    <HBox id="idHeadingHBox" alignItems="Center">
+                        <Button
+                            id="idNavBackButton"
+                            icon="sap-icon://nav-back"
+                            type="Transparent"
+                            press=".onButtonNavBackPress"
+                            tooltip="{i18n>back}"
+                            class="sapUiTinyMarginEnd"/>
+                        <Title id="idNotificationDetailsTitle" text="{i18n>notificationDetails}"/>
+                    </HBox>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <f:content>
+            <VBox id="idDetailContentVBox" class="notificationPageContainer">
+                <ObjectHeader
+                    id="idNotificationObjectHeader"
+                    class="notificationDetailCard"
+                    title="{_Notification/Title}"
+                    backgroundDesign="Transparent"
+                    responsive="true">
+                    <statuses>
+                        <ObjectStatus
+                            id="idPriorityObjectStatus"
+                            title="{i18n>priorityLabel}"
+                            text="{path: '_Notification/Priority', formatter: '.formatPriorityText'}"
+                            state="{path: '_Notification/Priority', formatter: '.formatPriorityState'}"/>
+                        <ObjectStatus
+                            id="idCategoryObjectStatus"
+                            title="{i18n>categoryLabel}"
+                            text="{parts: [{path: '_Notification/CategoryCode'}, {path: 'categoryVH>/map'}], formatter: '.formatCategory'}"
+                            state="Information"/>
+                        <ObjectStatus
+                            id="idIsReadObjectStatus"
+                            title="{i18n>status}"
+                            text="{parts: [{path: 'IsRead'}, {path: 'IsArchived'}], formatter: '.formatReadStatusCombined'}"
+                            state="{parts: [{path: 'IsRead'}, {path: 'IsArchived'}], formatter: '.formatReadStatusCombinedState'}"/>
+                    </statuses>
+                    <attributes>
+                        <ObjectAttribute
+                            id="idSentAtObjectAttribute"
+                            title="{i18n>sentAt}"
+                            text="{path: '_Notification/SentAt', formatter: '.formatDateTimeWithRelative'}"/>
+                    </attributes>
+                </ObjectHeader>
+
+                <Panel
+                    id="idMessagePanel"
+                    headerText="{i18n>message}"
+                    class="notificationDetailCard notificationMessagePanel">
+                    <content>
+                        <core:HTML
+                            id="idBodyContentHTML"
+                            content="{path: '_Notification/Body', formatter: '.formatBodyHtml'}"
+                            sanitizeContent="true"
+                            class="notificationDetailBody"/>
+                    </content>
+                </Panel>
+
+                <Panel
+                    id="idActionsPanel"
+                    headerText="{i18n>actions}"
+                    visible="{view>/hasActions}"
+                    class="notificationDetailCard">
+                    <content>
+                        <HBox
+                            id="idActionsHBox"
+                            wrap="Wrap"
+                            class="sapUiSmallMargin"/>
+                    </content>
+                </Panel>
+            </VBox>
+        </f:content>
+
+        <f:footer>
+            <OverflowToolbar id="idDetailFooterOverflowToolbar">
+                <ToolbarSpacer id="idFooterToolbarSpacer"/>
+                <Button id="idIsReadButton"
+                    text="{path: 'IsRead', formatter: '.formatMarkReadText'}"
+                    icon="{path: 'IsRead', formatter: '.formatMarkReadIcon'}"
+                    type="Transparent"
+                    press=".onIsReadButtonPress"/>
+                <Button id="idIsArchivedButton"
+                    text="{path: 'IsArchived', formatter: '.formatArchiveText'}"
+                    icon="{path: 'IsArchived', formatter: '.formatArchiveIcon'}"
+                    type="Attention"
+                    press=".onIsArchivedButtonPress"/>
+                <Button id="idDeleteButton"
+                    text="{i18n>delete}"
+                    icon="sap-icon://delete"
+                    type="Reject"
+                    press=".onDeleteButtonPress"/>
+            </OverflowToolbar>
+        </f:footer>
+
+    </f:DynamicPage>
+</mvc:View>

@@ -1,20 +1,27 @@
+/**
+ * models.js
+ *
+ * Model factory functions for Notification Center
+ */
 sap.ui.define([
-    "sap/ui/model/json/JSONModel",
-    "sap/ui/Device"
-], 
-function (JSONModel, Device) {
-    "use strict";
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/Device'
+], function (JSONModel, Device) {
+    'use strict';
 
     return {
-        /**
-         * Provides runtime information for the device the UI5 app is running on as a JSONModel.
-         * @returns {sap.ui.model.json.JSONModel} The device model.
-         */
         createDeviceModel: function () {
             var oModel = new JSONModel(Device);
-            oModel.setDefaultBindingMode("OneWay");
+            oModel.setDefaultBindingMode('OneWay');
             return oModel;
+        },
+
+        createAppModel: function () {
+            return new JSONModel({
+                UnreadCount: 0,
+                busy: false,
+                lastRefresh: null
+            });
         }
     };
-
 });

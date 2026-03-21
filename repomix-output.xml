@@ -1,0 +1,3551 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.appGenInfo.json
+.gitignore
+package.json
+README.md
+ui5-deploy.yaml
+ui5-local.yaml
+ui5-mock.yaml
+ui5.yaml
+webapp/Component.js
+webapp/controller/App.controller.js
+webapp/controller/NotificationDetail.controller.js
+webapp/controller/NotificationList.controller.js
+webapp/controller/Settings.controller.js
+webapp/css/style.css
+webapp/fragment/NotificationPopover.fragment.xml
+webapp/i18n/i18n.properties
+webapp/index.html
+webapp/localService/mainService/metadata.xml
+webapp/manifest.json
+webapp/model/models.js
+webapp/test/integration/AllJourneys.js
+webapp/test/integration/arrangements/Startup.js
+webapp/test/integration/NavigationJourney.js
+webapp/test/integration/opaTests.qunit.js
+webapp/test/integration/pages/App.js
+webapp/test/integration/pages/Main.js
+webapp/test/testsuite.qunit.html
+webapp/test/testsuite.qunit.js
+webapp/test/unit/AllTests.js
+webapp/test/unit/controller/NotificationList.controller.js
+webapp/test/unit/unitTests.qunit.js
+webapp/util/BooleanHelper.js
+webapp/util/CrossAppNavigation.js
+webapp/util/NotificationActionHelper.js
+webapp/util/NotificationFormatter.js
+webapp/util/ToolbarStateHelper.js
+webapp/util/WebSocketManager.js
+webapp/view/App.view.xml
+webapp/view/NotificationDetail.view.xml
+webapp/view/NotificationList.view.xml
+webapp/view/Settings.view.xml
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".appGenInfo.json">
+{
+  "generationParameters": {
+    "generationDate": "Mon Feb 02 2026 19:32:27 GMT+0700 (Indochina Time)",
+    "generatorPlatform": "Visual Studio Code",
+    "serviceType": "SAP System (ABAP On-Premise)",
+    "metadataFilename": "",
+    "serviceUrl": "https://s40lp1.ucc.cit.tum.de/sap/opu/odata4/iwbep/all/srvd/sap/y17_sd_notification/0001/",
+    "appName": "notification-center",
+    "appTitle": "Custom Notification Center Fiori Applicati",
+    "appDescription": "An SAP Fiori application.",
+    "appNamespace": "com.gsp26.sap17.nc",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.108.33",
+    "enableCodeAssist": false,
+    "enableEslint": false,
+    "enableTypeScript": false,
+    "showMockDataInfo": true,
+    "generatorVersion": "1.20.0",
+    "template": "Basic V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [],
+    "launchText": "To launch the generated application, run the following from the generated application root folder:\n\n```\n    npm start\n```"
+  }
+}
+</file>
+
+<file path=".gitignore">
+node_modules/
+dist/
+.scp/
+.env
+Makefile*.mta
+mta_archives
+mta-*
+resources
+archive.zip
+.*_mta_build_tmp
+</file>
+
+<file path="README.md">
+## Application Details
+|               |
+| ------------- |
+|**Generation Date and Time**<br>Mon Feb 02 2026 19:32:27 GMT+0700 (Indochina Time)|
+|**App Generator**<br>SAP Fiori Application Generator|
+|**App Generator Version**<br>1.20.0|
+|**Generation Platform**<br>Visual Studio Code|
+|**Template Used**<br>Basic V4|
+|**Service Type**<br>SAP System (ABAP On-Premise)|
+|**Service URL**<br>https://s40lp1.ucc.cit.tum.de/sap/opu/odata4/iwbep/all/srvd/sap/y17_sd_notification/0001/|
+|**Module Name**<br>notification-center|
+|**Application Title**<br>Custom Notification Center Fiori Applicati|
+|**Namespace**<br>com.gsp26.sap17.nc|
+|**UI5 Theme**<br>sap_horizon|
+|**UI5 Version**<br>1.108.33|
+|**Enable Code Assist Libraries**<br>False|
+|**Enable TypeScript**<br>False|
+|**Add Eslint configuration**<br>False|
+
+## notification-center
+
+An SAP Fiori application.
+
+### Starting the generated app
+
+-   This app has been generated using the SAP Fiori tools - App Generator, as part of the SAP Fiori tools suite.  To launch the generated application, run the following from the generated application root folder:
+
+```
+    npm start
+```
+
+- It is also possible to run the application using mock data that reflects the OData Service URL supplied during application generation.  In order to run the application with Mock Data, run the following from the generated app root folder:
+
+```
+    npm run start-mock
+```
+
+#### Pre-requisites:
+
+1. Active NodeJS LTS (Long Term Support) version and associated supported NPM version.  (See https://nodejs.org)
+</file>
+
+<file path="webapp/test/integration/NavigationJourney.js">
+/*global QUnit*/
+
+sap.ui.define([
+	"sap/ui/test/opaQunit",
+	"./pages/App",
+	"./pages/Main"
+], function (opaTest) {
+	"use strict";
+
+	QUnit.module("Navigation Journey");
+
+	opaTest("Should see the initial page of the app", function (Given, When, Then) {
+		// Arrangements
+		Given.iStartMyApp();
+
+		// Assertions
+		Then.onTheAppPage.iShouldSeeTheApp();
+      	Then.onTheViewPage.iShouldSeeThePageView();
+
+		//Cleanup
+		Then.iTeardownMyApp();
+	});
+});
+</file>
+
+<file path="webapp/test/integration/pages/App.js">
+sap.ui.define([
+	"sap/ui/test/Opa5"
+], function (Opa5) {
+	"use strict";
+	var sViewName = "App";
+	
+	Opa5.createPageObjects({
+		onTheAppPage: {
+
+			actions: {},
+
+			assertions: {
+
+				iShouldSeeTheApp: function () {
+					return this.waitFor({
+						id: "app",
+						viewName: sViewName,
+						success: function () {
+							Opa5.assert.ok(true, "The " + sViewName + " view is displayed");
+						},
+						errorMessage: "Did not find the " + sViewName + " view"
+					});
+				}
+			}
+		}
+	});
+
+});
+</file>
+
+<file path="webapp/test/integration/pages/Main.js">
+sap.ui.define([
+	"sap/ui/test/Opa5"
+], function (Opa5) {
+	"use strict";
+	var sViewName = "Main";
+	
+	Opa5.createPageObjects({
+		onTheViewPage: {
+
+			actions: {},
+
+			assertions: {
+
+				iShouldSeeThePageView: function () {
+					return this.waitFor({
+						id: "page",
+						viewName: sViewName,
+						success: function () {
+							Opa5.assert.ok(true, "The " + sViewName + " view is displayed");
+						},
+						errorMessage: "Did not find the " + sViewName + " view"
+					});
+				}
+			}
+		}
+	});
+
+});
+</file>
+
+<file path="webapp/test/unit/controller/NotificationList.controller.js">
+/*global QUnit*/
+
+sap.ui.define([
+	"com/gsp26/sap17/notificationcenter/controller/NotificationList.controller"
+], function (Controller) {
+	"use strict";
+
+	QUnit.module("NotificationList Controller");
+
+	QUnit.test("I should test the NotificationList controller", function (assert) {
+		assert.ok(Controller, "Controller module loaded");
+	});
+
+});
+</file>
+
+<file path="webapp/util/BooleanHelper.js">
+/**
+ * BooleanHelper.js
+ *
+ * Boolean type safety helper for handling various boolean representations
+ * - Native boolean
+ * - String "true"/"false"/"yes"/"no"/"x"
+ * - ABAP "X"/""
+ */
+sap.ui.define([], function () {
+    'use strict';
+
+    return {
+        /**
+         * Converts various boolean representations to native boolean
+         * @param {*} vValue Value to check
+         * @returns {boolean} true if value represents true
+         */
+        isTrue: function (vValue) {
+            if (typeof vValue === 'boolean') {
+                return vValue;
+            }
+            if (typeof vValue === 'string') {
+                var sLower = vValue.toLowerCase();
+                return sLower === 'true' || sLower === 'yes' || sLower === 'x';
+            }
+            return false;
+        }
+    };
+});
+</file>
+
+<file path="webapp/util/ToolbarStateHelper.js">
+/**
+ * ToolbarStateHelper.js
+ *
+ * Updates toolbar button states based on table selection
+ * - Delete button: "Delete" / "Delete All"
+ * - Archive button: "Archive" / "Unarchive"
+ * - Mark Read button: "Mark as Read" / "Mark as Unread" / "Mark All..."
+ */
+sap.ui.define([], function () {
+    'use strict';
+
+    return {
+        updateToolbarButtons: function (oTable, oViewModel, oBundle) {
+            var aSelected = oTable.getSelectedItems();
+            var aItems = oTable.getItems();
+            var bHasSel = aSelected.length > 0;
+
+            oViewModel.setProperty('/hasSelection', bHasSel);
+            oViewModel.setProperty('/deleteButtonText', oBundle.getText(bHasSel ? 'delete' : 'deleteAll'));
+
+            if (bHasSel) {
+                var bHasArchived = aSelected.some(function (o) {
+                    var c = o.getBindingContext();
+                    return c && c.getProperty('IsArchived');
+                });
+                oViewModel.setProperty('/archiveButtonText', oBundle.getText(bHasArchived ? 'unarchive' : 'archive'));
+                oViewModel.setProperty('/archiveButtonIcon', bHasArchived ? 'sap-icon://folder-blank' : 'sap-icon://folder');
+            }
+
+            var aTarget = bHasSel ? aSelected : aItems;
+            var bHasUnread = aTarget.some(function (o) {
+                var c = o.getBindingContext();
+                return c && !c.getProperty('IsRead');
+            });
+
+            if (bHasSel) {
+                oViewModel.setProperty('/markReadButtonText', oBundle.getText(bHasUnread ? 'markRead' : 'markUnread'));
+            } else {
+                oViewModel.setProperty('/markReadButtonText', oBundle.getText(bHasUnread ? 'markAllRead' : 'markAllUnread'));
+            }
+            oViewModel.setProperty('/markReadButtonIcon', bHasUnread ? 'sap-icon://email-read' : 'sap-icon://email');
+        }
+    };
+});
+</file>
+
+<file path="webapp/util/WebSocketManager.js">
+/**
+ * WebSocketManager.js
+ *
+ * Manages WebSocket connection to SAP APC endpoint for real-time notifications.
+ * - Connects to /sap/bc/apc/sap/z17_apc_notification
+ * - Parses incoming JSON messages and fires UI5 EventBus events
+ * - Auto-reconnects with exponential backoff (2s to 30s cap)
+ * - Graceful disconnect on app destroy
+ */
+sap.ui.define(['sap/base/Log'], function (Log) {
+    'use strict';
+
+    var APC_PATH = '/sap/bc/apc/sap/z17_apc_notification';
+    var EVENT_CHANNEL = 'notification.websocket';
+    var EVENT_MESSAGE = 'newNotification';
+    var RECONNECT_BASE_MS = 2000;
+    var RECONNECT_MAX_MS = 30000;
+    var LOG_COMPONENT = 'notification.WebSocketManager';
+
+    var _oWebSocket = null;
+    var _oEventBus = null;
+    var _iReconnectDelay = RECONNECT_BASE_MS;
+    var _iReconnectTimer = null;
+    var _bIntentionalClose = false;
+
+    function _buildUrl() {
+        var oLocation = window.location;
+        var sProtocol = oLocation.protocol === 'https:' ? 'wss:' : 'ws:';
+        return sProtocol + '//' + oLocation.host + APC_PATH;
+    }
+
+    function _onOpen() {
+        Log.info('WebSocket connected', _buildUrl(), LOG_COMPONENT);
+        _iReconnectDelay = RECONNECT_BASE_MS;
+    }
+
+    function _onMessage(oEvent) {
+        if (!_oEventBus) { return; }
+        try {
+            var oData = JSON.parse(oEvent.data);
+            if (!oData || oData.type !== 'NOTIFICATION') { return; }
+
+            _oEventBus.publish(EVENT_CHANNEL, EVENT_MESSAGE, {
+                notificationId: oData.notificationId,
+                title: oData.title,
+                body: oData.body,
+                categoryCode: oData.category,
+                priority: oData.priority,
+                createdAt: oData.createdAt,
+                userId: oData.userId
+            });
+        } catch (e) {
+            Log.warning('WebSocket message parse error: ' + e.message, null, LOG_COMPONENT);
+        }
+    }
+
+    function _onClose() {
+        Log.info('WebSocket closed', null, LOG_COMPONENT);
+        _oWebSocket = null;
+        if (!_bIntentionalClose) {
+            _scheduleReconnect();
+        }
+    }
+
+    function _onError(oError) {
+        Log.warning('WebSocket error', oError, LOG_COMPONENT);
+    }
+
+    function _scheduleReconnect() {
+        if (_iReconnectTimer) { return; }
+        Log.info('WebSocket reconnecting in ' + _iReconnectDelay + 'ms', null, LOG_COMPONENT);
+
+        _iReconnectTimer = setTimeout(function () {
+            _iReconnectTimer = null;
+            _doConnect();
+        }, _iReconnectDelay);
+
+        // Exponential backoff with cap
+        _iReconnectDelay = Math.min(_iReconnectDelay * 2, RECONNECT_MAX_MS);
+    }
+
+    function _doConnect() {
+        if (_oWebSocket) { return; }
+        if (typeof WebSocket === 'undefined') {
+            Log.warning('WebSocket not supported in this browser', null, LOG_COMPONENT);
+            return;
+        }
+
+        try {
+            var sUrl = _buildUrl();
+            _oWebSocket = new WebSocket(sUrl);
+            _oWebSocket.onopen = _onOpen;
+            _oWebSocket.onmessage = _onMessage;
+            _oWebSocket.onclose = _onClose;
+            _oWebSocket.onerror = _onError;
+        } catch (e) {
+            Log.warning('WebSocket connection failed: ' + e.message, null, LOG_COMPONENT);
+            _oWebSocket = null;
+            _scheduleReconnect();
+        }
+    }
+
+    return {
+        /**
+         * Open WebSocket connection and subscribe to notification events.
+         * @param {sap.ui.core.EventBus} oEventBus - UI5 EventBus for publishing events
+         */
+        connect: function (oEventBus) {
+            _oEventBus = oEventBus;
+            _bIntentionalClose = false;
+            _doConnect();
+        },
+
+        /**
+         * Close WebSocket connection cleanly. Stops reconnect attempts.
+         */
+        disconnect: function () {
+            _bIntentionalClose = true;
+            _oEventBus = null;
+            if (_iReconnectTimer) {
+                clearTimeout(_iReconnectTimer);
+                _iReconnectTimer = null;
+            }
+            if (_oWebSocket) {
+                _oWebSocket.close();
+                _oWebSocket = null;
+            }
+            _iReconnectDelay = RECONNECT_BASE_MS;
+        },
+
+        /**
+         * Check if WebSocket is currently connected.
+         * @returns {boolean} true if connected
+         */
+        isConnected: function () {
+            return _oWebSocket !== null && _oWebSocket.readyState === WebSocket.OPEN;
+        }
+    };
+});
+</file>
+
+<file path="package.json">
+{
+  "name": "notification-center",
+  "version": "0.0.1",
+  "description": "An SAP Fiori application.",
+  "keywords": [
+    "ui5",
+    "openui5",
+    "sapui5"
+  ],
+  "main": "webapp/index.html",
+  "devDependencies": {
+    "@sap-ux/ui5-middleware-fe-mockserver": "2",
+    "@sap/ux-ui5-tooling": "1",
+    "@ui5/cli": "^4.0.33",
+    "@ui5/linter": "^1.20.10",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "start": "fiori run --open \"test/flp.html#app-preview\"",
+    "start-local": "fiori run --config ./ui5-local.yaml --open \"test/flp.html#app-preview\"",
+    "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",
+    "deploy": "npm run build && fiori deploy --config ui5-deploy.yaml",
+    "deploy-config": "fiori add deploy-config",
+    "start-noflp": "fiori run --open \"/index.html?sap-ui-xx-viewCache=false\"",
+    "start-mock": "fiori run --config ./ui5-mock.yaml --open \"test/flp.html#app-preview\"",
+    "int-test": "fiori run --config ./ui5-mock.yaml --open \"test/integration/opaTests.qunit.html\"",
+    "start-variants-management": "fiori run --open \"/preview.html#app-preview\"",
+    "unit-test": "fiori run --config ./ui5-mock.yaml --open \"test/unit/unitTests.qunit.html\"",
+    "undeploy": "npm run build && fiori undeploy --config ui5-deploy.yaml",
+    "deploy-test": "npm run build && fiori deploy --config ui5-deploy.yaml --testMode true"
+  },
+  "sapuxLayer": "CUSTOMER_BASE"
+}
+</file>
+
+<file path="ui5-deploy.yaml">
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "4.0"
+metadata:
+  name: com.gsp26.sap17.notificationcenter
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: https://s40lp1.ucc.cit.tum.de/
+          client: '324'
+        app:
+          name: Z17_NOTI_CENTER
+          description: Custom Notification Center Fiori Application
+          package: ZGSP26SAP17
+          transport: S40K915973
+        exclude:
+          - /test/
+</file>
+
+<file path="ui5-local.yaml">
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "4.0"
+metadata:
+  name: com.gsp26.sap17.notificationcenter
+type: application
+framework:
+  name: SAPUI5
+  version: 1.108.33
+  libraries:
+    - name: sap.m
+    - name: sap.ui.core
+    - name: sap.ushell
+    - name: themelib_sap_horizon
+server:
+  customMiddleware:
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        flp:
+          theme: sap_horizon
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        backend:
+          - path: /sap
+            url: https://s40lp1.ucc.cit.tum.de
+            client: '324'
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/y17_sd_notification/0001
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+        annotations: []
+</file>
+
+<file path="ui5-mock.yaml">
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "4.0"
+metadata:
+  name: com.gsp26.sap17.notificationcenter
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: https://s40lp1.ucc.cit.tum.de
+            client: '324'
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        flp:
+          theme: sap_horizon
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/y17_sd_notification/0001
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+        annotations: []
+</file>
+
+<file path="ui5.yaml">
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "4.0"
+metadata:
+  name: com.gsp26.sap17.notificationcenter
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: https://s40lp1.ucc.cit.tum.de
+            client: '324'
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        flp:
+          theme: sap_horizon
+</file>
+
+<file path="webapp/controller/Settings.controller.js">
+sap.ui.define([
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/core/routing/History'
+], function (Controller, History) {
+    'use strict';
+    return Controller.extend('com.gsp26.sap17.notificationcenter.controller.Settings', {
+        onInit: function () {},
+        onNavBack: function () {
+            var oHistory = History.getInstance();
+            if (oHistory.getPreviousHash() !== undefined) {
+                window.history.go(-1);
+            } else {
+                this.getOwnerComponent().getRouter().navTo('main', {}, true);
+            }
+        }
+    });
+});
+</file>
+
+<file path="webapp/fragment/NotificationPopover.fragment.xml">
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <ResponsivePopover
+        id="notificationPopover"
+        placement="Bottom"
+        contentWidth="420px"
+        contentHeight="480px"
+        title="{i18n>notifications}"
+        class="sapUiResponsivePadding--content">
+
+        <customHeader>
+            <OverflowToolbar>
+                <Title text="{i18n>notifications}"/>
+                <ToolbarSpacer/>
+                <Button
+                    id="markAllReadBtn"
+                    text="{i18n>markAllRead}"
+                    type="Transparent"
+                    press=".onMarkAllAsRead"
+                    enabled="{= ${app>/UnreadCount} > 0 }"/>
+            </OverflowToolbar>
+        </customHeader>
+
+        <content>
+            <List
+                id="popoverNotificationList"
+                noDataText="{i18n>noNotifications}"
+                growing="true"
+                growingThreshold="10"
+                growingScrollToLoad="true">
+            </List>
+        </content>
+
+    </ResponsivePopover>
+</core:FragmentDefinition>
+</file>
+
+<file path="webapp/localService/mainService/metadata.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="SAP__common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="Org.OData.Measures.V1" Alias="SAP__measures"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CORE',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="Org.OData.Core.V1" Alias="SAP__core"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="SAP__capabilities"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="SAP__aggregation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.CodeList.v1" Alias="SAP__CodeList"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="SAP__UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.HTML5.v1" Alias="SAP__HTML5"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PDF',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PDF.v1" Alias="SAP__PDF"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_SESSION',Version='0001',SAP__Origin='LOCAL_324')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Session.v1" Alias="SAP__session"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="com.sap.gateway.srvd.y17_sd_notification.v0001" Alias="SAP__self">
+            <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
+            <EntityType Name="CategoryVHType">
+                <Key>
+                    <PropertyRef Name="Category"/>
+                    <PropertyRef Name="ValuePosition"/>
+                    <PropertyRef Name="Version"/>
+                </Key>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="ValuePosition" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="Version" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="60"/>
+            </EntityType>
+            <EntityType Name="PriorityVHType">
+                <Key>
+                    <PropertyRef Name="Priority"/>
+                    <PropertyRef Name="ValuePosition"/>
+                    <PropertyRef Name="Version"/>
+                </Key>
+                <Property Name="Priority" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="ValuePosition" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="Version" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="60"/>
+            </EntityType>
+            <EntityType Name="NotificationType">
+                <Key>
+                    <PropertyRef Name="NotificationId"/>
+                </Key>
+                <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="Body" Type="Edm.String" Nullable="false"/>
+                <Property Name="Priority" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="EventCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="SourceType" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="SourceName" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="ObjectKey" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="ScheduledAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="ExpiresAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="__CreateByAssociationControl" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationCbAControl"/>
+                <Property Name="__OperationControl" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationOperationControl"/>
+                <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.SAP__Message)" Nullable="false"/>
+                <NavigationProperty Name="_Actions" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.ActionType)" Partner="_Notification">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="_Recipients" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.RecipientType)" Partner="_Notification">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="SubcriptionType">
+                <Key>
+                    <PropertyRef Name="UserID"/>
+                    <PropertyRef Name="Category"/>
+                </Key>
+                <Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="InAppEnabled" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="EmailEnabled" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="__EntityControl" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.EntityControl"/>
+            </EntityType>
+            <EntityType Name="RecipientType">
+                <Key>
+                    <PropertyRef Name="NotificationID"/>
+                    <PropertyRef Name="RecipientID"/>
+                </Key>
+                <Property Name="NotificationID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="RecipientID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="IsRead" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="ReadAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="IsArchived" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="ArchivedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="IsDeleted" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="DeletedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="_Notification" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false" Partner="_Recipients">
+                    <ReferentialConstraint Property="NotificationID" ReferencedProperty="NotificationId"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="ActionType">
+                <Key>
+                    <PropertyRef Name="NotificationId"/>
+                    <PropertyRef Name="ActionSeq"/>
+                </Key>
+                <Property Name="NotificationId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="ActionSeq" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="ActionLabel" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="SematicObject" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="SematicAction" Type="Edm.String" Nullable="false" MaxLength="60"/>
+                <Property Name="Params" Type="Edm.String" Nullable="false"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="_Notification" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false" Partner="_Actions">
+                    <ReferentialConstraint Property="NotificationId" ReferencedProperty="NotificationId"/>
+                </NavigationProperty>
+            </EntityType>
+            <ComplexType Name="NotificationCbAControl">
+                <Property Name="_Actions" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="_Recipients" Type="Edm.Boolean" Nullable="false"/>
+            </ComplexType>
+            <ComplexType Name="NotificationOperationControl">
+                <Property Name="Archive" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="MarkAsDeleted" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="MarkAsRead" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="MarkAsUnread" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="Unarchive" Type="Edm.Boolean" Nullable="false"/>
+            </ComplexType>
+            <ComplexType Name="EntityControl">
+                <Property Name="Updatable" Type="Edm.Boolean" Nullable="false"/>
+            </ComplexType>
+            <ComplexType Name="SAP__Message">
+                <Property Name="code" Type="Edm.String" Nullable="false"/>
+                <Property Name="message" Type="Edm.String" Nullable="false"/>
+                <Property Name="target" Type="Edm.String"/>
+                <Property Name="additionalTargets" Type="Collection(Edm.String)" Nullable="false"/>
+                <Property Name="transition" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="numericSeverity" Type="Edm.Byte" Nullable="false"/>
+                <Property Name="longtextUrl" Type="Edm.String"/>
+            </ComplexType>
+            <Action Name="MarkAsDeleted" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="MarkAsRead" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="MarkAsUnread" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="MarkAllAsRead" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="false"/>
+                <ReturnType Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="true"/>
+            </Action>
+            <Action Name="Archive" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="MarkAllAsDeleted" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="false"/>
+                <ReturnType Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="true"/>
+            </Action>
+            <Action Name="MarkAllAsUnread" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="false"/>
+                <ReturnType Type="Collection(com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType)" Nullable="true"/>
+            </Action>
+            <Action Name="Unarchive" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <Action Name="CustomCreate" EntitySetPath="_it" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+                <ReturnType Type="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType" Nullable="false"/>
+            </Action>
+            <EntityContainer Name="Container">
+                <EntitySet Name="Action" EntityType="com.sap.gateway.srvd.y17_sd_notification.v0001.ActionType">
+                    <NavigationPropertyBinding Path="_Notification" Target="Notification"/>
+                </EntitySet>
+                <EntitySet Name="CategoryVH" EntityType="com.sap.gateway.srvd.y17_sd_notification.v0001.CategoryVHType"/>
+                <EntitySet Name="Notification" EntityType="com.sap.gateway.srvd.y17_sd_notification.v0001.NotificationType">
+                    <NavigationPropertyBinding Path="_Actions" Target="Action"/>
+                    <NavigationPropertyBinding Path="_Recipients" Target="Recipient"/>
+                </EntitySet>
+                <EntitySet Name="PriorityVH" EntityType="com.sap.gateway.srvd.y17_sd_notification.v0001.PriorityVHType"/>
+                <EntitySet Name="Recipient" EntityType="com.sap.gateway.srvd.y17_sd_notification.v0001.RecipientType">
+                    <NavigationPropertyBinding Path="_Notification" Target="Notification"/>
+                </EntitySet>
+                <EntitySet Name="Subcription" EntityType="com.sap.gateway.srvd.y17_sd_notification.v0001.SubcriptionType"/>
+            </EntityContainer>
+            <Annotations Target="SAP__self.CategoryVHType/Category">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Lower Value"/>
+                <Annotation Term="SAP__common.Heading" String="Fixed"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Values for Domains: Single Value/Lower Limit"/>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryVHType/ValuePosition">
+                <Annotation Term="SAP__common.IsDigitSequence"/>
+                <Annotation Term="SAP__common.Label" String="Value key"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Domain value key"/>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryVHType/Version">
+                <Annotation Term="SAP__common.IsDigitSequence"/>
+                <Annotation Term="SAP__common.Label" String="Version"/>
+                <Annotation Term="SAP__common.Heading" String="Vers"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Version of the entry (not used)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryVHType">
+                <Annotation Term="SAP__common.Label" String="Category Value Help"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/CategoryVH">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Category"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.PriorityVHType/Priority">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Lower Value"/>
+                <Annotation Term="SAP__common.Heading" String="Fixed"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Values for Domains: Single Value/Lower Limit"/>
+            </Annotations>
+            <Annotations Target="SAP__self.PriorityVHType/ValuePosition">
+                <Annotation Term="SAP__common.IsDigitSequence"/>
+                <Annotation Term="SAP__common.Label" String="Value key"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Domain value key"/>
+            </Annotations>
+            <Annotations Target="SAP__self.PriorityVHType/Version">
+                <Annotation Term="SAP__common.IsDigitSequence"/>
+                <Annotation Term="SAP__common.Label" String="Version"/>
+                <Annotation Term="SAP__common.Heading" String="Vers"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Version of the entry (not used)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.PriorityVHType">
+                <Annotation Term="SAP__common.Label" String="Priority Value Help"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/PriorityVH">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Priority"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/NotificationId">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="UUID"/>
+                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/Title">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/Body">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/Priority">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.ValueListReferences">
+                    <Collection>
+                        <String>../../../../srvd_f4/sap/y17_i_priority_vh/0001;ps='srvd-y17_sd_notification-0001';va='com.sap.gateway.srvd.y17_sd_notification.v0001.et-y17_c_notification.priority'/$metadata</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__common.Label" String="Priority Level"/>
+                <Annotation Term="SAP__common.Heading" String="Priority"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Notification Priority Level"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/CategoryCode">
+                <Annotation Term="SAP__common.FieldControl" EnumMember="SAP__common.FieldControlType/Mandatory"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.ValueListReferences">
+                    <Collection>
+                        <String>../../../../srvd_f4/sap/y17_i_category_vh/0001;ps='srvd-y17_sd_notification-0001';va='com.sap.gateway.srvd.y17_sd_notification.v0001.et-y17_c_notification.category'/$metadata</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__common.Label" String="Notif. Category"/>
+                <Annotation Term="SAP__common.Heading" String="Category"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Notification Business Category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/CreatedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
+                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/CreatedBy">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="User Name"/>
+                <Annotation Term="SAP__common.Heading" String="User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/LastChangedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
+                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/__CreateByAssociationControl">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__UI.HiddenFilter"/>
+                <Annotation Term="SAP__UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/__OperationControl">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__UI.HiddenFilter"/>
+                <Annotation Term="SAP__UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/_Actions">
+                <Annotation Term="SAP__common.Composition"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/Notification">
+                <Annotation Term="SAP__capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Actions"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Path="__CreateByAssociationControl/_Actions"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Recipients"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Path="__CreateByAssociationControl/_Recipients"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="Filterable" Bool="true"/>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Body"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>__CreateByAssociationControl</PropertyPath>
+                                <PropertyPath>__OperationControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Body</PropertyPath>
+                                <PropertyPath>__CreateByAssociationControl</PropertyPath>
+                                <PropertyPath>__OperationControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType/_Recipients">
+                <Annotation Term="SAP__common.Composition"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MarkAsDeleted(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsDeleted"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MarkAsRead(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsRead"/>
+            </Annotations>
+            <Annotations Target="SAP__self.MarkAsUnread(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/MarkAsUnread"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Archive(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/Archive"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Unarchive(SAP__self.NotificationType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/Unarchive"/>
+            </Annotations>
+            <Annotations Target="SAP__self.NotificationType">
+                <Annotation Term="SAP__common.Label" String="Notification"/>
+                <Annotation Term="SAP__common.Messages" Path="SAP__Messages"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SubcriptionType/UserID">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="User Name"/>
+                <Annotation Term="SAP__common.Heading" String="User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SubcriptionType/Category">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Notif. Category"/>
+                <Annotation Term="SAP__common.Heading" String="Category"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Notification Business Category"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SubcriptionType/InAppEnabled">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SubcriptionType/EmailEnabled">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SubcriptionType/ChangedAt">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
+                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SubcriptionType/__EntityControl">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__UI.HiddenFilter"/>
+                <Annotation Term="SAP__UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SubcriptionType">
+                <Annotation Term="SAP__common.Label" String="Notification Subscription"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/Subcription">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>__EntityControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>__EntityControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Path="__EntityControl/Updatable"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/NotificationID">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="UUID"/>
+                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/RecipientID">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="UUID"/>
+                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/UserID">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="User Name"/>
+                <Annotation Term="SAP__common.Heading" String="User"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/IsRead">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/IsArchived">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/IsDeleted">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Truth Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Truth Value: True/False"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/Recipient">
+                <Annotation Term="SAP__capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Notification"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="UserID"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="IsRead"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="IsArchived"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="IsDeleted"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType">
+                <Annotation Term="SAP__common.Label" String="Notification Recipient"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/NotificationId">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="UUID"/>
+                <Annotation Term="SAP__common.QuickInfo" String="16 Byte UUID in 16 Bytes (Raw Format)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType/ActionSeq">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__common.Label" String="Action Sequence"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Action sequence number"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/Action">
+                <Annotation Term="SAP__capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="_Notification"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="Filterable" Bool="true"/>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Params"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Params</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.ActionType">
+                <Annotation Term="SAP__common.Label" String="Notification Action"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container">
+                <Annotation Term="SAP__aggregation.ApplySupported">
+                    <Record>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Rollup" EnumMember="SAP__aggregation.RollupType/None"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
+                <Annotation Term="SAP__capabilities.FilterFunctions">
+                    <Collection>
+                        <String>eq</String>
+                        <String>ne</String>
+                        <String>gt</String>
+                        <String>ge</String>
+                        <String>lt</String>
+                        <String>le</String>
+                        <String>and</String>
+                        <String>or</String>
+                        <String>contains</String>
+                        <String>startswith</String>
+                        <String>endswith</String>
+                        <String>any</String>
+                        <String>all</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SupportedFormats">
+                    <Collection>
+                        <String>application/json</String>
+                        <String>application/pdf</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__PDF.Features">
+                    <Record>
+                        <PropertyValue Property="DocumentDescriptionReference" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="DocumentDescriptionCollection" String="MyDocumentDescriptions"/>
+                        <PropertyValue Property="ArchiveFormat" Bool="true"/>
+                        <PropertyValue Property="Border" Bool="true"/>
+                        <PropertyValue Property="CoverPage" Bool="true"/>
+                        <PropertyValue Property="FitToPage" Bool="true"/>
+                        <PropertyValue Property="FontName" Bool="true"/>
+                        <PropertyValue Property="FontSize" Bool="true"/>
+                        <PropertyValue Property="Margin" Bool="true"/>
+                        <PropertyValue Property="Signature" Bool="true"/>
+                        <PropertyValue Property="ResultSizeDefault" Int="20000"/>
+                        <PropertyValue Property="ResultSizeMaximum" Int="20000"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.CategoryVHType/Description">
+                <Annotation Term="SAP__common.Label" String="Short Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Short Text for Fixed Values"/>
+            </Annotations>
+            <Annotations Target="SAP__self.PriorityVHType/Description">
+                <Annotation Term="SAP__common.Label" String="Short Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Short Text for Fixed Values"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/ReadAt">
+                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
+                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.RecipientType/ArchivedAt">
+                <Annotation Term="SAP__common.Label" String="Time Stamp"/>
+                <Annotation Term="SAP__common.QuickInfo" String="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
+</file>
+
+<file path="webapp/model/models.js">
+/**
+ * models.js
+ *
+ * Model factory functions for Notification Center
+ */
+sap.ui.define([
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/Device'
+], function (JSONModel, Device) {
+    'use strict';
+
+    return {
+        createDeviceModel: function () {
+            var oModel = new JSONModel(Device);
+            oModel.setDefaultBindingMode('OneWay');
+            return oModel;
+        },
+
+        createAppModel: function () {
+            return new JSONModel({
+                UnreadCount: 0,
+                busy: false,
+                lastRefresh: null
+            });
+        }
+    };
+});
+</file>
+
+<file path="webapp/test/integration/AllJourneys.js">
+sap.ui.define([
+	"sap/ui/test/Opa5",
+	"./arrangements/Startup",
+	"./NavigationJourney"
+], function (Opa5, Startup) {
+	"use strict";
+
+	Opa5.extendConfig({
+		arrangements: new Startup(),
+		viewNamespace: "com.gsp26.sap17.notificationcenter.view.",
+		autoWait: true
+	});
+});
+</file>
+
+<file path="webapp/test/integration/arrangements/Startup.js">
+sap.ui.define([
+	"sap/ui/test/Opa5"
+], function (Opa5) {
+	"use strict";
+
+	return Opa5.extend("integration.arrangements.Startup", {
+
+		iStartMyApp: function (oOptionsParameter) {
+			var oOptions = oOptionsParameter || {};
+
+			// start the app with a minimal delay to make tests fast but still async to discover basic timing issues
+			oOptions.delay = oOptions.delay || 50;
+
+			// start the app UI component
+			this.iStartMyUIComponent({
+				componentConfig: {
+					name: "com.gsp26.sap17.notificationcenter",
+					async: true
+				},
+				hash: oOptions.hash,
+				autoWait: oOptions.autoWait
+			});
+		}
+	});
+});
+</file>
+
+<file path="webapp/test/testsuite.qunit.html">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>QUnit test suite for com.gsp26.sap17.notificationcenter</title>
+	<script
+		src="../resources/sap/ui/test/starter/runTest.js"
+		data-sap-ui-testsuite="test-resources/com/gsp26/sap17/notificationcenter/test/testsuite.qunit">
+	</script>
+</head>
+<body>
+</body>
+</html>
+</file>
+
+<file path="webapp/test/testsuite.qunit.js">
+sap.ui.define(function () {
+	"use strict";
+
+	return {
+		name: "QUnit test suite for com.gsp26.sap17.notificationcenter",
+		defaults: {
+			page: "ui5://test-resources/com/gsp26/sap17/notificationcenter/test/{name}.qunit.html",
+			qunit: {
+				version: 2
+			},
+			sinon: {
+				version: 4
+			},
+			ui5: {
+				language: "EN",
+				theme: "sap_horizon"
+			},
+			loader: {
+				paths: {
+					"com/gsp26/sap17/notificationcenter": "../"
+				}
+			}
+		},
+		tests: {
+			"unit/unitTests": {
+				title: "Unit Tests for com.gsp26.sap17.notificationcenter"
+			},
+			"integration/opaTests": {
+				title: "Integration Tests for com.gsp26.sap17.notificationcenter"
+			}
+		}
+	};
+});
+</file>
+
+<file path="webapp/test/unit/AllTests.js">
+sap.ui.define([
+	"com/gsp26/sap17/notificationcenter/test/unit/controller/NotificationList.controller"
+], function () {
+	"use strict";
+});
+</file>
+
+<file path="webapp/util/CrossAppNavigation.js">
+/**
+ * CrossAppNavigation.js
+ *
+ * Cross-application navigation helper for SAP Fiori Launchpad
+ * Handles navigation to source objects (e.g., Leave Request)
+ */
+sap.ui.define([
+    'sap/m/MessageToast',
+    'sap/ushell/Container'
+], function (MessageToast, Container) {
+    'use strict';
+
+    return {
+        navigateToSource: function (sObject, sKey) {
+            var oCrossAppNav = Container && Container.getServiceAsync('CrossApplicationNavigation');
+
+            if (oCrossAppNav) {
+                oCrossAppNav.then(function (oService) {
+                    switch (sObject) {
+                        case 'LEAVE_REQUEST':
+                            oService.toExternal({
+                                target: { semanticObject: 'Y17LeaveRequest', action: 'display' },
+                                params: { RequestId: sKey }
+                            });
+                            break;
+                        default:
+                            MessageToast.show('Navigate to: ' + sObject + ' - ' + sKey);
+                    }
+                });
+            } else {
+                MessageToast.show('Source: ' + sObject + ' - ' + sKey);
+            }
+        }
+    };
+});
+</file>
+
+<file path="webapp/util/NotificationActionHelper.js">
+/**
+ * NotificationActionHelper.js
+ *
+ * OData V4 action execution helper for notification operations
+ * - Single item actions (MarkAsRead, MarkAsDeleted, Archive, etc.)
+ * - Batch actions on multiple items
+ * - Collection actions (MarkAllAsRead, MarkAllAsDeleted)
+ */
+sap.ui.define([], function () {
+    'use strict';
+
+    var ACTION_PREFIX = 'com.sap.gateway.srvd.y17_sd_notification.v0001';
+
+    return {
+        buildActionPath: function (sNotificationId, sAction) {
+            return '/Notification(NotificationId=' + sNotificationId + ')/' + ACTION_PREFIX + '.' + sAction + '(...)';
+        },
+
+        buildCollectionActionPath: function (sAction) {
+            return '/Notification/' + ACTION_PREFIX + '.' + sAction + '(...)';
+        },
+
+        executeAction: function (oModel, sNotificationId, sAction) {
+            var sPath = this.buildActionPath(sNotificationId, sAction);
+            var oOperation = oModel.bindContext(sPath);
+            return oOperation.execute();
+        },
+
+        executeBatchAction: function (oModel, aItems, sAction) {
+            var aPromises = [];
+            var that = this;
+            aItems.forEach(function (oItem) {
+                var oCtx = oItem.getBindingContext();
+                if (oCtx) {
+                    var sId = oCtx.getProperty('NotificationID');
+                    if (sId) {
+                        aPromises.push(that.executeAction(oModel, sId, sAction));
+                    }
+                }
+            });
+            return Promise.all(aPromises);
+        },
+
+        executeCollectionAction: function (oModel, sAction) {
+            var sPath = this.buildCollectionActionPath(sAction);
+            var oOperation = oModel.bindContext(sPath);
+            return oOperation.execute();
+        }
+    };
+});
+</file>
+
+<file path="webapp/util/NotificationFormatter.js">
+/**
+ * NotificationFormatter.js
+ *
+ * Shared formatters for notification display
+ * - Date/time formatting
+ * - Category/priority display
+ * - HTML formatters for bold-on-unread effect
+ * - Status text and icon formatters
+ */
+sap.ui.define([
+    'sap/ui/core/format/DateFormat',
+    'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
+    'sap/ui/core/library',
+    'sap/base/security/encodeXML'
+], function (DateFormat, BooleanHelper, coreLibrary, encodeXML) {
+    'use strict';
+
+    var Priority = coreLibrary.Priority;
+
+    var oDateTimeFormat = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yy HH:mm:ss' });
+    var oRelativeFormat = DateFormat.getDateTimeInstance({ relative: true, relativeScale: 'auto' });
+
+    return {
+        formatDateTime: function (sDateTime) {
+            if (!sDateTime) { return ''; }
+            return oRelativeFormat.format(new Date(sDateTime));
+        },
+
+        formatFullDateTime: function (sDateTime) {
+            if (!sDateTime) { return ''; }
+            return oDateTimeFormat.format(new Date(sDateTime));
+        },
+
+        formatCategory: function (sCategory, oBundle) {
+            var sKey = {
+                'TASK': 'categoryTask',
+                'SYTM': 'categorySystem',
+                'INFO': 'categoryInfo',
+                'ALRT': 'categoryAlert'
+            }[sCategory];
+            return sKey && oBundle ? oBundle.getText(sKey) : sCategory || '';
+        },
+
+        formatPriority: function (sPriority) {
+            return { 'H': Priority.High, 'M': Priority.Medium, 'L': Priority.Low }[sPriority] || Priority.None;
+        },
+
+        formatPriorityState: function (sPriority) {
+            return { 'H': 'Error', 'M': 'Warning', 'L': 'Success' }[sPriority] || 'None';
+        },
+
+        formatPriorityText: function (sPriority, oBundle) {
+            var sKey = { 'H': 'priorityHigh', 'M': 'priorityMedium', 'L': 'priorityLow' }[sPriority];
+            return sKey && oBundle ? oBundle.getText(sKey) : sPriority || '';
+        },
+
+        formatSubjectHtml: function (vIsRead, sTitle, sMessage) {
+            var sT = encodeXML(sTitle || '');
+            var sM = encodeXML(sMessage || '');
+            var bRead = BooleanHelper.isTrue(vIsRead);
+            return bRead ? sT + ' - <em>' + sM + '</em>' : '<strong>' + sT + '</strong> - <em>' + sM + '</em>';
+        },
+
+        formatCategoryHtml: function (vIsRead, sCategory, oBundle) {
+            var sText = encodeXML(this.formatCategory(sCategory, oBundle));
+            return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
+        },
+
+        formatDateHtml: function (vIsRead, sDateTime) {
+            var sText = encodeXML(this.formatFullDateTime(sDateTime));
+            return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
+        },
+
+        formatPriorityHtml: function (vIsRead, sPriority) {
+            var sText = { 'H': 'High', 'M': 'Medium', 'L': 'Low' }[sPriority] || sPriority || '';
+            var sColor = { 'H': '#bb0000', 'M': '#e9730c', 'L': '#107e3e' }[sPriority] || '#6a6d70';
+            var sEsc = encodeXML(sText);
+            var sSpan = '<span style="color:' + sColor + '">' + sEsc + '</span>';
+            return BooleanHelper.isTrue(vIsRead) ? sSpan : '<strong>' + sSpan + '</strong>';
+        },
+
+        formatReadStatusText: function (vIsRead, oBundle) {
+            var sKey = BooleanHelper.isTrue(vIsRead) ? 'read' : 'unreadStatus';
+            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
+        },
+
+        formatReadStatusState: function (vIsRead) {
+            return BooleanHelper.isTrue(vIsRead) ? 'Success' : 'Warning';
+        },
+
+        formatArchivedStatusVisible: function (vIsArchived) {
+            return BooleanHelper.isTrue(vIsArchived);
+        },
+
+        formatMarkReadText: function (vIsRead, oBundle) {
+            var sKey = BooleanHelper.isTrue(vIsRead) ? 'markUnread' : 'markRead';
+            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Mark as Unread' : 'Mark as Read');
+        },
+
+        formatMarkReadIcon: function (vIsRead) {
+            return BooleanHelper.isTrue(vIsRead) ? 'sap-icon://email' : 'sap-icon://email-read';
+        },
+
+        formatArchiveText: function (vIsArchived, oBundle) {
+            var sKey = BooleanHelper.isTrue(vIsArchived) ? 'unarchive' : 'archive';
+            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsArchived) ? 'Unarchive' : 'Archive');
+        },
+
+        formatArchiveIcon: function (vIsArchived) {
+            return BooleanHelper.isTrue(vIsArchived) ? 'sap-icon://folder-blank' : 'sap-icon://folder';
+        },
+
+        formatSourceObjectType: function (sSourceObject, oBundle) {
+            if (sSourceObject === 'LEAVE_REQUEST') {
+                return oBundle ? oBundle.getText('sourceLeaveRequest') : 'Leave Request';
+            }
+            return sSourceObject || '';
+        }
+    };
+});
+</file>
+
+<file path="webapp/view/Settings.view.xml">
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.Settings"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:semantic="sap.f.semantic">
+    <semantic:SemanticPage
+        id="settingsPage"
+        headerPinnable="false"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+        <semantic:titleHeading>
+            <Title text="{i18n>notificationSettings}"/>
+        </semantic:titleHeading>
+        <semantic:content>
+            <VBox class="sapUiMediumMargin">
+                <Text text="Settings page - To be implemented"/>
+            </VBox>
+        </semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>
+</file>
+
+<file path="webapp/css/style.css">
+/* Notification Center Custom Styles */
+
+/* Badge styling for bell icon */
+.sapFShellBarNotificationsButton .sapMBtnInner {
+    position: relative;
+}
+
+/* Unread notification highlight */
+.sapMNLI.sapMNLIUnread {
+    background-color: rgba(0, 112, 192, 0.05);
+}
+
+/* Unread notification - bold text */
+.notificationUnread {
+    font-weight: 700 !important;
+}
+
+.sapMText.notificationUnread {
+    font-weight: 700 !important;
+}
+
+.sapMObjStatus.notificationUnread .sapMObjStatusText {
+    font-weight: 700 !important;
+}
+
+span.notificationUnread {
+    font-weight: 700 !important;
+}
+
+/* Priority indicator colors */
+.sapMNLI .sapMNLIPriorityHigh .sapMNLIBPriorityDiv {
+    background-color: #bb0000;
+}
+
+.sapMNLI .sapMNLIPriorityMedium .sapMNLIBPriorityDiv {
+    background-color: #e9730c;
+}
+
+.sapMNLI .sapMNLIPriorityLow .sapMNLIBPriorityDiv {
+    background-color: #107e3e;
+}
+
+/* Popover styling */
+.sapMPopover .sapMNLIB {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.sapMPopover .sapMNLIB:last-child {
+    border-bottom: none;
+}
+
+/* Icon tab bar styling */
+.sapMITBFilter .sapMITBCount {
+    font-weight: bold;
+}
+
+/* Compact mode adjustments */
+.sapUiSizeCompact .sapMNLI {
+    padding: 0.5rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+    .sapMPopover {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .sapMNLIBButtons {
+        flex-direction: column;
+    }
+
+    .sapMNLIBButtons .sapMBtn {
+        margin-bottom: 0.25rem;
+    }
+}
+
+/* Animation for new notifications */
+@keyframes notificationSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.sapMNLI {
+    animation: notificationSlideIn 0.3s ease-out;
+}
+
+/* Notification message styling - secondary text appearance */
+.notificationMessage {
+    color: #6a6d70;
+    font-size: 0.875rem;
+}
+
+/* FormattedText em tag - used for message text in subject column */
+.sapMFT em {
+    color: #6a6d70;
+    font-style: normal;
+}
+
+/* Subject column - ensure proper vertical alignment */
+.sapMListTblCell .sapMVBox {
+    justify-content: center;
+}
+
+/* Rounded Table Styling */
+.notificationTable {
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Remove default inner borders of the table */
+.notificationTable .sapMListUl {
+    border: none !important;
+}
+
+.notificationTable .sapMListTblHeader {
+    border-bottom: 1px solid #e5e5e5 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Tab Bar Styling */
+.notificationTabBar .sapMITH {
+    border-radius: 0.75rem 0.75rem 0 0;
+    background-color: white;
+    border: 1px solid #e5e5e5 !important;
+    border-bottom: none !important;
+}
+
+.notificationTabBar .sapMITBContent {
+    border: none;
+    border-radius: 0 0 0.75rem 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0 !important;
+}
+
+.notificationTabBar {
+    margin: 1.5rem;
+    width: auto;
+    box-sizing: border-box;
+}
+
+/* Filter Bar Styling */
+.notificationFilterBar {
+    border: 1px solid #e5e5e5 !important;
+    border-top: none !important;
+    border-radius: 0 0 0.75rem 0.75rem;
+    height: auto !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+}
+
+/* Fix sticky/dummy area borders */
+.sapMListDummyArea, .sapMListDummyAreaSticky {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    height: 0 !important;
+    min-height: 0 !important;
+}
+
+/* Ensure table container doesn't leak bottom border */
+.notificationTable .sapMList {
+    border-bottom: none !important;
+}
+
+/* Remove bottom border from last row */
+.notificationTable .sapMListShowSeparatorsAll .sapMLIBShowSeparator:last-child > td,
+.notificationTable .sapMListShowSeparatorsAll .sapMListTblSubRow:last-child > td {
+    border-bottom: none !important;
+}
+
+/* Detail Page Card Styling */
+.notificationDetailCard {
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden;
+    background-color: white;
+    box-sizing: border-box;
+    margin: 1rem !important;
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* Settings page styling */
+.sapUiForm .sapUiFormCL {
+    padding: 1rem;
+}
+
+/* Checkbox alignment in settings */
+.sapMCb {
+    margin-right: 1rem;
+}
+</file>
+
+<file path="webapp/index.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Custom Notification Center Fiori Applicati</title>
+    <style>
+        html, body, body > div, #container, #container-uiarea {
+            height: 100%;
+        }
+    </style>
+    <script
+        id="sap-ui-bootstrap"
+        src="resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-resource-roots='{
+            "com.gsp26.sap17.notificationcenter": "./"
+        }'
+        data-sap-ui-on-init="module:sap/ui/core/ComponentSupport"
+        data-sap-ui-compat-version="edge"
+        data-sap-ui-async="true"
+        data-sap-ui-frame-options="trusted"
+    ></script>
+</head>
+<body class="sapUiBody sapUiSizeCompact" id="content">
+    <div
+        data-sap-ui-component
+        data-name="com.gsp26.sap17.notificationcenter"
+        data-id="container"
+        data-settings='{"id" : "com.gsp26.sap17.notificationcenter"}'
+        data-handle-validation="true"
+    ></div>
+</body>
+</html>
+</file>
+
+<file path="webapp/test/integration/opaTests.qunit.js">
+sap.ui.define([
+	"com/gsp26/sap17/notificationcenter/test/integration/AllJourneys"
+], function () {
+	"use strict";
+});
+</file>
+
+<file path="webapp/test/unit/unitTests.qunit.js">
+sap.ui.define([
+	"com/gsp26/sap17/notificationcenter/test/unit/AllTests"
+], function () {
+	"use strict";
+});
+</file>
+
+<file path="webapp/controller/NotificationDetail.controller.js">
+/**
+ * NotificationDetail.controller.js
+ *
+ * Notification detail page with actions
+ * - ObjectHeader with priority/category/read status
+ * - Message panel with HTML rendering
+ * - Source object navigation
+ * - Footer: delete, toggle read, toggle archive
+ * - Auto-marks as read on first load
+ */
+sap.ui.define([
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageToast',
+    'sap/m/MessageBox',
+    'sap/ui/core/routing/History',
+    'sap/base/Log',
+    'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
+    'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper',
+    'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
+    'com/gsp26/sap17/notificationcenter/util/CrossAppNavigation'
+], function (Controller, JSONModel, MessageToast, MessageBox, History, Log,
+             Formatter, ActionHelper, BooleanHelper, CrossAppNav) {
+    'use strict';
+
+    var EVENT_CHANNEL = 'notification.center';
+    var EVENT_REFRESH = 'refreshList';
+
+    return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationDetail', {
+
+        // Formatters on prototype so XML template processor finds them at parse time
+        formatPriorityText: function (s) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatPriorityText(s, oBundle);
+        },
+        formatPriorityState: Formatter.formatPriorityState,
+        formatCategory: function (s) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatCategory(s, oBundle);
+        },
+        formatReadStatusText: function (v) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatReadStatusText(v, oBundle);
+        },
+        formatReadStatusState: Formatter.formatReadStatusState,
+        formatArchivedStatusVisible: Formatter.formatArchivedStatusVisible,
+        formatFullDateTime: Formatter.formatFullDateTime,
+        formatMarkReadText: function (v) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatMarkReadText(v, oBundle);
+        },
+        formatMarkReadIcon: Formatter.formatMarkReadIcon,
+        formatArchiveText: function (v) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatArchiveText(v, oBundle);
+        },
+        formatArchiveIcon: Formatter.formatArchiveIcon,
+        formatSourceObjectType: function (s) {
+            var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
+            return Formatter.formatSourceObjectType(s, oBundle);
+        },
+
+        onInit: function () {
+            this.getView().setModel(new JSONModel({ busy: false }), 'view');
+            this.getOwnerComponent().getRouter().getRoute('detail').attachPatternMatched(this._onRouteMatched, this);
+        },
+
+        _onRouteMatched: function (oEvent) {
+            var oArgs = oEvent.getParameter('arguments');
+            this._sNotificationId = oArgs.notificationId;
+            this._sRecipientId = oArgs.recipientId;
+            this._bAutoMarkReadDone = false;
+            this._bindView(this._sRecipientId, this._sNotificationId);
+        },
+
+        _bindView: function (sRecipientId, sNotificationId) {
+            var oView = this.getView();
+            var oVM = oView.getModel('view');
+            var that = this;
+            oVM.setProperty('/busy', true);
+
+            var sPath = '/Recipient(RecipientID=' + sRecipientId + ',NotificationID=' + sNotificationId + ')';
+
+            oView.bindElement({
+                path: sPath,
+                parameters: { $expand: '_Notification($expand=_Actions)' },
+                events: {
+                    dataRequested: function () { oVM.setProperty('/busy', true); },
+                    dataReceived: function () {
+                        oVM.setProperty('/busy', false);
+                        that._autoMarkAsRead();
+                    }
+                }
+            });
+        },
+
+        _autoMarkAsRead: function () {
+            if (this._bAutoMarkReadDone) { return; }
+            this._bAutoMarkReadDone = true;
+
+            var oCtx = this.getView().getBindingContext();
+            var that = this;
+            if (!oCtx) { return; }
+
+            oCtx.requestObject().then(function (oData) {
+                if (!oData || BooleanHelper.isTrue(oData.IsRead)) { return; }
+                var sId = oData.NotificationID;
+                if (!sId) { return; }
+
+                ActionHelper.executeAction(oCtx.getModel(), sId, 'MarkAsRead')
+                    .then(function () {
+                        that.getOwnerComponent().refreshUnreadCount();
+                        oCtx.refresh();
+                        that._publishRefresh();
+                    }).catch(function (oErr) {
+                        Log.error('Auto mark-as-read failed: ' + oErr.message);
+                    });
+            });
+        },
+
+        onNavBack: function () {
+            var oHistory = History.getInstance();
+            if (oHistory.getPreviousHash() !== undefined) {
+                window.history.go(-1);
+            } else {
+                this.getOwnerComponent().getRouter().navTo('main', {}, true);
+            }
+        },
+
+        onNavigateToSource: function () {
+            var oCtx = this.getView().getBindingContext();
+            if (!oCtx) { return; }
+            var sSrc = oCtx.getProperty('_Notification/SourceType');
+            var sKey = oCtx.getProperty('_Notification/ObjectKey');
+            if (sSrc && sKey) {
+                CrossAppNav.navigateToSource(sSrc, sKey);
+            } else {
+                MessageToast.show(this._getBundle().getText('noNotifications'));
+            }
+        },
+
+        onToggleRead: function () {
+            var oCtx = this.getView().getBindingContext();
+            if (!oCtx) { return; }
+            var that = this;
+            var bIsRead = oCtx.getProperty('IsRead');
+            var sAction = bIsRead ? 'MarkAsUnread' : 'MarkAsRead';
+
+            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
+                .then(function () {
+                    MessageToast.show(that._getBundle().getText(bIsRead ? 'markUnread' : 'markRead'));
+                    that.getOwnerComponent().refreshUnreadCount();
+                    oCtx.refresh();
+                    that._publishRefresh();
+                }).catch(function (oErr) { MessageBox.error(oErr.message); });
+        },
+
+        onArchive: function () {
+            var oCtx = this.getView().getBindingContext();
+            if (!oCtx) { return; }
+            var that = this;
+            var bArchived = oCtx.getProperty('IsArchived');
+            var sAction = bArchived ? 'Unarchive' : 'Archive';
+
+            ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), sAction)
+                .then(function () {
+                    MessageToast.show(that._getBundle().getText(bArchived ? 'unarchive' : 'archive'));
+                    that.getOwnerComponent().refreshUnreadCount();
+                    oCtx.refresh();
+                    that._publishRefresh();
+                }).catch(function (oErr) { MessageBox.error(oErr.message); });
+        },
+
+        onDelete: function () {
+            var oCtx = this.getView().getBindingContext();
+            if (!oCtx) { return; }
+            var that = this;
+
+            MessageBox.confirm(this._getBundle().getText('delete') + '?', {
+                onClose: function (sBtn) {
+                    if (sBtn === MessageBox.Action.OK) {
+                        ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationID'), 'MarkAsDeleted')
+                            .then(function () {
+                                MessageToast.show(that._getBundle().getText('delete'));
+                                that.getOwnerComponent().refreshUnreadCount();
+                                that._publishRefresh();
+                                that.onNavBack();
+                            }).catch(function (oErr) { MessageBox.error(oErr.message); });
+                    }
+                }
+            });
+        },
+
+        _getBundle: function () { return this.getView().getModel('i18n').getResourceBundle(); },
+        _publishRefresh: function () { this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH); }
+    });
+});
+</file>
+
+<file path="webapp/view/NotificationDetail.view.xml">
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.NotificationDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic">
+
+    <semantic:SemanticPage
+        id="notificationDetailPage"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false"
+        showFooter="true"
+        showNavButton="true"
+        navButtonPress=".onNavBack"
+        busy="{view>/busy}"
+        busyIndicatorDelay="0">
+
+        <semantic:titleHeading>
+            <HBox alignItems="Center">
+                <Button
+                    icon="sap-icon://nav-back"
+                    type="Transparent"
+                    press=".onNavBack"
+                    class="sapUiTinyMarginEnd"
+                    tooltip="{i18n>back}"/>
+                <Title text="{i18n>notificationDetails}"/>
+            </HBox>
+        </semantic:titleHeading>
+
+        <semantic:content>
+            <VBox>
+                <ObjectHeader
+                    id="notificationHeader"
+                    class="notificationDetailCard"
+                    title="{_Notification/Title}"
+                    number=""
+                    numberUnit=""
+                    condensed="false"
+                    backgroundDesign="Transparent"
+                    responsive="true">
+                    <statuses>
+                        <ObjectStatus
+                            title="{i18n>priorityLabel}"
+                            text="{path: '_Notification/Priority', formatter: '.formatPriorityText'}"
+                            state="{path: '_Notification/Priority', formatter: '.formatPriorityState'}"/>
+                        <ObjectStatus
+                            title="{i18n>categoryLabel}"
+                            text="{path: '_Notification/CategoryCode', formatter: '.formatCategory'}"
+                            state="Information"/>
+                        <ObjectStatus
+                            title="{i18n>status}"
+                            text="{path: 'IsRead', formatter: '.formatReadStatusText'}"
+                            state="{path: 'IsRead', formatter: '.formatReadStatusState'}"/>
+                        <ObjectStatus
+                            text="{i18n>archived}"
+                            state="None"
+                            visible="{path: 'IsArchived', formatter: '.formatArchivedStatusVisible'}"/>
+                    </statuses>
+                    <attributes>
+                        <ObjectAttribute
+                            title="{i18n>createdAt}"
+                            text="{path: '_Notification/CreatedAt', formatter: '.formatFullDateTime'}"/>
+                    </attributes>
+                </ObjectHeader>
+
+                <Panel
+                    headerText="{i18n>message}"
+                    expandable="false"
+                    class="notificationDetailCard">
+                    <content>
+                        <FormattedText
+                            htmlText="{_Notification/Body}"
+                            class="sapUiSmallMargin"/>
+                    </content>
+                </Panel>
+
+                <Panel
+                    id="sourceObjectPanel"
+                    headerText="{i18n>sourceObject}"
+                    expandable="false"
+                    visible="{= !!${_Notification/SourceType} }"
+                    class="notificationDetailCard">
+                    <content>
+                        <HBox alignItems="Center" class="sapUiSmallMargin">
+                            <core:Icon
+                                src="sap-icon://action"
+                                size="1.5rem"
+                                color="#0854a0"
+                                class="sapUiSmallMarginEnd"/>
+                            <VBox>
+                                <Text text="{path: '_Notification/SourceType', formatter: '.formatSourceObjectType'}"/>
+                                <Link
+                                    text="{i18n>openSourceObject}"
+                                    press=".onNavigateToSource"/>
+                            </VBox>
+                        </HBox>
+                    </content>
+                </Panel>
+            </VBox>
+        </semantic:content>
+
+        <semantic:footerMainAction>
+            <semantic:FooterMainAction
+                id="btnNavigateSource"
+                text="{i18n>openSourceObject}"
+                icon="sap-icon://action"
+                visible="{= !!${_Notification/SourceType} }"
+                press=".onNavigateToSource"/>
+        </semantic:footerMainAction>
+
+        <semantic:footerCustomActions>
+            <Button id="btnDelete"
+                text="{i18n>delete}" icon="sap-icon://delete"
+                type="Reject" press=".onDelete"/>
+            <Button id="btnToggleRead"
+                text="{path: 'IsRead', formatter: '.formatMarkReadText'}"
+                icon="{path: 'IsRead', formatter: '.formatMarkReadIcon'}"
+                type="Transparent" press=".onToggleRead"/>
+            <Button id="btnArchive"
+                text="{path: 'IsArchived', formatter: '.formatArchiveText'}"
+                icon="{path: 'IsArchived', formatter: '.formatArchiveIcon'}"
+                type="Transparent" press=".onArchive"/>
+        </semantic:footerCustomActions>
+
+    </semantic:SemanticPage>
+</mvc:View>
+</file>
+
+<file path="webapp/view/NotificationList.view.xml">
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.NotificationList"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic">
+
+    <semantic:SemanticPage
+        id="notificationListPage"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title text="{i18n>allNotifications}"/>
+        </semantic:titleHeading>
+
+        <semantic:content>
+            <IconTabBar
+                id="notificationTabs"
+                class="notificationTabBar"
+                select=".onTabSelect"
+                selectedKey="{view>/selectedTab}"
+                expandable="false"
+                stretchContentHeight="true"
+                applyContentPadding="false">
+
+                <items>
+                    <IconTabFilter key="all" text="{i18n>all}" icon="sap-icon://list"/>
+                    <IconTabFilter key="unread" text="{i18n>unread}"
+                        icon="sap-icon://email" count="{app>/UnreadCount}"/>
+                    <IconTabFilter key="archived" text="{i18n>archived}"
+                        icon="sap-icon://folder"/>
+                </items>
+
+                <content>
+                    <OverflowToolbar design="Solid"
+                        class="sapUiTinyMarginBottom notificationFilterBar">
+                        <ToolbarSpacer/>
+                        <SearchField id="searchField" width="auto"
+                            placeholder="{i18n>searchNotifications}"
+                            liveChange=".onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData minWidth="200px"
+                                    maxWidth="300px" shrinkable="true" priority="High"/>
+                            </layoutData>
+                        </SearchField>
+                        <ToolbarSeparator/>
+                        <Select id="categoryFilter" change=".onCategoryFilterChange"
+                            selectedKey="all" width="auto" autoAdjustWidth="true">
+                            <items>
+                                <core:Item key="all" text="{i18n>allCategories}"/>
+                                <core:Item key="TASK" text="{i18n>categoryTask}"/>
+                                <core:Item key="SYTM" text="{i18n>categorySystem}"/>
+                                <core:Item key="INFO" text="{i18n>categoryInfo}"/>
+                                <core:Item key="ALRT" text="{i18n>categoryAlert}"/>
+                            </items>
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="1"/>
+                            </layoutData>
+                        </Select>
+                        <Select id="priorityFilter" change=".onPriorityFilterChange"
+                            selectedKey="all" width="auto" autoAdjustWidth="true">
+                            <items>
+                                <core:Item key="all" text="{i18n>allPriorities}"/>
+                                <core:Item key="H" text="{i18n>priorityHigh}"/>
+                                <core:Item key="M" text="{i18n>priorityMedium}"/>
+                                <core:Item key="L" text="{i18n>priorityLow}"/>
+                            </items>
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="1"/>
+                            </layoutData>
+                        </Select>
+                        <DatePicker id="dateFromFilter" placeholder="{i18n>dateFrom}"
+                            change=".onDateFilterChange" width="auto" displayFormat="short">
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="2"
+                                    minWidth="120px" shrinkable="true"/>
+                            </layoutData>
+                        </DatePicker>
+                        <DatePicker id="dateToFilter" placeholder="{i18n>dateTo}"
+                            change=".onDateFilterChange" width="auto" displayFormat="short">
+                            <layoutData>
+                                <OverflowToolbarLayoutData priority="Low" group="2"
+                                    minWidth="120px" shrinkable="true"/>
+                            </layoutData>
+                        </DatePicker>
+                    </OverflowToolbar>
+
+                    <Table id="notificationTable" class="notificationTable" width="auto"
+                        items="{
+                            path: '/Recipient',
+                            parameters: {
+                                $expand: '_Notification($expand=_Actions)',
+                                $count: true
+                            },
+                            sorter: {
+                                path: '_Notification/CreatedAt',
+                                descending: true
+                            }
+                        }"
+                        mode="MultiSelect"
+                        noDataText="{i18n>noNotifications}"
+                        growing="true" growingThreshold="20"
+                        growingScrollToLoad="true"
+                        itemPress=".onNotificationPress"
+                        selectionChange=".onSelectionChange"
+                        updateFinished=".onUpdateFinished">
+                        <headerToolbar>
+                            <OverflowToolbar design="Transparent">
+                                <content>
+                                    <Title id="tableTitle" text="{i18n>notifications}" level="H2"/>
+                                    <ToolbarSpacer/>
+                                    <Button id="btnDelete"
+                                        text="{view>/deleteButtonText}"
+                                        icon="sap-icon://delete" type="Reject"
+                                        press=".onDeleteAction"/>
+                                    <Button id="btnMarkRead"
+                                        text="{view>/markReadButtonText}"
+                                        icon="{view>/markReadButtonIcon}"
+                                        type="Transparent" press=".onMarkReadAction"/>
+                                    <Button id="btnArchive"
+                                        text="{view>/archiveButtonText}"
+                                        icon="{view>/archiveButtonIcon}"
+                                        type="Transparent" press=".onArchiveAction"
+                                        visible="{= ${view>/hasSelection} }"/>
+                                </content>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column>
+                                <Text text="{i18n>subjectColumn}"/>
+                            </Column>
+                            <Column width="8rem" minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="{i18n>categoryColumn}"/>
+                            </Column>
+                            <Column width="6rem" minScreenWidth="Tablet" demandPopin="true">
+                                <Text text="{i18n>priorityColumn}"/>
+                            </Column>
+                            <Column width="10rem" minScreenWidth="Desktop" demandPopin="true">
+                                <Text text="{i18n>dateColumn}"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem vAlign="Middle" type="Navigation"
+                                press=".onNotificationPress"
+                                highlight="{= ${IsRead} ? 'None' : 'Information'}">
+                                <customData>
+                                    <core:CustomData key="IsRead" value="{IsRead}" writeToDom="false"/>
+                                    <core:CustomData key="IsArchived" value="{IsArchived}" writeToDom="false"/>
+                                </customData>
+                                <cells>
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/Title', targetType: 'any'},
+                                        {path: '_Notification/Body', targetType: 'any'}],
+                                        formatter: '.formatSubjectHtml'}"/>
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/CategoryCode', targetType: 'any'}],
+                                        formatter: '.formatCategoryHtml'}"/>
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/Priority', targetType: 'any'}],
+                                        formatter: '.formatPriorityHtml'}"/>
+                                    <FormattedText htmlText="{parts: [
+                                        {path: 'IsRead', targetType: 'any'},
+                                        {path: '_Notification/CreatedAt', targetType: 'any'}],
+                                        formatter: '.formatDateHtml'}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+            </IconTabBar>
+        </semantic:content>
+
+        <semantic:positiveAction>
+            <semantic:PositiveAction text="{i18n>markAllRead}" press=".onMarkAllAsRead"/>
+        </semantic:positiveAction>
+
+        <semantic:negativeAction>
+            <semantic:NegativeAction text="{i18n>archiveAll}" press=".onArchiveAll"/>
+        </semantic:negativeAction>
+
+    </semantic:SemanticPage>
+</mvc:View>
+</file>
+
+<file path="webapp/Component.js">
+/**
+ * Component.js
+ *
+ * Notification Center application component
+ * - Initializes device and app models
+ * - Loads initial unread count for bell badge
+ * - Provides refreshUnreadCount method for controllers
+ */
+sap.ui.define([
+    'sap/ui/core/UIComponent',
+    'sap/ui/Device',
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator',
+    'sap/base/Log',
+    'com/gsp26/sap17/notificationcenter/util/WebSocketManager'
+], function (UIComponent, Device, JSONModel, Filter, FilterOperator, Log, WebSocketManager) {
+    'use strict';
+
+    return UIComponent.extend('com.gsp26.sap17.notificationcenter.Component', {
+        metadata: {
+            manifest: 'json'
+        },
+
+        init: function () {
+            UIComponent.prototype.init.apply(this, arguments);
+
+            var oDeviceModel = new JSONModel(Device);
+            oDeviceModel.setDefaultBindingMode('OneWay');
+            this.setModel(oDeviceModel, 'device');
+
+            var oAppModel = new JSONModel({
+                UnreadCount: 0,
+                busy: false,
+                lastRefresh: null
+            });
+            this.setModel(oAppModel, 'app');
+
+            this.getRouter().initialize();
+            this._loadUnreadCount();
+
+            // Connect WebSocket for real-time notifications
+            WebSocketManager.connect(this.getEventBus());
+        },
+
+        _loadUnreadCount: function () {
+            var oModel = this.getModel();
+            var oAppModel = this.getModel('app');
+
+            if (!oModel) {
+                return;
+            }
+
+            var oListBinding = oModel.bindList('/Recipient', null, null, [
+                new Filter({ path: 'IsRead', operator: FilterOperator.EQ, value1: false }),
+                new Filter({ path: 'IsArchived', operator: FilterOperator.EQ, value1: false })
+            ], { $count: true });
+
+            oListBinding.requestContexts(0, 1).then(function () {
+                var iCount = oListBinding.getCount();
+                oAppModel.setProperty('/UnreadCount', iCount || 0);
+                oAppModel.setProperty('/lastRefresh', new Date());
+            }).catch(function (oError) {
+                Log.error('Error loading unread count: ' + oError.message);
+                oAppModel.setProperty('/UnreadCount', 0);
+            });
+        },
+
+        refreshUnreadCount: function () {
+            this._loadUnreadCount();
+        },
+
+        destroy: function () {
+            WebSocketManager.disconnect();
+            UIComponent.prototype.destroy.apply(this, arguments);
+        }
+    });
+});
+</file>
+
+<file path="webapp/controller/NotificationList.controller.js">
+/**
+ * NotificationList.controller.js
+ *
+ * Notification list with tabs, filters, table, and bulk actions
+ */
+sap.ui.define([
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageToast',
+    'sap/m/MessageBox',
+    'sap/base/Log',
+    'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
+    'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper',
+    'com/gsp26/sap17/notificationcenter/util/ToolbarStateHelper'
+], function (Controller, Filter, FilterOperator, JSONModel, MessageToast,
+             MessageBox, Log, Formatter, ActionHelper, ToolbarHelper) {
+    'use strict';
+
+    var EVENT_CHANNEL = 'notification.center';
+    var EVENT_REFRESH = 'refreshList';
+
+    return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationList', {
+
+        // Formatters on prototype so XML template processor finds them at parse time
+        formatSubjectHtml: Formatter.formatSubjectHtml,
+        formatPriorityHtml: Formatter.formatPriorityHtml,
+        formatDateHtml: Formatter.formatDateHtml.bind(Formatter),
+        formatCategoryHtml: function (vIsRead, sCategory) {
+            var oModel = this.getView() ? this.getView().getModel('i18n') : null;
+            var oBundle = oModel ? oModel.getResourceBundle() : null;
+            return Formatter.formatCategoryHtml.call(Formatter, vIsRead, sCategory, oBundle);
+        },
+
+        onInit: function () {
+            this.getView().setModel(new JSONModel({
+                selectedTab: 'unread', hasSelection: false,
+                deleteButtonText: 'Delete', archiveButtonText: 'Archive',
+                archiveButtonIcon: 'sap-icon://folder',
+                markReadButtonText: 'Mark All as Read', markReadButtonIcon: 'sap-icon://email-read'
+            }), 'view');
+            this._sCurrentTab = 'unread';
+            this._sSearchQuery = '';
+            this._sPriorityFilter = 'all';
+            this._sCategoryFilter = 'all';
+            this._dDateFrom = null;
+            this._dDateTo = null;
+            this.getOwnerComponent().getRouter().getRoute('main').attachPatternMatched(this._onRouteMatched, this);
+            this.getOwnerComponent().getEventBus().subscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
+        },
+
+        onExit: function () {
+            this.getOwnerComponent().getEventBus().unsubscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
+        },
+
+        _onRefreshList: function () {
+            var oBinding = this.byId('notificationTable').getBinding('items');
+            if (oBinding) { oBinding.refresh(); }
+            this.getOwnerComponent().refreshUnreadCount();
+        },
+
+        _onRouteMatched: function () {
+            this._applyFilters();
+            this._updateTableTitleCount();
+        },
+
+        onTabSelect: function (oEvent) {
+            this._sCurrentTab = oEvent.getParameter('key');
+            this.getView().getModel('view').setProperty('/selectedTab', this._sCurrentTab);
+            this._applyFilters();
+        },
+
+        onSearch: function (oEvent) { this._sSearchQuery = oEvent.getParameter('newValue'); this._applyFilters(); },
+        onCategoryFilterChange: function (oEvent) { this._sCategoryFilter = oEvent.getParameter('selectedItem').getKey(); this._applyFilters(); },
+        onPriorityFilterChange: function (oEvent) { this._sPriorityFilter = oEvent.getParameter('selectedItem').getKey(); this._applyFilters(); },
+
+        onDateFilterChange: function (oEvent) {
+            var sId = oEvent.getSource().getId();
+            var dDate = oEvent.getSource().getDateValue();
+            if (sId.indexOf('dateFromFilter') !== -1) { this._dDateFrom = dDate; } else { this._dDateTo = dDate; }
+            this._applyFilters();
+        },
+
+        _buildFilters: function () {
+            var a = [new Filter('IsDeleted', FilterOperator.EQ, false)];
+            switch (this._sCurrentTab) {
+                case 'unread': a.push(new Filter('IsRead', FilterOperator.EQ, false)); a.push(new Filter('IsArchived', FilterOperator.EQ, false)); break;
+                case 'archived': a.push(new Filter('IsArchived', FilterOperator.EQ, true)); break;
+                default: a.push(new Filter('IsArchived', FilterOperator.EQ, false));
+            }
+            if (this._sPriorityFilter !== 'all') { a.push(new Filter('_Notification/Priority', FilterOperator.EQ, this._sPriorityFilter)); }
+            if (this._sCategoryFilter !== 'all') { a.push(new Filter('_Notification/CategoryCode', FilterOperator.EQ, this._sCategoryFilter)); }
+            if (this._dDateFrom) { var d = new Date(this._dDateFrom); d.setHours(0,0,0,0); a.push(new Filter('_Notification/CreatedAt', FilterOperator.GE, d)); }
+            if (this._dDateTo) { var t = new Date(this._dDateTo); t.setHours(23,59,59,999); a.push(new Filter('_Notification/CreatedAt', FilterOperator.LE, t)); }
+            if (this._sSearchQuery) { a.push(new Filter({ filters: [new Filter('_Notification/Title', FilterOperator.Contains, this._sSearchQuery), new Filter('_Notification/Body', FilterOperator.Contains, this._sSearchQuery)], and: false })); }
+            return a;
+        },
+
+        _applyFilters: function () {
+            var b = this.byId('notificationTable').getBinding('items');
+            if (b) {
+                b.filter(this._buildFilters(), 'Application');
+                this._updateTableTitleCount();
+            }
+        },
+
+        _updateTableTitleCount: function () {
+            var oList = this.byId('notificationTable');
+            var oBinding = oList.getBinding('items');
+            var oTitle = this.byId('tableTitle');
+            var oBundle = this._getBundle();
+
+            if (oBinding && oTitle) {
+                oBinding.attachEventOnce('dataReceived', function () {
+                    var iCount = oBinding.getLength();
+                    if (iCount === undefined) {
+                        iCount = oList.getItems().length;
+                    }
+                    oTitle.setText(oBundle.getText('notifications') + ' (' + iCount + ')');
+                });
+            }
+        },
+
+        onNotificationPress: function (oEvent) { this._markAsReadAndNavigate(oEvent.getSource().getBindingContext()); },
+
+        _markAsReadAndNavigate: function (oCtx) {
+            if (!oCtx) { return; }
+            var that = this, sR = oCtx.getProperty('RecipientID'), sN = oCtx.getProperty('NotificationID');
+            if (!oCtx.getProperty('IsRead')) {
+                ActionHelper.executeAction(oCtx.getModel(), sN, 'MarkAsRead').then(function () { that.getOwnerComponent().refreshUnreadCount(); }).catch(function (e) { Log.error('Mark read failed: ' + e.message); });
+            }
+            this.getOwnerComponent().getRouter().navTo('detail', { notificationId: sN, recipientId: sR });
+        },
+
+        onSelectionChange: function () { this._updateToolbarButtons(); },
+        onUpdateFinished: function () {
+            this._updateToolbarButtons();
+            this._updateTableTitleCount();
+        },
+        _updateToolbarButtons: function () { ToolbarHelper.updateToolbarButtons(this.byId('notificationTable'), this.getView().getModel('view'), this._getBundle()); },
+
+        onDeleteAction: function () {
+            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oM = this.getView().getModel(), that = this;
+            if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () { MessageToast.show(that._getBundle().getText('delete')); oT.removeSelections(true); that._refreshAfterAction(); }); }
+            else { MessageBox.confirm(this._getBundle().getText('deleteAll') + '?', { onClose: function (a) { if (a === MessageBox.Action.OK) { ActionHelper.executeCollectionAction(oM, 'MarkAllAsDeleted').then(function () { that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); } } }); }
+        },
+
+        onArchiveAction: function () {
+            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), bU = this.getView().getModel('view').getProperty('/archiveButtonText') === oB.getText('unarchive'), sA = bU ? 'Unarchive' : 'Archive', that = this;
+            if (aS.length > 0) { ActionHelper.executeBatchAction(this.getView().getModel(), aS, sA).then(function () { MessageToast.show(oB.getText(bU ? 'unarchive' : 'archive')); oT.removeSelections(true); that._refreshAfterAction(); }); }
+        },
+
+        onMarkReadAction: function () {
+            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), sT = this.getView().getModel('view').getProperty('/markReadButtonText');
+            var bMR = (sT === oB.getText('markRead') || sT === oB.getText('markAllRead')), sA = bMR ? 'MarkAsRead' : 'MarkAsUnread', oM = this.getView().getModel(), that = this;
+            if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, sA).then(function () { oT.removeSelections(true); that._refreshAfterAction(); }); }
+            else if (bMR) { this.onMarkAllAsRead(); }
+            else { ActionHelper.executeBatchAction(oM, oT.getItems(), 'MarkAsUnread').then(function () { that._refreshAfterAction(); }); }
+        },
+
+        onMarkAllAsRead: function () {
+            var that = this;
+            ActionHelper.executeCollectionAction(this.getView().getModel(), 'MarkAllAsRead').then(function () { MessageToast.show(that._getBundle().getText('markAllRead')); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); });
+        },
+
+        onArchiveAll: function () {
+            var that = this;
+            MessageBox.confirm(this._getBundle().getText('archiveAll') + '?', { onClose: function (a) { if (a === MessageBox.Action.OK) { ActionHelper.executeBatchAction(that.getView().getModel(), that.byId('notificationTable').getItems(), 'Archive').then(function () { that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); } } });
+        },
+
+        _getBundle: function () { return this.getView().getModel('i18n').getResourceBundle(); },
+        _refreshAfterAction: function () { this.getOwnerComponent().refreshUnreadCount(); this.byId('notificationTable').getBinding('items').refresh(); }
+    });
+});
+</file>
+
+<file path="webapp/i18n/i18n.properties">
+# This is the resource bundle for com.gsp26.sap17.notificationcenter
+
+#Texts for manifest.json
+
+#XTIT: Application name
+appTitle=Notification Center
+
+#YDES: Application description
+appDescription=Custom Notification Center for SAP Fiori
+
+#XTIT: Main view title
+title=Notification Center
+
+#XFLD: FLP title
+Z17Notification-display.flpTitle=Notification Center
+
+#XFLD: FLP subtitle
+Z17Notification-display.flpSubtitle=Custom Notification Center
+
+# General
+notifications=Notifications
+noNotifications=No notifications
+settings=Settings
+notificationSettings=Notification Settings
+general=General
+close=Close
+save=Save
+reset=Reset
+cancel=Cancel
+
+# Actions
+markRead=Mark as Read
+markUnread=Mark as Unread
+markAllRead=Mark All as Read
+markAllUnread=Mark All as Unread
+viewAll=View All
+viewDetails=View Details
+archive=Archive
+unarchive=Unarchive
+archiveAll=Archive All
+delete=Delete
+deleteAll=Delete All
+
+# Columns
+subjectColumn=Subject
+titleColumn=Title
+messageColumn=Message
+categoryColumn=Category
+priorityColumn=Priority
+dateColumn=Date
+
+# Filters
+all=All
+unread=Unread
+archived=Archived
+filter=Filter
+searchNotifications=Search...
+allPriorities=All Priorities
+priorityHigh=High
+priorityMedium=Medium
+priorityLow=Low
+allCategories=All Categories
+categoryTask=Workflow
+categorySystem=System
+categoryInfo=Information
+categoryAlert=Alert
+dateFrom=Date From
+dateTo=Date To
+
+# Pages
+allNotifications=All Notifications
+
+# Messages
+noUnread=No unread notifications
+loadError=Failed to load data
+
+# WebSocket
+newNotificationReceived=New notification received
+
+# Detail Page
+notificationDetails=Notification Details
+message=Message
+details=Details
+categoryLabel=Category
+priorityLabel=Priority
+createdAt=Created At
+createdBy=Created By
+status=Status
+read=Read
+unreadStatus=Unread
+yes=Yes
+no=No
+sender=Sender
+notificationId=Notification ID
+sourceObject=Source Object
+openSourceObject=Open Source Object
+sourceLeaveRequest=Leave Request
+archived=Archived
+back=Back
+</file>
+
+<file path="webapp/view/App.view.xml">
+<mvc:View
+    controllerName="com.gsp26.sap17.notificationcenter.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    displayBlock="true">
+
+    <VBox fitContainer="true">
+        <f:ShellBar
+            id="shellBar"
+            title="{i18n>appTitle}"
+            homeIcon="sap-icon://home"
+            showMenuButton="true"
+            menuButtonPressed=".onMenuPress"
+            showNavButton="false"
+            showNotifications="true"
+            notificationsNumber="{= ${app>/UnreadCount} > 99 ? '99+' : ${app>/UnreadCount} }"
+            notificationsPressed=".onNotificationPress"
+            homeIconPressed=".onHomePress">
+            <f:additionalContent>
+                <OverflowToolbarButton
+                    id="settingsButton"
+                    icon="sap-icon://action-settings"
+                    type="Transparent"
+                    press=".onSettingsPress"
+                    tooltip="{i18n>settings}"/>
+            </f:additionalContent>
+        </f:ShellBar>
+
+        <App id="app" class="sapUiSizeCompact">
+            <layoutData>
+                <FlexItemData growFactor="1" baseSize="0%"/>
+            </layoutData>
+        </App>
+    </VBox>
+</mvc:View>
+</file>
+
+<file path="webapp/controller/App.controller.js">
+/**
+ * App.controller.js
+ *
+ * Application shell controller
+ * - ShellBar with notification bell and menu
+ * - Polling for unread count refresh
+ * - Notification popover (lazy loaded)
+ * - Navigation menu
+ */
+sap.ui.define([
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/core/Fragment',
+    'sap/m/Menu',
+    'sap/m/MenuItem',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator',
+    'sap/ui/model/Sorter',
+    'sap/m/MessageToast',
+    'sap/m/MessageBox',
+    'sap/m/NotificationListItem',
+    'sap/base/Log',
+    'sap/ui/core/CustomData',
+    'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
+    'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper'
+], function (Controller, Fragment, Menu, MenuItem, Filter, FilterOperator, Sorter,
+             MessageToast, MessageBox, NotificationListItem, Log, CustomData, Formatter, ActionHelper) {
+    'use strict';
+
+    var EVENT_CHANNEL = 'notification.center';
+    var EVENT_REFRESH = 'refreshList';
+
+    return Controller.extend('com.gsp26.sap17.notificationcenter.controller.App', {
+
+        onInit: function () {
+            this._oNotificationPopover = null;
+            this._oMainMenu = null;
+
+            // Subscribe to WebSocket notification events
+            this.getOwnerComponent().getEventBus().subscribe(
+                'notification.websocket', 'newNotification',
+                this._onWebSocketMessage, this
+            );
+        },
+
+        _onWebSocketMessage: function (sChannel, sEvent, oData) {
+            // Refresh unread count badge
+            this.getOwnerComponent().refreshUnreadCount();
+
+            // Show toast with notification title
+            if (oData && oData.title) {
+                MessageToast.show(oData.title);
+            }
+
+            // Refresh popover if it exists and is open
+            if (this._oNotificationPopover && this._oNotificationPopover.isOpen()) {
+                this._refreshPopoverData();
+            }
+
+            // Notify list controller to refresh
+            this.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
+        },
+
+        onHomePress: function () {
+            this.getOwnerComponent().getRouter().navTo('main');
+        },
+
+        onSettingsPress: function () {
+            this.getOwnerComponent().getRouter().navTo('settings');
+        },
+
+        onMenuPress: function (oEvent) {
+            var oButton = oEvent.getParameter("button") || this.byId("shellBar");
+            var oBundle = this.getView().getModel('i18n').getResourceBundle();
+            var that = this;
+
+            if (!this._oMainMenu) {
+                this._oMainMenu = new Menu({
+                    itemSelected: function (oEvt) {
+                        var sKey = oEvt.getParameter('item').getKey();
+                        if (sKey === 'main') {
+                            that.getOwnerComponent().getRouter().navTo('main');
+                        } else if (sKey === 'settings') {
+                            that.getOwnerComponent().getRouter().navTo('settings');
+                        }
+                    },
+                    items: [
+                        new MenuItem({
+                            key: 'main',
+                            text: oBundle.getText('allNotifications'),
+                            icon: 'sap-icon://list'
+                        }),
+                        new MenuItem({
+                            key: 'settings',
+                            text: oBundle.getText('notificationSettings'),
+                            icon: 'sap-icon://action-settings'
+                        })
+                    ]
+                });
+                this.getView().addDependent(this._oMainMenu);
+            }
+            this._oMainMenu.openBy(oButton);
+        },
+
+        onNotificationPress: function (oEvent) {
+            var oSource = oEvent.getParameter('button') || oEvent.getSource();
+            var that = this;
+
+            if (!this._oNotificationPopover) {
+                Fragment.load({
+                    id: this.getView().getId(),
+                    name: 'com.gsp26.sap17.notificationcenter.fragment.NotificationPopover',
+                    controller: this
+                }).then(function (oPopover) {
+                    that._oNotificationPopover = oPopover;
+                    that.getView().addDependent(oPopover);
+                    that._bindPopoverList();
+                    oPopover.openBy(oSource);
+                });
+            } else {
+                this._refreshPopoverData();
+                this._oNotificationPopover.openBy(oSource);
+            }
+        },
+
+        _bindPopoverList: function () {
+            var oList = Fragment.byId(this.getView().getId(), 'popoverNotificationList');
+            if (oList) {
+                oList.bindItems({
+                    path: '/Recipient',
+                    parameters: { $expand: '_Notification($expand=_Actions)' },
+                    sorter: new Sorter('_Notification/CreatedAt', true),
+                    filters: [new Filter('IsArchived', FilterOperator.EQ, false)],
+                    template: this._getNotificationItemTemplate()
+                });
+            }
+        },
+
+        _getNotificationItemTemplate: function () {
+            var that = this;
+            return new NotificationListItem({
+                title: '{_Notification/Title}',
+                description: '{_Notification/Body}',
+                unread: '{= !${IsRead}}',
+                priority: { path: '_Notification/Priority', formatter: Formatter.formatPriority },
+                showCloseButton: false,
+                press: that.onNotificationItemPress.bind(that)
+            }).addCustomData(new CustomData({
+                key: 'datetime',
+                value: { path: '_Notification/CreatedAt', formatter: Formatter.formatDateTime },
+                writeToDom: true
+            }));
+        },
+
+        _refreshPopoverData: function () {
+            var oList = Fragment.byId(this.getView().getId(), 'popoverNotificationList');
+            if (oList) {
+                var oBinding = oList.getBinding('items');
+                if (oBinding) { oBinding.refresh(); }
+            }
+        },
+
+        onNotificationItemPress: function (oEvent) {
+            var oItem = oEvent.getSource();
+            var oCtx = oItem.getBindingContext();
+            var that = this;
+
+            if (!oCtx) { return; }
+
+            var sUserId = oCtx.getProperty('UserId');
+            var sNotificationId = oCtx.getProperty('NotificationId');
+
+            if (!oCtx.getProperty('IsRead')) {
+                ActionHelper.executeAction(oCtx.getModel(), sNotificationId, 'MarkAsRead')
+                    .then(function () {
+                        that.getOwnerComponent().refreshUnreadCount();
+                        that._refreshPopoverData();
+                        that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
+                    }).catch(function (oError) {
+                        Log.error('Failed to mark as read: ' + oError.message);
+                    });
+            }
+
+            if (this._oNotificationPopover) { this._oNotificationPopover.close(); }
+            this.getOwnerComponent().getRouter().navTo('detail', {
+                notificationId: sNotificationId,
+                userId: sUserId
+            });
+        },
+
+        onMarkAllAsRead: function () {
+            var oModel = this.getView().getModel();
+            var that = this;
+
+            ActionHelper.executeCollectionAction(oModel, 'MarkAllAsRead')
+                .then(function () {
+                    MessageToast.show(that.getView().getModel('i18n').getResourceBundle().getText('markAllRead'));
+                    that.getOwnerComponent().refreshUnreadCount();
+                    that._refreshPopoverData();
+                    that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH);
+                }).catch(function (oError) {
+                    MessageBox.error('Failed to mark all as read: ' + oError.message);
+                });
+        },
+
+        onExit: function () {
+            this.getOwnerComponent().getEventBus().unsubscribe(
+                'notification.websocket', 'newNotification',
+                this._onWebSocketMessage, this
+            );
+            if (this._oNotificationPopover) { this._oNotificationPopover.destroy(); }
+            if (this._oMainMenu) { this._oMainMenu.destroy(); }
+        }
+    });
+});
+</file>
+
+<file path="webapp/manifest.json">
+{
+  "_version": "2.0.0",
+  "sap.app": {
+    "id": "com.gsp26.sap17.notificationcenter",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.20.0",
+      "toolsId": "1f36c736-317f-44bf-b0b8-983cb52eb61f"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata4/iwbep/all/srvd/sap/y17_sd_notification/0001/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "Z17Notification-display": {
+          "semanticObject": "Z17Notification",
+          "action": "display",
+          "title": "{{Z17Notification-display.flpTitle}}",
+          "subTitle": "{{Z17Notification-display.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "sap-icon://bell",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.136.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.ui.layout": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.gsp26.sap17.notificationcenter.i18n.i18n",
+          "supportedLocales": [""],
+          "fallbackLocale": ""
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "groupId": "$auto"
+        }
+      },
+      "app": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {
+          "UnreadCount": 0,
+          "busy": false
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "com.gsp26.sap17.notificationcenter.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "main",
+          "pattern": "",
+          "target": ["notificationList"]
+        },
+        {
+          "name": "detail",
+          "pattern": "detail/{notificationId}/{recipientId}",
+          "target": ["notificationDetail"]
+        },
+        {
+          "name": "settings",
+          "pattern": "settings",
+          "target": ["settings"]
+        }
+      ],
+      "targets": {
+        "notificationList": {
+          "type": "View",
+          "viewType": "XML",
+          "transition": "slide",
+          "id": "notificationList",
+          "name": "NotificationList"
+        },
+        "notificationDetail": {
+          "type": "View",
+          "viewType": "XML",
+          "transition": "slide",
+          "id": "notificationDetail",
+          "name": "NotificationDetail"
+        },
+        "settings": {
+          "type": "View",
+          "viewType": "XML",
+          "transition": "slide",
+          "id": "settings",
+          "name": "Settings"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.gsp26.sap17.notificationcenter.view.App",
+      "type": "XML",
+      "id": "App"
+    }
+  }
+}
+</file>
+
+</files>

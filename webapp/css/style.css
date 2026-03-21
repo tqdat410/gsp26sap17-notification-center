@@ -1,1 +1,398 @@
-/* Enter your custom styles here */
+/* Notification Center Custom Styles */
+
+/* Badge styling for bell icon */
+.sapFShellBarNotificationsButton .sapMBtnInner {
+    position: relative;
+}
+
+/* Unread notification highlight */
+.sapMNLI.sapMNLIUnread {
+    background-color: rgba(0, 112, 192, 0.05);
+}
+
+/* Unread notification - bold text */
+.notificationUnread {
+    font-weight: 700 !important;
+}
+
+.sapMText.notificationUnread {
+    font-weight: 700 !important;
+}
+
+.sapMObjStatus.notificationUnread .sapMObjStatusText {
+    font-weight: 700 !important;
+}
+
+span.notificationUnread {
+    font-weight: 700 !important;
+}
+
+/* Priority indicator colors */
+.sapMNLI .sapMNLIPriorityHigh .sapMNLIBPriorityDiv {
+    background-color: #bb0000;
+}
+
+.sapMNLI .sapMNLIPriorityMedium .sapMNLIBPriorityDiv {
+    background-color: #e9730c;
+}
+
+.sapMNLI .sapMNLIPriorityLow .sapMNLIBPriorityDiv {
+    background-color: #107e3e;
+}
+
+/* Popover styling */
+.sapMPopover .sapMNLIB {
+    border-bottom: 1px solid var(--sapList_BorderColor, #e5e5e5);
+}
+
+.sapMPopover .sapMNLIB:last-child {
+    border-bottom: none;
+}
+
+/* Icon tab bar styling */
+.sapMITBFilter .sapMITBCount {
+    font-weight: bold;
+}
+
+/* Compact mode adjustments */
+.sapUiSizeCompact .sapMNLI {
+    padding: 0.5rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+    .sapMPopover {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .sapMNLIBButtons {
+        flex-direction: column;
+    }
+
+    .sapMNLIBButtons .sapMBtn {
+        margin-bottom: 0.25rem;
+    }
+}
+
+/* Animation for new notifications */
+@keyframes notificationSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.sapMNLI {
+    animation: notificationSlideIn 0.3s ease-out;
+}
+
+/* Notification message styling - secondary text appearance */
+.notificationMessage {
+    color: var(--sapContent_LabelColor, #6a6d70);
+    font-size: 0.875rem;
+}
+
+/* FormattedText em tag - used for message text in subject column */
+.sapMFT em {
+    color: var(--sapContent_LabelColor, #6a6d70);
+    font-style: normal;
+}
+
+/* Single-line truncation for subject column */
+.notificationSubjectCell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+}
+
+/* Subject column - ensure proper vertical alignment */
+.sapMListTblCell .sapMVBox {
+    justify-content: center;
+}
+
+/* Rounded Table Styling */
+.notificationTable {
+    border: 1px solid var(--sapList_BorderColor, #e5e5e5) !important;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Remove default inner borders of the table */
+.notificationTable .sapMListUl {
+    border: none !important;
+}
+
+.notificationTable .sapMListTblHeader {
+    border-bottom: 1px solid var(--sapList_BorderColor, #e5e5e5) !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Tab Bar Styling */
+.notificationTabBar .sapMITH {
+    border-radius: 0.75rem 0.75rem 0 0;
+    background-color: var(--sapGroup_ContentBackground, #fff);
+    border: 1px solid var(--sapGroup_ContentBorderColor, #e5e5e5) !important;
+    border-bottom: none !important;
+}
+
+.notificationTabBar .sapMITBContent {
+    border: none;
+    border-radius: 0 0 0.75rem 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0 !important;
+}
+
+.notificationTabBar {
+    margin: 1.5rem;
+    width: auto;
+    box-sizing: border-box;
+}
+
+/* Filter Bar Styling */
+.notificationFilterBar {
+    border: 1px solid var(--sapList_BorderColor, #e5e5e5) !important;
+    border-top: none !important;
+    border-radius: 0 0 0.75rem 0.75rem;
+    height: auto !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+}
+
+/* Fix sticky/dummy area borders */
+.sapMListDummyArea, .sapMListDummyAreaSticky {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    height: 0 !important;
+    min-height: 0 !important;
+}
+
+/* Ensure table container doesn't leak bottom border */
+.notificationTable .sapMList {
+    border-bottom: none !important;
+}
+
+/* Remove bottom border from last row */
+.notificationTable .sapMListShowSeparatorsAll .sapMLIBShowSeparator:last-child > td,
+.notificationTable .sapMListShowSeparatorsAll .sapMListTblSubRow:last-child > td {
+    border-bottom: none !important;
+}
+
+/* Reject reason dialog - content padding */
+.rejectReasonDialog .sapMDialogScrollCont {
+    padding: 0.5rem;
+}
+
+
+
+.rejectReasonLabel {
+    display: block;
+    
+    font-weight: 600;
+}
+
+.rejectReasonTextArea {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Notification HTML body content area */
+.notificationDetailBody {
+    padding: 1rem;
+    line-height: 1.6;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Message panel with scrollable content */
+.notificationMessagePanel {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notificationMessagePanel .notificationDetailBody {
+    max-height: none;
+}
+
+
+
+
+
+/* Container cho Detail & Settings - đồng bộ với List */
+.notificationPageContainer {
+    margin: 1.5rem;
+    width: auto;
+    box-sizing: border-box;
+}
+
+/* Detail Page Card Styling */
+.notificationDetailCard {
+    border: 1px solid var(--sapGroup_ContentBorderColor, #e5e5e5) !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden;
+    background-color: var(--sapGroup_ContentBackground, #fff);
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* ================================
+   Settings Page Styles
+   ================================ */
+
+/* Category description - secondary text */
+.settingsCategoryDesc {
+    color: var(--sapContent_LabelColor, #6a6d70);
+    font-size: 0.875rem;
+}
+
+/* Category list item spacing */
+.settingsCategoryItem .sapMLIBContent {
+    padding: 0.75rem 0;
+}
+
+/* Settings DynamicPage - remove default header border */
+.settingsDynamicPage .sapFDynamicPageTitleMainInner {
+    padding-bottom: 0;
+}
+
+/* ================================
+   Settings Card Layout - Clean Card
+    ================================ */
+
+.settingsCategoryCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+/* Responsive Grid Container for Settings Cards */
+.settingsCardGridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.settingsCategoryCard {
+    min-width: 280px;
+    border-radius: 0.75rem;
+    box-shadow: var(--sapContent_Shadow1, 0 1px 3px rgba(0, 0, 0, 0.08));
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background-color: var(--sapTile_Background, #fff);
+}
+
+.settingsCategoryCard:hover {
+    box-shadow: var(--sapContent_Shadow2, 0 4px 12px rgba(0, 0, 0, 0.1));
+    transform: translateY(-1px);
+}
+
+.settingsCategoryCard .sapFCardContent {
+    padding: 1rem;
+}
+
+.settingsCategoryCard .sapMTitle {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--sapTextColor, #1f1f1f);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.settingsCategoryDesc {
+    color: var(--sapContent_LabelColor, #6a6d70);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.settingsCategoryCard .sapMLabel {
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--sapContent_LabelColor, #32363a);
+}
+
+.settingsCardContent {
+    width: 100%;
+}
+
+.settingsCardInfo {
+    flex: 1;
+    padding-right: 2rem;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.settingsCardSwitches {
+    min-width: 160px;
+    max-width: 160px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.settingsCardSwitches > .sapMHBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+
+.settingsCardSwitches > .sapMHBox:last-child {
+    margin-bottom: 0;
+}
+
+.settingsCardSwitches .sapMLabel {
+    min-width: 50px;
+    margin-right: 0.75rem;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.settingsCardSwitches .sapMSwitch {
+    flex-shrink: 0;
+}
+
+/* Responsive Breakpoints */
+@media (min-width: 1200px) {
+    .settingsCardGridContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1199px) {
+    .settingsCardGridContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .settingsCardGridContainer {
+        grid-template-columns: 1fr;
+    }
+}

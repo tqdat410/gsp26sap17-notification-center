@@ -1,11 +1,11 @@
 {
-  "_version": "1.48.0",
+  "_version": "2.0.0",
   "sap.app": {
     "id": "com.gsp26.sap17.notificationcenter",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
-      "version": "0.0.1"
+      "version": "1.0.0"
     },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/sap/opu/odata4/iwbep/all/srvd/sap/y17_sd_notification/0001/",
+        "uri": "/sap/opu/odata4/sap/z17_ui_notification_o4/srvd/sap/z17_sd_notification/0001/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -44,7 +44,7 @@
   "sap.ui": {
     "technology": "UI5",
     "icons": {
-      "icon": "",
+      "icon": "sap-icon://bell",
       "favIcon": "",
       "phone": "",
       "phone@2": "",
@@ -63,7 +63,9 @@
       "minUI5Version": "1.108.33",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.ui.layout": {}
       }
     },
     "contentDensities": {
@@ -74,7 +76,9 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "com.gsp26.sap17.notificationcenter.i18n.i18n"
+          "bundleName": "com.gsp26.sap17.notificationcenter.i18n.i18n",
+          "supportedLocales": ["", "en"],
+          "fallbackLocale": "en"
         }
       },
       "": {
@@ -84,7 +88,15 @@
           "synchronizationMode": "None",
           "operationMode": "Server",
           "autoExpandSelect": true,
-          "earlyRequests": true
+          "earlyRequests": true,
+          "groupId": "$auto"
+        }
+      },
+      "app": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {
+          "UnreadCount": 0,
+          "busy": false
         }
       }
     },
@@ -99,28 +111,44 @@
       "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
-        "async": true,
         "viewPath": "com.gsp26.sap17.notificationcenter.view",
+        "async": true,
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
       },
       "routes": [
         {
-          "name": "RouteMain",
-          "pattern": ":?query:",
-          "target": [
-            "TargetMain"
-          ]
+          "name": "main",
+          "pattern": "",
+          "target": ["notificationList"]
+        },
+        {
+          "name": "detail",
+          "pattern": "detail/{notificationId}/{recipientId}:query:",
+          "target": ["notificationDetail"]
+        },
+        {
+          "name": "settings",
+          "pattern": "settings",
+          "target": ["settings"]
         }
       ],
       "targets": {
-        "TargetMain": {
-          "viewType": "XML",
+        "notificationList": {
           "transition": "slide",
-          "clearControlAggregation": false,
-          "viewId": "Main",
-          "viewName": "Main"
+          "viewId": "notificationList",
+          "viewName": "NotificationList"
+        },
+        "notificationDetail": {
+          "transition": "slide",
+          "viewId": "notificationDetail",
+          "viewName": "NotificationDetail"
+        },
+        "settings": {
+          "transition": "slide",
+          "viewId": "settings",
+          "viewName": "Settings"
         }
       }
     },
