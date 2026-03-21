@@ -35,21 +35,40 @@ sap.ui.define([
         return sText.replace(/\s+/g, ' ').trim();
     }
 
+    var oIsoParser = DateFormat.getDateTimeInstance({ pattern: "yyyy-MM-dd'T'HH:mm:ss" });
+    var oLocalParser = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yyyy, HH:mm:ss' });
+
+    function toDate(vDateTime) {
+        if (!vDateTime) { return null; }
+        if (vDateTime instanceof Date) { return vDateTime; }
+        var s = String(vDateTime);
+        // Try native ISO parse first
+        var oDate = new Date(s);
+        if (!isNaN(oDate.getTime())) { return oDate; }
+        // Try UI5 locale format (FLP returns "dd.MM.yyyy, HH:mm:ss")
+        oDate = oLocalParser.parse(s);
+        if (oDate) { return oDate; }
+        // Try UI5 ISO parse as fallback
+        oDate = oIsoParser.parse(s);
+        return oDate || null;
+    }
+
     return {
         formatDateTime: function (sDateTime) {
-            if (!sDateTime) { return ''; }
-            return oRelativeFormat.format(new Date(sDateTime));
+            var oDate = toDate(sDateTime);
+            return oDate ? oRelativeFormat.format(oDate) : '';
         },
 
         formatFullDateTime: function (sDateTime) {
-            if (!sDateTime) { return ''; }
-            return oDateTimeFormat.format(new Date(sDateTime));
+            var oDate = toDate(sDateTime);
+            return oDate ? oDateTimeFormat.format(oDate) : '';
         },
 
         formatDateTimeWithRelative: function (sDateTime) {
-            if (!sDateTime) { return ''; }
-            var sRelative = oRelativeFormat.format(new Date(sDateTime));
-            var sFull = oDateTimeFormat.format(new Date(sDateTime));
+            var oDate = toDate(sDateTime);
+            if (!oDate) { return ''; }
+            var sRelative = oRelativeFormat.format(oDate);
+            var sFull = oDateTimeFormat.format(oDate);
             return sRelative + ' (' + sFull + ')';
         },
 
