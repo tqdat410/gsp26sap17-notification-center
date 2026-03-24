@@ -30,6 +30,7 @@ sap.ui.define([
             this._iUnreadRefreshTimer = null;
             this._bUnreadRefreshInFlight = false;
             this._bUnreadRefreshPending = false;
+            this._fnNavigationGuard = null;
 
             var oDeviceModel = new JSONModel(Device);
             oDeviceModel.setDefaultBindingMode('OneWay');
@@ -155,6 +156,25 @@ sap.ui.define([
             }).catch(function (oError) {
                 Log.error('Error loading CategoryValueHelp: ' + oError.message);
             });
+        },
+
+        setNavigationGuard: function (fnGuard) {
+            this._fnNavigationGuard = fnGuard;
+        },
+
+        clearNavigationGuard: function () {
+            this._fnNavigationGuard = null;
+        },
+
+        guardedNavTo: function (sRoute, oParams, oComponentTargetInfo, bReplace) {
+            var that = this;
+            if (this._fnNavigationGuard) {
+                this._fnNavigationGuard(function () {
+                    that.getRouter().navTo(sRoute, oParams, oComponentTargetInfo, bReplace);
+                }, sRoute);
+            } else {
+                this.getRouter().navTo(sRoute, oParams, oComponentTargetInfo, bReplace);
+            }
         },
 
         refreshUnreadCount: function (bImmediate) {

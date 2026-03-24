@@ -76,21 +76,21 @@ sap.ui.define([
         },
 
         onHomePress: function () {
-            var oRouter = this.getOwnerComponent() && this.getOwnerComponent().getRouter();
-            if (!oRouter) {
+            var oComponent = this.getOwnerComponent();
+            if (!oComponent || !oComponent.getRouter()) {
                 Log.error('Cannot navigate to main: router unavailable', null, LOG_COMPONENT);
                 return;
             }
-            oRouter.navTo('main');
+            oComponent.guardedNavTo('main');
         },
 
         onSettingsPress: function () {
-            var oRouter = this.getOwnerComponent() && this.getOwnerComponent().getRouter();
-            if (!oRouter) {
+            var oComponent = this.getOwnerComponent();
+            if (!oComponent || !oComponent.getRouter()) {
                 Log.error('Cannot navigate to settings: router unavailable', null, LOG_COMPONENT);
                 return;
             }
-            oRouter.navTo('settings');
+            oComponent.guardedNavTo('settings');
         },
 
         onMenuPress: function (oEvent) {
@@ -103,9 +103,9 @@ sap.ui.define([
                     itemSelected: function (oEvt) {
                         var sKey = oEvt.getParameter('item').getKey();
                         if (sKey === 'main') {
-                            that.getOwnerComponent().getRouter().navTo('main');
+                            that.getOwnerComponent().guardedNavTo('main');
                         } else if (sKey === 'settings') {
-                            that.getOwnerComponent().getRouter().navTo('settings');
+                            that.getOwnerComponent().guardedNavTo('settings');
                         }
                     },
                     items: [
@@ -259,7 +259,7 @@ sap.ui.define([
             if (this._oNotificationPopover) { this._oNotificationPopover.close(); }
 
             // Popover always shows unread notifications, so pass tab=unread
-            this.getOwnerComponent().getRouter().navTo('detail', {
+            this.getOwnerComponent().guardedNavTo('detail', {
                 notificationId: sNotificationId,
                 recipientId: sRecipientId,
                 '?query': {
