@@ -291,13 +291,16 @@ sap.ui.define([
                 }.bind(this)
             });
         },
+        _showToast: function (sMessageKey, aArgs) {
+            MessageToast.show(this._getBundle().getText(sMessageKey, aArgs || []));
+        },
 
         onDeleteAction: function () {
             var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oM = this.getView().getModel(), that = this;
             if (aS.length > 0) {
                 this._confirmAction('confirmDeleteSelected', function () {
                     ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () {
-                        MessageToast.show(that._getBundle().getText('delete'));
+                        that._showToast('selectedNotificationsDeleted');
                         oT.removeSelections(true);
                         that._refreshAfterAction();
                     }).catch(function (e) { MessageBox.error(e.message); });
@@ -307,7 +310,7 @@ sap.ui.define([
 
             this._confirmAction('confirmDeleteAll', function () {
                 ActionHelper.executeCollectionAction(oM, 'MarkAllAsDeleted').then(function () {
-                    MessageToast.show(that._getBundle().getText('deleteAll'));
+                    that._showToast('allNotificationsDeleted');
                     that._refreshAfterAction();
                 }).catch(function (e) { MessageBox.error(e.message); });
             });
@@ -322,7 +325,7 @@ sap.ui.define([
 
             this._confirmAction(sConfirmKey, function () {
                 ActionHelper.executeBatchAction(oM, aS, sA).then(function () {
-                    MessageToast.show(oB.getText(bU ? 'unarchive' : 'archive'));
+                    that._showToast(bU ? 'selectedNotificationsUnarchived' : 'selectedNotificationsArchived');
                     oT.removeSelections(true);
                     that._refreshAfterAction();
                 }).catch(function (e) { MessageBox.error(e.message); });
@@ -334,6 +337,7 @@ sap.ui.define([
             var bMR = (sT === oB.getText('markRead') || sT === oB.getText('markAllRead')), sA = bMR ? 'MarkAsRead' : 'MarkAsUnread', oM = this.getView().getModel(), that = this;
             if (aS.length > 0) {
                 ActionHelper.executeBatchAction(oM, aS, sA).then(function () {
+                    that._showToast(bMR ? 'selectedNotificationsMarkedRead' : 'selectedNotificationsMarkedUnread');
                     oT.removeSelections(true);
                     that._refreshAfterAction();
                 }).catch(function (e) {
@@ -345,7 +349,7 @@ sap.ui.define([
             }
             else {
                 ActionHelper.executeCollectionAction(oM, 'MarkAllAsUnread').then(function () {
-                    MessageToast.show(that._getBundle().getText('markAllUnread'));
+                    that._showToast('allNotificationsMarkedUnread');
                     that._refreshAfterAction();
                 }).catch(function (e) {
                     MessageBox.error(e.message);
@@ -355,13 +359,17 @@ sap.ui.define([
 
         onMarkAllAsRead: function () {
             var that = this;
-            ActionHelper.executeCollectionAction(this.getView().getModel(), 'MarkAllAsRead').then(function () { MessageToast.show(that._getBundle().getText('markAllRead')); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); });
+            ActionHelper.executeCollectionAction(this.getView().getModel(), 'MarkAllAsRead').then(function () {
+                that._showToast('allNotificationsMarkedRead');
+                that._refreshAfterAction();
+            }).catch(function (e) { MessageBox.error(e.message); });
         },
 
         onArchiveAll: function () {
             var that = this;
             this._confirmAction('confirmArchiveAll', function () {
                 ActionHelper.executeBatchAction(that.getView().getModel(), that.byId('notificationTable').getItems(), 'Archive').then(function () {
+                    that._showToast('allNotificationsArchived');
                     that._refreshAfterAction();
                 }).catch(function (e) { MessageBox.error(e.message); });
             });

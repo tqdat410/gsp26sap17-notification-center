@@ -53,15 +53,15 @@ sap.ui.define([
         _onWebSocketMessage: function (sChannel, sEvent, oData) {
             var oPayload = oData || {};
             var oComponent = this.getOwnerComponent();
+            var oBundle = this.getView().getModel('i18n').getResourceBundle();
 
             // Optimistically update badge, then reconcile async
             oComponent.incrementUnreadCount();
             oComponent.refreshUnreadCount();
 
-            // Show toast with notification title
-            if (oPayload.title) {
-                MessageToast.show(oPayload.title);
-            }
+            MessageToast.show(oPayload.title
+                ? oBundle.getText('newNotificationReceivedWithTitle', [oPayload.title])
+                : oBundle.getText('newNotificationReceived'));
 
             // Refresh popover if it exists and is open
             if (this._oNotificationPopover && this._oNotificationPopover.isOpen()) {
@@ -142,7 +142,7 @@ sap.ui.define([
                     oPopover.openBy(oSource);
                 }).catch(function (oError) {
                     Log.error('Failed to load NotificationPopover fragment: ' + oError.message, null, LOG_COMPONENT);
-                    MessageBox.error('Cannot open notification popover right now.');
+                    MessageBox.error(that.getView().getModel('i18n').getResourceBundle().getText('notificationPopoverOpenError'));
                 });
             } else {
                 this._schedulePopoverRefresh();
@@ -278,7 +278,7 @@ sap.ui.define([
 
             ActionHelper.executeCollectionAction(oModel, 'MarkAllAsRead')
                 .then(function () {
-                    MessageToast.show(that.getView().getModel('i18n').getResourceBundle().getText('markAllRead'));
+                    MessageToast.show(that.getView().getModel('i18n').getResourceBundle().getText('allNotificationsMarkedRead'));
                     that.getOwnerComponent().refreshUnreadCount();
                     that._schedulePopoverRefresh();
                     that.getOwnerComponent().getEventBus().publish(EVENT_CHANNEL, EVENT_REFRESH, {
@@ -286,7 +286,7 @@ sap.ui.define([
                         notificationId: ''
                     });
                 }).catch(function (oError) {
-                    MessageBox.error('Failed to mark all as read: ' + oError.message);
+                    MessageBox.error(that.getView().getModel('i18n').getResourceBundle().getText('markAllReadError') + ': ' + oError.message);
                 });
         },
 

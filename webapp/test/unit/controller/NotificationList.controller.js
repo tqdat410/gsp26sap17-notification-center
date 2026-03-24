@@ -14,11 +14,23 @@ sap.ui.define([
 			unarchive: "Unarchive",
 			delete: "Delete",
 			deleteAll: "Delete All",
-			confirmDeleteSelected: "Delete selected?",
-			confirmDeleteAll: "Delete all?",
-			confirmArchiveSelected: "Archive selected?",
-			confirmUnarchiveSelected: "Unarchive selected?",
-			confirmArchiveAll: "Archive all?"
+			markRead: "Mark as Read",
+			markUnread: "Mark as Unread",
+			markAllRead: "Mark All as Read",
+			confirmDeleteSelected: "Are you sure you want to delete the selected notifications?",
+			confirmDeleteAll: "Are you sure you want to delete all notifications?",
+			confirmArchiveSelected: "Are you sure you want to archive the selected notifications?",
+			confirmUnarchiveSelected: "Are you sure you want to unarchive the selected notifications?",
+			confirmArchiveAll: "Are you sure you want to archive all notifications?",
+			selectedNotificationsDeleted: "Selected notifications deleted.",
+			allNotificationsDeleted: "All notifications deleted.",
+			selectedNotificationsArchived: "Selected notifications archived.",
+			selectedNotificationsUnarchived: "Selected notifications unarchived.",
+			allNotificationsArchived: "All notifications archived.",
+			selectedNotificationsMarkedRead: "Selected notifications marked as read.",
+			selectedNotificationsMarkedUnread: "Selected notifications marked as unread.",
+			allNotificationsMarkedRead: "All notifications marked as read.",
+			allNotificationsMarkedUnread: "All notifications marked as unread."
 		};
 
 		return {
@@ -105,7 +117,7 @@ sap.ui.define([
 		this.aStubs.push(oExecuteBatchActionStub, oExecuteCollectionActionStub, oToastStub);
 
 		this.aStubs.push(sinon.stub(MessageBox, "confirm").callsFake(function (sMessage, mOptions) {
-			assert.strictEqual(sMessage, "Delete selected?", "selected delete confirmation text is used");
+			assert.strictEqual(sMessage, "Are you sure you want to delete the selected notifications?", "selected delete confirmation text is used");
 			mOptions.onClose(MessageBox.Action.OK);
 		}));
 
@@ -116,7 +128,7 @@ sap.ui.define([
 			assert.ok(oExecuteBatchActionStub.calledWith(this.oMainModel, aSelectedItems, "MarkAsDeleted"), "selected delete uses batch MarkAsDeleted");
 			assert.ok(oExecuteCollectionActionStub.notCalled, "delete-all action is not used");
 			assert.ok(this.oTable.removeSelections.calledOnceWithExactly(true), "table selection is cleared");
-			assert.ok(oToastStub.calledOnceWithExactly("Delete"), "delete toast is shown");
+			assert.ok(oToastStub.calledOnceWithExactly("Selected notifications deleted."), "delete toast is shown");
 			assert.ok(this.bRefreshed, "list is refreshed");
 		}.bind(this));
 	});
@@ -131,7 +143,7 @@ sap.ui.define([
 		this.aStubs.push(oExecuteBatchActionStub, oToastStub);
 
 		this.aStubs.push(sinon.stub(MessageBox, "confirm").callsFake(function (sMessage, mOptions) {
-			assert.strictEqual(sMessage, "Delete selected?", "selected delete confirmation text is used");
+			assert.strictEqual(sMessage, "Are you sure you want to delete the selected notifications?", "selected delete confirmation text is used");
 			mOptions.onClose(MessageBox.Action.CANCEL);
 		}));
 
@@ -148,7 +160,7 @@ sap.ui.define([
 		this.aStubs.push(oExecuteCollectionActionStub, oToastStub);
 
 		this.aStubs.push(sinon.stub(MessageBox, "confirm").callsFake(function (sMessage, mOptions) {
-			assert.strictEqual(sMessage, "Delete all?", "delete-all confirmation text is used");
+			assert.strictEqual(sMessage, "Are you sure you want to delete all notifications?", "delete-all confirmation text is used");
 			mOptions.onClose(MessageBox.Action.OK);
 		}));
 
@@ -156,7 +168,7 @@ sap.ui.define([
 
 		return Promise.resolve().then(function () {
 			assert.ok(oExecuteCollectionActionStub.calledOnceWithExactly(this.oMainModel, "MarkAllAsDeleted"), "delete-all action is executed after confirmation");
-			assert.ok(oToastStub.calledOnceWithExactly("Delete All"), "delete-all toast is shown");
+			assert.ok(oToastStub.calledOnceWithExactly("All notifications deleted."), "delete-all toast is shown");
 			assert.ok(this.bRefreshed, "list is refreshed");
 		}.bind(this));
 	});
@@ -173,7 +185,7 @@ sap.ui.define([
 		this.aStubs.push(oExecuteBatchActionStub, oToastStub);
 
 		this.aStubs.push(sinon.stub(MessageBox, "confirm").callsFake(function (sMessage, mOptions) {
-			assert.strictEqual(sMessage, "Archive selected?", "archive confirmation text is used");
+			assert.strictEqual(sMessage, "Are you sure you want to archive the selected notifications?", "archive confirmation text is used");
 			mOptions.onClose(MessageBox.Action.OK);
 		}));
 
@@ -182,7 +194,7 @@ sap.ui.define([
 		return Promise.resolve().then(function () {
 			assert.ok(oExecuteBatchActionStub.calledOnceWithExactly(this.oMainModel, aSelectedItems, "Archive"), "archive action runs after confirmation");
 			assert.ok(this.oTable.removeSelections.calledOnceWithExactly(true), "table selection is cleared");
-			assert.ok(oToastStub.calledOnceWithExactly("Archive"), "archive toast is shown");
+			assert.ok(oToastStub.calledOnceWithExactly("Selected notifications archived."), "archive toast is shown");
 			assert.ok(this.bRefreshed, "list is refreshed");
 		}.bind(this));
 	});
@@ -202,7 +214,7 @@ sap.ui.define([
 		this.aStubs.push(oExecuteBatchActionStub, oToastStub);
 
 		this.aStubs.push(sinon.stub(MessageBox, "confirm").callsFake(function (sMessage, mOptions) {
-			assert.strictEqual(sMessage, "Unarchive selected?", "unarchive confirmation text is used");
+			assert.strictEqual(sMessage, "Are you sure you want to unarchive the selected notifications?", "unarchive confirmation text is used");
 			mOptions.onClose(MessageBox.Action.OK);
 		}));
 
@@ -211,7 +223,7 @@ sap.ui.define([
 		return Promise.resolve().then(function () {
 			assert.ok(oExecuteBatchActionStub.calledOnceWithExactly(this.oMainModel, aSelectedItems, "Unarchive"), "unarchive action runs after confirmation");
 			assert.ok(this.oTable.removeSelections.calledOnceWithExactly(true), "table selection is cleared");
-			assert.ok(oToastStub.calledOnceWithExactly("Unarchive"), "unarchive toast is shown");
+			assert.ok(oToastStub.calledOnceWithExactly("Selected notifications unarchived."), "unarchive toast is shown");
 			assert.ok(this.bRefreshed, "list is refreshed");
 		}.bind(this));
 	});
@@ -224,10 +236,11 @@ sap.ui.define([
 		};
 
 		var oExecuteBatchActionStub = sinon.stub(ActionHelper, "executeBatchAction").returns(Promise.resolve());
-		this.aStubs.push(oExecuteBatchActionStub);
+		var oToastStub = sinon.stub(MessageToast, "show");
+		this.aStubs.push(oExecuteBatchActionStub, oToastStub);
 
 		this.aStubs.push(sinon.stub(MessageBox, "confirm").callsFake(function (sMessage, mOptions) {
-			assert.strictEqual(sMessage, "Archive all?", "archive-all confirmation text is used");
+			assert.strictEqual(sMessage, "Are you sure you want to archive all notifications?", "archive-all confirmation text is used");
 			mOptions.onClose(MessageBox.Action.OK);
 		}));
 
@@ -235,6 +248,49 @@ sap.ui.define([
 
 		return Promise.resolve().then(function () {
 			assert.ok(oExecuteBatchActionStub.calledOnceWithExactly(this.oMainModel, aItems, "Archive"), "archive-all action runs after confirmation");
+			assert.ok(oToastStub.calledOnceWithExactly("All notifications archived."), "archive-all toast is shown");
+			assert.ok(this.bRefreshed, "list is refreshed");
+		}.bind(this));
+	});
+
+	QUnit.test("marks selected notifications as read and shows a clear toast", function (assert) {
+		var aSelectedItems = [createItem("1007")];
+
+		this.oViewModel.getProperty = function () {
+			return "Mark as Read";
+		};
+		this.oTable.getSelectedItems = function () {
+			return aSelectedItems;
+		};
+
+		var oExecuteBatchActionStub = sinon.stub(ActionHelper, "executeBatchAction").returns(Promise.resolve());
+		var oToastStub = sinon.stub(MessageToast, "show");
+		this.aStubs.push(oExecuteBatchActionStub, oToastStub);
+
+		this.oController.onMarkReadAction();
+
+		return Promise.resolve().then(function () {
+			assert.ok(oExecuteBatchActionStub.calledOnceWithExactly(this.oMainModel, aSelectedItems, "MarkAsRead"), "selected items are marked as read");
+			assert.ok(this.oTable.removeSelections.calledOnceWithExactly(true), "table selection is cleared");
+			assert.ok(oToastStub.calledOnceWithExactly("Selected notifications marked as read."), "read toast is shown");
+			assert.ok(this.bRefreshed, "list is refreshed");
+		}.bind(this));
+	});
+
+	QUnit.test("marks all notifications as unread and shows a clear toast", function (assert) {
+		this.oViewModel.getProperty = function () {
+			return "Mark as Unread";
+		};
+
+		var oExecuteCollectionActionStub = sinon.stub(ActionHelper, "executeCollectionAction").returns(Promise.resolve());
+		var oToastStub = sinon.stub(MessageToast, "show");
+		this.aStubs.push(oExecuteCollectionActionStub, oToastStub);
+
+		this.oController.onMarkReadAction();
+
+		return Promise.resolve().then(function () {
+			assert.ok(oExecuteCollectionActionStub.calledOnceWithExactly(this.oMainModel, "MarkAllAsUnread"), "all notifications are marked as unread");
+			assert.ok(oToastStub.calledOnceWithExactly("All notifications marked as unread."), "unread toast is shown");
 			assert.ok(this.bRefreshed, "list is refreshed");
 		}.bind(this));
 	});

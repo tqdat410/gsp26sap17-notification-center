@@ -211,7 +211,7 @@ sap.ui.define([
 
             ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), sAction)
                 .then(function () {
-                    MessageToast.show(that._getBundle().getText(bIsRead ? 'markUnread' : 'markRead'));
+                    MessageToast.show(that._getBundle().getText(bIsRead ? 'notificationMarkedUnread' : 'notificationMarkedRead'));
                     if (bIsRead) {
                         that.getOwnerComponent().incrementUnreadCount();
                     } else {
@@ -232,14 +232,14 @@ sap.ui.define([
             var that = this;
             var bArchived = oCtx.getProperty('IsArchived');
             var sAction = bArchived ? 'Unarchive' : 'Archive';
-            var sMessage = this._getBundle().getText(bArchived ? 'unarchive' : 'archive') + '?';
+            var sMessage = this._getBundle().getText(bArchived ? 'confirmUnarchiveNotification' : 'confirmArchiveNotification');
 
             MessageBox.confirm(sMessage, {
                 onClose: function (sBtn) {
                     if (sBtn === MessageBox.Action.OK) {
                         ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), sAction)
                             .then(function () {
-                                MessageToast.show(that._getBundle().getText(bArchived ? 'unarchive' : 'archive'));
+                                MessageToast.show(that._getBundle().getText(bArchived ? 'notificationUnarchived' : 'notificationArchived'));
                                 that.getOwnerComponent().refreshUnreadCount();
                                 oCtx.refresh();
                                 that._publishRefresh({ source: 'action', notificationId: oCtx.getProperty('NotificationId') });
@@ -286,12 +286,12 @@ sap.ui.define([
             if (!oCtx) { return; }
             var that = this;
 
-            MessageBox.confirm(this._getBundle().getText('delete') + '?', {
+            MessageBox.confirm(this._getBundle().getText('confirmDeleteNotification'), {
                 onClose: function (sBtn) {
                     if (sBtn === MessageBox.Action.OK) {
                         ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), 'MarkAsDeleted')
                             .then(function () {
-                                MessageToast.show(that._getBundle().getText('delete'));
+                                MessageToast.show(that._getBundle().getText('notificationDeleted'));
                                 that.getOwnerComponent().refreshUnreadCount();
                                 // Lưu ID để list ẩn item ngay (optimistic UI)
                                 that.getOwnerComponent().getModel('app').setProperty('/deletedNotificationId', oCtx.getProperty('NotificationId'));
@@ -351,7 +351,7 @@ sap.ui.define([
                                         if (kv.length === 2) { oP[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]); }
                                     });
                                 }
-                                CrossAppNav.navigateWithAction(oAction.SematicObject, oAction.SematicAction, oP);
+                                CrossAppNav.navigateWithAction(oAction.SematicObject, oAction.SematicAction, oP, that._getBundle());
                             };
                         })(oAct));
                     }
@@ -388,7 +388,7 @@ sap.ui.define([
 
             if (sSematicAction.toLowerCase() === 'approve') {
                 MessageBox.confirm(
-                    oBundle.getText('confirmApprove'),
+                    oBundle.getText('confirmApproveLeaveRequest'),
                     {
                         onClose: function (sAction) {
                             if (sAction === MessageBox.Action.OK) {
