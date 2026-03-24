@@ -10,15 +10,19 @@ sap.ui.define([
 ], function (MessageToast, MessageBox) {
     'use strict';
 
+    function getText(oBundle, sKey, aArgs, sFallback) {
+        return oBundle ? oBundle.getText(sKey, aArgs || []) : sFallback;
+    }
+
     return {
-        navigateWithAction: function (sSematicObject, sSematicAction, oParams) {
+        navigateWithAction: function (sSematicObject, sSematicAction, oParams, oBundle) {
             var oContainer;
             var oCrossAppNav;
             var oService;
 
             oContainer = sap.ushell && sap.ushell.Container;
             if (!oContainer) {
-                MessageToast.show('Navigate: ' + sSematicObject + '#' + sSematicAction);
+                MessageToast.show(getText(oBundle, 'crossAppNavigationUnavailable', [], 'Cannot open the target application here.'));
                 return;
             }
 
@@ -30,13 +34,13 @@ sap.ui.define([
                     oCrossAppNav = Promise.resolve(oService);
                 }
             } catch (e) {
-                MessageToast.show('Navigate: ' + sSematicObject + '#' + sSematicAction);
+                MessageToast.show(getText(oBundle, 'crossAppNavigationUnavailable', [], 'Cannot open the target application here.'));
                 return;
             }
             if (oCrossAppNav) {
                 oCrossAppNav.then(function (oService) {
                     if (!oService) {
-                        MessageBox.error('Navigation service is not available.');
+                        MessageBox.error(getText(oBundle, 'navigationServiceUnavailable', [], 'Navigation service is not available.'));
                         return;
                     }
                     oService.toExternal({
@@ -44,10 +48,10 @@ sap.ui.define([
                         params: oParams || {}
                     });
                 }).catch(function (oError) {
-                    MessageBox.error('Navigation failed: ' + (oError && oError.message ? oError.message : String(oError)));
+                    MessageBox.error(getText(oBundle, 'navigationFailed', [oError && oError.message ? oError.message : String(oError)], 'Navigation failed.'));
                 });
             } else {
-                MessageToast.show('Navigate: ' + sSematicObject + '#' + sSematicAction);
+                MessageToast.show(getText(oBundle, 'crossAppNavigationUnavailable', [], 'Cannot open the target application here.'));
             }
         }
     };

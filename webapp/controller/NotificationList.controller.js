@@ -282,16 +282,54 @@ sap.ui.define([
             this._updateTableTitleCount();
         },
         _updateToolbarButtons: function () { ToolbarHelper.updateToolbarButtons(this.byId('notificationTable'), this.getView().getModel('view'), this._getBundle()); },
+        _confirmAction: function (sMessageKey, fnOnConfirm) {
+            MessageBox.confirm(this._getBundle().getText(sMessageKey), {
+                onClose: function (sAction) {
+                    if (sAction === MessageBox.Action.OK) {
+                        fnOnConfirm();
+                    }
+                }.bind(this)
+            });
+        },
+        _showToast: function (sMessageKey, aArgs) {
+            MessageToast.show(this._getBundle().getText(sMessageKey, aArgs || []));
+        },
 
         onDeleteAction: function () {
             var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oM = this.getView().getModel(), that = this;
-            if (aS.length > 0) { ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () { MessageToast.show(that._getBundle().getText('delete')); oT.removeSelections(true); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); }
-            else { MessageBox.confirm(this._getBundle().getText('deleteAll') + '?', { onClose: function (a) { if (a === MessageBox.Action.OK) { ActionHelper.executeCollectionAction(oM, 'MarkAllAsDeleted').then(function () { MessageToast.show(that._getBundle().getText('deleteAll')); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); } } }); }
+            if (aS.length > 0) {
+                this._confirmAction('confirmDeleteSelected', function () {
+                    ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () {
+                        that._showToast('selectedNotificationsDeleted');
+                        oT.removeSelections(true);
+                        that._refreshAfterAction();
+                    }).catch(function (e) { MessageBox.error(e.message); });
+                });
+                return;
+            }
+
+            this._confirmAction('confirmDeleteAll', function () {
+                ActionHelper.executeCollectionAction(oM, 'MarkAllAsDeleted').then(function () {
+                    that._showToast('allNotificationsDeleted');
+                    that._refreshAfterAction();
+                }).catch(function (e) { MessageBox.error(e.message); });
+            });
         },
 
         onArchiveAction: function () {
-            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), bU = this.getView().getModel('view').getProperty('/archiveButtonText') === oB.getText('unarchive'), sA = bU ? 'Unarchive' : 'Archive', that = this;
-            if (aS.length > 0) { ActionHelper.executeBatchAction(this.getView().getModel(), aS, sA).then(function () { MessageToast.show(oB.getText(bU ? 'unarchive' : 'archive')); oT.removeSelections(true); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); }
+            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), oM = this.getView().getModel(),
+                bU = this.getView().getModel('view').getProperty('/archiveButtonText') === oB.getText('unarchive'),
+                sA = bU ? 'Unarchive' : 'Archive', sConfirmKey = bU ? 'confirmUnarchiveSelected' : 'confirmArchiveSelected', that = this;
+
+            if (aS.length === 0) { return; }
+
+            this._confirmAction(sConfirmKey, function () {
+                ActionHelper.executeBatchAction(oM, aS, sA).then(function () {
+                    that._showToast(bU ? 'selectedNotificationsUnarchived' : 'selectedNotificationsArchived');
+                    oT.removeSelections(true);
+                    that._refreshAfterAction();
+                }).catch(function (e) { MessageBox.error(e.message); });
+            });
         },
 
         onMarkReadAction: function () {
@@ -299,6 +337,7 @@ sap.ui.define([
             var bMR = (sT === oB.getText('markRead') || sT === oB.getText('markAllRead')), sA = bMR ? 'MarkAsRead' : 'MarkAsUnread', oM = this.getView().getModel(), that = this;
             if (aS.length > 0) {
                 ActionHelper.executeBatchAction(oM, aS, sA).then(function () {
+                    that._showToast(bMR ? 'selectedNotificationsMarkedRead' : 'selectedNotificationsMarkedUnread');
                     oT.removeSelections(true);
                     that._refreshAfterAction();
                 }).catch(function (e) {
@@ -310,7 +349,7 @@ sap.ui.define([
             }
             else {
                 ActionHelper.executeCollectionAction(oM, 'MarkAllAsUnread').then(function () {
-                    MessageToast.show(that._getBundle().getText('markAllUnread'));
+                    that._showToast('allNotificationsMarkedUnread');
                     that._refreshAfterAction();
                 }).catch(function (e) {
                     MessageBox.error(e.message);
@@ -320,12 +359,20 @@ sap.ui.define([
 
         onMarkAllAsRead: function () {
             var that = this;
-            ActionHelper.executeCollectionAction(this.getView().getModel(), 'MarkAllAsRead').then(function () { MessageToast.show(that._getBundle().getText('markAllRead')); that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); });
+            ActionHelper.executeCollectionAction(this.getView().getModel(), 'MarkAllAsRead').then(function () {
+                that._showToast('allNotificationsMarkedRead');
+                that._refreshAfterAction();
+            }).catch(function (e) { MessageBox.error(e.message); });
         },
 
         onArchiveAll: function () {
             var that = this;
-            MessageBox.confirm(this._getBundle().getText('archiveAll') + '?', { onClose: function (a) { if (a === MessageBox.Action.OK) { ActionHelper.executeBatchAction(that.getView().getModel(), that.byId('notificationTable').getItems(), 'Archive').then(function () { that._refreshAfterAction(); }).catch(function (e) { MessageBox.error(e.message); }); } } });
+            this._confirmAction('confirmArchiveAll', function () {
+                ActionHelper.executeBatchAction(that.getView().getModel(), that.byId('notificationTable').getItems(), 'Archive').then(function () {
+                    that._showToast('allNotificationsArchived');
+                    that._refreshAfterAction();
+                }).catch(function (e) { MessageBox.error(e.message); });
+            });
         },
 
         _getBundle: function () { return this.getView().getModel('i18n').getResourceBundle(); },
