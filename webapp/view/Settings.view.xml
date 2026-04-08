@@ -1,3 +1,4 @@
+<!-- Settings.view.xml — Notification preference settings page -->
 <mvc:View
     controllerName="com.gsp26.sap17.notificationcenter.controller.Settings"
     xmlns:mvc="sap.ui.core.mvc"
@@ -32,10 +33,10 @@
         <f:content>
             <VBox id="idSettingsContentVBox" class="notificationPageContainer">
 
-                <!-- Category Preferences with GridContainer -->
+                <!-- Category preference cards (in-app / email toggles per category) -->
                 <VBox id="idCategoryPreferencesVBox">
 
-                    <!-- Category list header + search -->
+                    <!-- Toolbar with search/filter (disabled — uncomment to enable) -->
                     <!-- <Toolbar id="idCategoryToolbar">
                         <Title id="idCategoryPreferencesTitle" text="{i18n>categoryPreferences}" level="H4"/>
                         <ToolbarSpacer id="idCategoryToolbarSpacer"/>
@@ -66,7 +67,7 @@
                             liveChange=".onSearchFieldCategoryLiveChange"/>
                     </Toolbar> -->
 
-                    <!-- Category GridContainer for responsive cards -->
+                    <!-- Responsive card grid bound to settingsModel>/categories -->
                     <VBox
                         id="idCategoryGridContainer"
                         class="settingsCardGridContainer"
@@ -111,7 +112,7 @@
             </VBox>
         </f:content>
 
-        <!-- Footer toolbar -->
+        <!-- Footer: Reset to Default | Cancel | Save (enabled when dirty) -->
         <f:footer>
             <OverflowToolbar id="idSettingsFooterOverflowToolbar">
                 <Button
@@ -120,18 +121,6 @@
                     icon="sap-icon://undo"
                     type="Transparent"
                     press=".onResetToDefault"/>
-                <Button
-                    id="idEnableAllButton"
-                    text="{i18n>enableAll}"
-                    type="Transparent"
-                    visible="{= !${settingsModel>/allEnabled} }"
-                    press=".onToggleAll"/>
-                <Button
-                    id="idDisableAllButton"
-                    text="{i18n>disableAll}"
-                    type="Transparent"
-                    visible="{= ${settingsModel>/allEnabled} }"
-                    press=".onToggleAll"/>
                 <ToolbarSpacer id="idSettingsFooterToolbarSpacer"/>
                 <Button
                     id="idCancelButton"

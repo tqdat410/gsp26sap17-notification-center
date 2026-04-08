@@ -1,3 +1,6 @@
+/**
+ * Settings.controller.js — Notification preference settings
+ */
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/core/routing/History',
@@ -11,20 +14,22 @@ sap.ui.define([
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.Settings', {
 
+        /** Initialize settings model and route listener */
         onInit: function () {
             var oSettingsModel = new JSONModel({
                 masterEnabled: true,
                 isDirty: false,
                 busy: false,
-                allEnabled: false,
                 categories: []
             });
             this.getView().setModel(oSettingsModel, 'settingsModel');
 
-            this._aAllCategories = null;
-            this._sSearchQuery = '';
-            this._sStatusFilter = 'all';
-            this._sRequiredFilter = 'all';
+            this._aAllCategories = null;          // full unfiltered category list
+            this._sSearchQuery = '';               // current search text
+            this._sStatusFilter = 'all';           // enabled/disabled filter
+            this._sRequiredFilter = 'all';         // required/optional filter
+            this._bGuardInHistory = false;         // pushState guard entry active
+            this._fnPopstateHandler = null;        // browser back listener ref
 
             this.getOwnerComponent()
                 .getRouter()
@@ -32,6 +37,7 @@ sap.ui.define([
                 .attachPatternMatched(this._onRouteMatched, this);
         },
 
+        /** Reset state and reload on each route match */
         _onRouteMatched: function () {
             var oModel = this.getView().getModel('settingsModel');
             oModel.setProperty('/masterEnabled', true);
@@ -40,9 +46,12 @@ sap.ui.define([
             this._sSearchQuery = '';
             this._sStatusFilter = 'all';
             this._sRequiredFilter = 'all';
+            this._registerNavigationGuard();
+            this._attachBrowserBackGuard();
             this._loadSettings();
         },
 
+        /** Load category settings from OData /Setting entity */
         _loadSettings: function () {
             var oModel = this.getView().getModel('settingsModel');
             var oODataModel = this.getView().getModel();
@@ -63,7 +72,6 @@ sap.ui.define([
                 that._aAllCategories = aCategories;
                 oModel.setProperty('/categories', aCategories.slice());
                 oModel.setProperty('/busy', false);
-                that._computeAllEnabled();
             }).catch(function (oError) {
                 Log.error('Settings: Failed to load - ' + oError.message);
                 oModel.setProperty('/busy', false);
@@ -71,15 +79,18 @@ sap.ui.define([
             });
         },
 
+        /** Master toggle changed — re-evaluate dirty state */
         onSwitchMasterChange: function () {
             this._checkDirty();
         },
 
+        /** Live search by category name/description */
         onSearchFieldCategoryLiveChange: function (oEvent) {
             this._sSearchQuery = (oEvent.getParameter('newValue') || '').toLowerCase();
             this._applyFilters();
         },
 
+        /** Status or Required filter changed */
         onFilterChange: function (oEvent) {
             var oSource = oEvent.getSource();
             var sKey = oEvent.getParameter('selectedItem').getKey();
@@ -93,6 +104,7 @@ sap.ui.define([
             this._applyFilters();
         },
 
+        /** Apply search + status + required filters to category list */
         _applyFilters: function () {
             var oModel = this.getView().getModel('settingsModel');
             var aAll = this._aAllCategories || [];
@@ -128,6 +140,7 @@ sap.ui.define([
             oModel.setProperty('/categories', aFiltered);
         },
 
+        /** In-app toggle; turning off also disables email */
         onSwitchInAppChange: function (oEvent) {
             var oCtx = oEvent.getSource().getBindingContext('settingsModel');
             var sPath = oCtx.getPath();
@@ -140,10 +153,10 @@ sap.ui.define([
                 oModel.setProperty(sPath + '/emailEnabled', false);
             }
 
-            this._computeAllEnabled();
             this._checkDirty();
         },
 
+        /** Email toggle changed */
         onSwitchEmailChange: function (oEvent) {
             var oCtx = oEvent.getSource().getBindingContext('settingsModel');
             var sPath = oCtx.getPath();
@@ -151,30 +164,6 @@ sap.ui.define([
             var oModel = this.getView().getModel('settingsModel');
 
             oModel.setProperty(sPath + '/emailEnabled', bState);
-            this._computeAllEnabled();
-            this._checkDirty();
-        },
-
-        onToggleAll: function () {
-            var oModel = this.getView().getModel('settingsModel');
-            var bEnable = !oModel.getProperty('/allEnabled');
-
-            (this._aAllCategories || []).forEach(function (oItem) {
-                if (bEnable) {
-                    if (!oItem.obligatory) {
-                        oItem.isEnabled = true;
-                    }
-                    oItem.emailEnabled = true;
-                } else {
-                    if (!oItem.obligatory) {
-                        oItem.isEnabled = false;
-                    }
-                    oItem.emailEnabled = false;
-                }
-            });
-
-            this._applyFilters();
-            this._computeAllEnabled();
             this._checkDirty();
         },
 
@@ -183,60 +172,10 @@ sap.ui.define([
         },
 
         onCancel: function () {
-            var oModel = this.getView().getModel('settingsModel');
-            if (oModel.getProperty('/isDirty')) {
-                var that = this;
-                MessageBox.confirm(this._getBundle().getText('confirmCancelDirty'), {
-                    onClose: function (sAction) {
-                        if (sAction === MessageBox.Action.OK) {
-                            that.onButtonNavBackPress();
-                        }
-                    }
-                });
-            } else {
-                this.onButtonNavBackPress();
-            }
+            this.onButtonNavBackPress();
         },
 
-        // onResetToDefault: function () {
-        //     var that = this;
-        //     var aCategories = this._aAllCategories;
-
-        //     if (!aCategories) return;
-
-        //     var aNonDefault = aCategories.filter(function (oItem) {
-        //         return oItem.isEnabled !== oItem.defaultEnabled || oItem.emailEnabled !== false;
-        //     });
-
-        //     if (aNonDefault.length === 0) {
-        //         MessageToast.show(this._getBundle().getText('alreadyDefault'));
-        //         return;
-        //     }
-
-        //     MessageBox.confirm(this._getBundle().getText('confirmResetDefault'), {
-        //         onClose: function (sAction) {
-        //             if (sAction === MessageBox.Action.OK) {
-        //                 var oModel = that.getView().getModel('settingsModel');
-        //                 var oODataModel = that.getView().getModel();
-
-        //                 oModel.setProperty('/busy', true);
-        //                 SettingsUtil.resetToDefaultViaAction(oODataModel)
-        //                     .then(function () {
-        //                         oModel.setProperty('/isDirty', false);
-        //                         oModel.setProperty('/busy', false);
-        //                         MessageToast.show(that._getBundle().getText('settingsSaved'));
-        //                         that._loadSettings();
-        //                     })
-        //                     .catch(function (oError) {
-        //                         oModel.setProperty('/busy', false);
-        //                         Log.error('Settings: Reset to default failed - ' + oError.message);
-        //                         MessageBox.error(that._getBundle().getText('saveError'));
-        //                     });
-        //             }
-        //         }
-        //     });
-        // },
-
+        /** Fetch defaults from /SettingDefault, compare, confirm, then apply locally */
         onResetToDefault: function () {
             var that = this;
             var oODataModel = this.getView().getModel();
@@ -280,7 +219,6 @@ sap.ui.define([
                                 });
 
                                 that._applyFilters();
-                                that._computeAllEnabled();
                                 that._checkDirty();
 
                                 oSettingsModel.setProperty('/busy', false);
@@ -298,6 +236,7 @@ sap.ui.define([
                 });
         },
 
+        /** Persist changed items via OData Upsert action */
         _saveSettings: function () {
             var oModel = this.getView().getModel('settingsModel');
             var aAll = this._aAllCategories || oModel.getProperty('/categories') || [];
@@ -326,23 +265,123 @@ sap.ui.define([
                 });
         },
 
+        // --- Unsaved-changes navigation guard ---
+        // Guards: UI back button, in-app nav (Component.guardedNavTo), browser back (pushState/popstate)
+        // _bGuardInHistory tracks whether the pushState entry is still in the history stack
+
+        /** UI back button — confirm if dirty, then navigate back */
         onButtonNavBackPress: function () {
+            this._confirmIfDirty(this._cleanUpAndNavigateBack.bind(this));
+        },
+
+        /** Show confirm dialog if dirty; otherwise proceed immediately */
+        _confirmIfDirty: function (fnProceed) {
+            var oModel = this.getView().getModel('settingsModel');
+            if (oModel.getProperty('/isDirty')) {
+                MessageBox.confirm(this._getBundle().getText('confirmCancelDirty'), {
+                    onClose: function (sAction) {
+                        if (sAction === MessageBox.Action.OK) {
+                            fnProceed();
+                        }
+                    }
+                });
+            } else {
+                fnProceed();
+            }
+        },
+
+        /** Remove guards and go back; skip guard entry if still in history */
+        _cleanUpAndNavigateBack: function () {
+            var bGuardInHistory = this._bGuardInHistory;
+            this._removeAllGuards();
             var oHistory = History.getInstance();
             if (oHistory.getPreviousHash() !== undefined) {
-                window.history.go(-1);
+                // go(-2) to skip guard entry + settings, go(-1) if guard already popped
+                window.history.go(bGuardInHistory ? -2 : -1);
             } else {
                 this.getOwnerComponent().getRouter().navTo('main', {}, {replace: true});
             }
         },
 
-        _computeAllEnabled: function () {
-            var aAll = this._aAllCategories || [];
-            var bAllEnabled = aAll.length > 0 && aAll.every(function (oItem) {
-                return oItem.isEnabled === true && oItem.emailEnabled === true;
+        /** Register Component-level guard to intercept in-app navigation */
+        _registerNavigationGuard: function () {
+            var that = this;
+            this.getOwnerComponent().setNavigationGuard(function (fnProceed, sRoute) {
+                if (sRoute === 'settings') {
+                    return;
+                }
+                that._confirmIfDirty(function () {
+                    var bGuardInHistory = that._bGuardInHistory;
+                    that._removeAllGuards();
+                    if (bGuardInHistory) {
+                        // Pop the guard entry first, then navigate to new route
+                        var fnOnPop = function () {
+                            window.removeEventListener('popstate', fnOnPop);
+                            fnProceed();
+                        };
+                        window.addEventListener('popstate', fnOnPop);
+                        window.history.go(-1);
+                    } else {
+                        fnProceed();
+                    }
+                });
             });
-            this.getView().getModel('settingsModel').setProperty('/allEnabled', bAllEnabled);
         },
 
+        /** Push a guard entry into browser history to intercept back button */
+        _attachBrowserBackGuard: function () {
+            this._detachBrowserBackGuard();
+            this._fnPopstateHandler = this._onBrowserBack.bind(this);
+            window.addEventListener('popstate', this._fnPopstateHandler);
+            window.history.pushState({ settingsGuard: true }, '');
+            this._bGuardInHistory = true;
+        },
+
+        /** Remove popstate listener */
+        _detachBrowserBackGuard: function () {
+            if (this._fnPopstateHandler) {
+                window.removeEventListener('popstate', this._fnPopstateHandler);
+                this._fnPopstateHandler = null;
+            }
+        },
+
+        /** Handle browser back: confirm if dirty, re-push guard on cancel */
+        _onBrowserBack: function () {
+            // Browser already popped the guard entry
+            this._bGuardInHistory = false;
+            var oModel = this.getView().getModel('settingsModel');
+            if (oModel.getProperty('/isDirty')) {
+                var that = this;
+                MessageBox.confirm(this._getBundle().getText('confirmCancelDirty'), {
+                    onClose: function (sAction) {
+                        if (sAction === MessageBox.Action.OK) {
+                            that._removeAllGuards();
+                            window.history.go(-1);
+                        } else {
+                            window.history.pushState({ settingsGuard: true }, '');
+                            that._bGuardInHistory = true;
+                        }
+                    }
+                });
+            } else {
+                this._removeAllGuards();
+                window.history.go(-1);
+            }
+        },
+
+        /** Clear all navigation guards and listeners */
+        _removeAllGuards: function () {
+            this._bGuardInHistory = false;
+            this.getOwnerComponent().clearNavigationGuard();
+            this._detachBrowserBackGuard();
+        },
+
+        /** Lifecycle cleanup — remove guards to prevent memory leaks */
+        onExit: function () {
+            this._removeAllGuards();
+        },
+
+        /** Compare current vs original values to set isDirty flag */
         _checkDirty: function () {
             var aAll = this._aAllCategories || [];
             var aChanged = SettingsUtil.getChangedItems(aAll);

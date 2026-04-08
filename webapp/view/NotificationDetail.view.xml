@@ -101,7 +101,7 @@
                 <Button id="idIsArchivedButton"
                     text="{path: 'IsArchived', formatter: '.formatArchiveText'}"
                     icon="{path: 'IsArchived', formatter: '.formatArchiveIcon'}"
-                    type="Attention"
+                    type="Transparent"
                     press=".onIsArchivedButtonPress"/>
                 <Button id="idDeleteButton"
                     text="{i18n>delete}"
