@@ -291,10 +291,11 @@ sap.ui.define([
                     if (sBtn === MessageBox.Action.OK) {
                         ActionHelper.executeAction(oCtx.getModel(), oCtx.getProperty('NotificationId'), 'MarkAsDeleted')
                             .then(function () {
-                                MessageToast.show(that._getBundle().getText('notificationDeleted'));
                                 that.getOwnerComponent().refreshUnreadCount();
-                                // Lưu ID để list ẩn item ngay (optimistic UI)
-                                that.getOwnerComponent().getModel('app').setProperty('/deletedNotificationId', oCtx.getProperty('NotificationId'));
+                                var oAppModel = that.getOwnerComponent().getModel('app');
+                                // Lưu ID để list ẩn item ngay (optimistic UI) + hiện toast sau navigate
+                                oAppModel.setProperty('/deletedNotificationId', oCtx.getProperty('NotificationId'));
+                                oAppModel.setProperty('/pendingToast', 'notificationDeleted');
                                 that.onButtonNavBackPress();
                             }).catch(function (oErr) { MessageBox.error(oErr.message); });
                     }
