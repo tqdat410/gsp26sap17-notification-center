@@ -37,20 +37,95 @@ sap.ui.define([
 
     var oIsoParser = DateFormat.getDateTimeInstance({ pattern: "yyyy-MM-dd'T'HH:mm:ss" });
     var oLocalParser = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yyyy, HH:mm:ss' });
+    var rIsoDateTime = /^\d{4}-\d{2}-\d{2}T/;
+    var rODataDate = /^\/Date\((\d+)(?:[+-]\d+)?\)\/$/;
+
+    function normalizeYear(iYear) {
+        return iYear < 100 ? 2000 + iYear : iYear;
+    }
+
+    function createLocalDate(iYear, iMonth, iDay, iHour, iMinute, iSecond) {
+        var oDate = new Date(iYear, iMonth - 1, iDay, iHour, iMinute, iSecond, 0);
+        if (
+            oDate.getFullYear() !== iYear ||
+            oDate.getMonth() !== iMonth - 1 ||
+            oDate.getDate() !== iDay
+        ) {
+            return null;
+        }
+        return oDate;
+    }
+
+    function parseDottedDateTime(sDateTime) {
+        var aMatch = String(sDateTime || '').trim().match(
+            /^(\d{1,2})\.(\d{1,2})\.(\d{2}|\d{4})(?:,?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+        );
+        if (!aMatch) { return null; }
+
+        var iPart1 = parseInt(aMatch[1], 10);
+        var iPart2 = parseInt(aMatch[2], 10);
+        var iYear = normalizeYear(parseInt(aMatch[3], 10));
+        var iHour = parseInt(aMatch[4] || '0', 10);
+        var iMinute = parseInt(aMatch[5] || '0', 10);
+        var iSecond = parseInt(aMatch[6] || '0', 10);
+
+        if (iHour > 23 || iMinute > 59 || iSecond > 59) { return null; }
+
+        var oDayFirst = createLocalDate(iYear, iPart2, iPart1, iHour, iMinute, iSecond);
+        var oMonthFirst = createLocalDate(iYear, iPart1, iPart2, iHour, iMinute, iSecond);
+
+        if (oDayFirst && !oMonthFirst) { return oDayFirst; }
+        if (oMonthFirst && !oDayFirst) { return oMonthFirst; }
+        if (!oDayFirst && !oMonthFirst) { return null; }
+
+        var iNow = Date.now();
+        var iFutureThreshold = 24 * 60 * 60 * 1000;
+        var iDayFirstDelta = oDayFirst.getTime() - iNow;
+        var iMonthFirstDelta = oMonthFirst.getTime() - iNow;
+        var bDayFirstFarFuture = iDayFirstDelta > iFutureThreshold;
+        var bMonthFirstFarFuture = iMonthFirstDelta > iFutureThreshold;
+
+        if (bDayFirstFarFuture !== bMonthFirstFarFuture) {
+            return bDayFirstFarFuture ? oMonthFirst : oDayFirst;
+        }
+        return Math.abs(iDayFirstDelta) <= Math.abs(iMonthFirstDelta) ? oDayFirst : oMonthFirst;
+    }
 
     function toDate(vDateTime) {
         if (!vDateTime) { return null; }
         if (vDateTime instanceof Date) { return vDateTime; }
-        var s = String(vDateTime);
-        // Try native ISO parse first
-        var oDate = new Date(s);
-        if (!isNaN(oDate.getTime())) { return oDate; }
-        // Try UI5 locale format (FLP returns "dd.MM.yyyy, HH:mm:ss")
+        var s = String(vDateTime).trim();
+        if (!s) { return null; }
+
+        var oMatch = s.match(rODataDate);
+        if (oMatch) {
+            var iTimestamp = parseInt(oMatch[1], 10);
+            if (!isNaN(iTimestamp)) {
+                return new Date(iTimestamp);
+            }
+        }
+
+        // Parse ISO-like values deterministically (with or without timezone suffix)
+        var oDate;
+        if (rIsoDateTime.test(s)) {
+            oDate = new Date(s);
+            if (!isNaN(oDate.getTime())) { return oDate; }
+        }
+
+        // Handle ambiguous dotted values from FLP/local runtime (dd.MM vs MM.dd)
+        oDate = parseDottedDateTime(s);
+        if (oDate) { return oDate; }
+
+        // Fallback for explicit UI5 dd.MM.yyyy format
         oDate = oLocalParser.parse(s);
         if (oDate) { return oDate; }
         // Try UI5 ISO parse as fallback
         oDate = oIsoParser.parse(s);
-        return oDate || null;
+        if (oDate) { return oDate; }
+
+        // Last resort (kept at the end to avoid locale-dependent swaps)
+        oDate = new Date(s);
+        return !isNaN(oDate.getTime()) ? oDate : null;
     }
 
     return {
