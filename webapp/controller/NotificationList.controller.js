@@ -79,6 +79,13 @@ sap.ui.define([
             var oAppModel = this.getOwnerComponent().getModel('app');
             var sDeletedId = oAppModel.getProperty('/deletedNotificationId');
 
+            // Show pending toast from previous page (e.g. delete from detail)
+            var sPendingToast = oAppModel.getProperty('/pendingToast');
+            if (sPendingToast) {
+                oAppModel.setProperty('/pendingToast', null);
+                MessageToast.show(this._getBundle().getText(sPendingToast));
+            }
+
             if (sDeletedId) {
                 oAppModel.setProperty('/deletedNotificationId', null);
                 var aItems = this.byId('notificationTable').getItems();
