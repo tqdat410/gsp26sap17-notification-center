@@ -34,6 +34,52 @@ sap.ui.define([
         return _oModel;
     }
 
+    /**
+     * Normalize a leave request UUID to canonical GUID format for OData URI usage.
+     * Accepts:
+     * - C32 uppercase/lowercase without hyphens
+     * - C36 uppercase/lowercase with hyphens
+     * Returns:
+     * - lowercase C36 with hyphens
+     *
+     * @param {string} sRequestId - UUID from notification Action.Params
+     * @returns {string}
+     */
+    function _normalizeRequestId(sRequestId) {
+        var sValue = String(sRequestId || '').trim();
+
+        if (!sValue) {
+            throw new Error('RequestID is missing.');
+        }
+
+        if (/^[0-9a-fA-F]{32}$/.test(sValue)) {
+            sValue = sValue.slice(0, 8) + '-'
+                + sValue.slice(8, 12) + '-'
+                + sValue.slice(12, 16) + '-'
+                + sValue.slice(16, 20) + '-'
+                + sValue.slice(20, 32);
+        }
+
+        if (!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(sValue)) {
+            throw new Error('Invalid RequestID format: ' + sRequestId);
+        }
+
+        return sValue.toLowerCase();
+    }
+
+    /**
+     * Build the canonical OData V4 entity path for a leave request bound action.
+     * Uses the single-key shortcut form:
+     * /LeaveRequest(<guid>)/
+     *
+     * @param {string} sRequestId - UUID of the leave request
+     * @returns {string}
+     */
+    function _buildLeaveRequestPath(sRequestId) {
+        var sNormalizedRequestId = _normalizeRequestId(sRequestId);
+        return '/LeaveRequest(' + sNormalizedRequestId + ')/';
+    }
+
     return {
 
         /**
@@ -45,7 +91,7 @@ sap.ui.define([
          * @returns {Promise}
          */
         approve: function (sRequestId) {
-            var sPath = '/LeaveRequest(RequestID=' + sRequestId + ',IsActiveEntity=true)/'
+            var sPath = _buildLeaveRequestPath(sRequestId)
                       + ACTION_NS + '.Approve(...)';
             Log.debug('LeaveRequestActionHelper: Approve ' + sRequestId, null, LOG_COMPONENT);
             var oOp = _getModel().bindContext(sPath);
@@ -62,7 +108,7 @@ sap.ui.define([
          * @returns {Promise}
          */
         reject: function (sRequestId, sRejectReason) {
-            var sPath = '/LeaveRequest(RequestID=' + sRequestId + ',IsActiveEntity=true)/'
+            var sPath = _buildLeaveRequestPath(sRequestId)
                       + ACTION_NS + '.Reject(...)';
             Log.debug('LeaveRequestActionHelper: Reject ' + sRequestId, null, LOG_COMPONENT);
             var oOp = _getModel().bindContext(sPath);
