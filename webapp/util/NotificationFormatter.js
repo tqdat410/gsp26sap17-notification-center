@@ -11,13 +11,11 @@ sap.ui.define([
     'sap/ui/core/format/DateFormat',
     'sap/ui/core/Locale',
     'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
-    'sap/ui/core/library',
     'sap/base/security/encodeXML',
     'sap/base/security/sanitizeHTML'
-], function (DateFormat, Locale, BooleanHelper, coreLibrary, encodeXML, sanitizeHTML) {
+], function (DateFormat, Locale, BooleanHelper, encodeXML, sanitizeHTML) {
     'use strict';
 
-    var Priority = coreLibrary.Priority;
     var oEnLocale = new Locale('en');
 
     var oDateTimeFormat = DateFormat.getDateTimeInstance({ pattern: 'dd.MM.yy HH:mm:ss' }, oEnLocale);
@@ -129,11 +127,6 @@ sap.ui.define([
     }
 
     return {
-        formatDateTime: function (sDateTime) {
-            var oDate = toDate(sDateTime);
-            return oDate ? oRelativeFormat.format(oDate) : '';
-        },
-
         formatFullDateTime: function (sDateTime) {
             var oDate = toDate(sDateTime);
             return oDate ? oDateTimeFormat.format(oDate) : '';
@@ -150,11 +143,6 @@ sap.ui.define([
         formatCategory: function (sCategory, oCategoryMap) {
             if (!sCategory) { return ''; }
             return oCategoryMap && oCategoryMap[sCategory] ? oCategoryMap[sCategory] : sCategory;
-        },
-
-        formatPriority: function (vPriority) {
-            var s = String(vPriority || '');
-            return { '1': Priority.High, '2': Priority.Medium, '3': Priority.Low, 'H': Priority.High, 'M': Priority.Medium, 'L': Priority.Low }[s] || Priority.None;
         },
 
         formatPriorityState: function (vPriority) {
@@ -179,19 +167,6 @@ sap.ui.define([
             return stripHtml(sBody || '');
         },
 
-        formatPopoverDescriptionWithPrioritySuffix: function (sBody, vPriority, oBundle) {
-            var sBodyText = stripHtml(sBody || '');
-            var s = String(vPriority || '');
-            var sPriorityKey = { '1': 'priorityHigh', '2': 'priorityMedium', '3': 'priorityLow', 'H': 'priorityHigh', 'M': 'priorityMedium', 'L': 'priorityLow' }[s];
-            var sPriorityText = sPriorityKey && oBundle ? oBundle.getText(sPriorityKey) : '';
-            var sPriorityLabel = oBundle ? oBundle.getText('priorityLabel') : 'Priority';
-
-            if (!sBodyText && !sPriorityText) { return ''; }
-            if (!sBodyText) { return sPriorityLabel + ': ' + sPriorityText; }
-            if (!sPriorityText) { return sBodyText; }
-            return sBodyText + ' - ' + sPriorityLabel + ': ' + sPriorityText;
-        },
-
         formatCategoryHtml: function (vIsRead, sCategory, oCategoryMap) {
             var sText = encodeXML(this.formatCategory(sCategory, oCategoryMap));
             return BooleanHelper.isTrue(vIsRead) ? sText : '<strong>' + sText + '</strong>';
@@ -211,11 +186,6 @@ sap.ui.define([
             return BooleanHelper.isTrue(vIsRead) ? sSpan : '<strong>' + sSpan + '</strong>';
         },
 
-        formatReadStatusText: function (vIsRead, oBundle) {
-            var sKey = BooleanHelper.isTrue(vIsRead) ? 'read' : 'unreadStatus';
-            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
-        },
-
         formatReadStatusCombined: function (vIsRead, vIsArchived, oBundle) {
             if (BooleanHelper.isTrue(vIsArchived)) {
                 var sArchived = oBundle ? oBundle.getText('archived') : 'Archived';
@@ -225,32 +195,9 @@ sap.ui.define([
             return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
         },
 
-        formatReadStatusState: function (vIsRead) {
-            return BooleanHelper.isTrue(vIsRead) ? 'Success' : 'Warning';
-        },
-
         formatReadStatusCombinedState: function (vIsRead, vIsArchived) {
             if (BooleanHelper.isTrue(vIsArchived)) { return 'Warning'; }
             return BooleanHelper.isTrue(vIsRead) ? 'Success' : 'Warning';
-        },
-
-        formatArchivedStatusVisible: function (vIsArchived) {
-            return BooleanHelper.isTrue(vIsArchived);
-        },
-
-        formatReadStatusText: function (vIsRead, oBundle) {
-            var sKey = BooleanHelper.isTrue(vIsRead) ? 'read' : 'unreadStatus';
-            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
-        },
-
-        formatArchivedStatusText: function (vIsArchived, oBundle) {
-            if (!BooleanHelper.isTrue(vIsArchived)) { return ''; }
-            var sArchived = oBundle ? oBundle.getText('archived') : 'Archived';
-            return sArchived;
-        },
-
-        formatArchivedState: function (vIsArchived) {
-            return BooleanHelper.isTrue(vIsArchived) ? 'Warning' : 'None';
         },
 
         formatMarkReadText: function (vIsRead, oBundle) {

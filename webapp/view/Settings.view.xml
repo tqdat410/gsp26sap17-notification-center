@@ -3,8 +3,7 @@
     controllerName="com.gsp26.sap17.notificationcenter.controller.Settings"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:f="sap.f"
-    xmlns:core="sap.ui.core">
+    xmlns:f="sap.f">
 
     <f:DynamicPage
         id="idSettingsDynamicPage"
@@ -35,37 +34,6 @@
 
                 <!-- Category preference cards (in-app / email toggles per category) -->
                 <VBox id="idCategoryPreferencesVBox">
-
-                    <!-- Toolbar with search/filter (disabled — uncomment to enable) -->
-                    <!-- <Toolbar id="idCategoryToolbar">
-                        <Title id="idCategoryPreferencesTitle" text="{i18n>categoryPreferences}" level="H4"/>
-                        <ToolbarSpacer id="idCategoryToolbarSpacer"/>
-                        <Select
-                            id="idStatusFilter"
-                            width="110px"
-                            selectedKey="all"
-                            change=".onFilterChange"
-                            class="sapUiTinyMarginBegin">
-                            <core:Item key="all" text="{i18n>filterAll}"/>
-                            <core:Item key="enabled" text="{i18n>filterEnabled}"/>
-                            <core:Item key="disabled" text="{i18n>filterDisabled}"/>
-                        </Select>
-                        <Select
-                            id="idRequiredFilter"
-                            width="110px"
-                            selectedKey="all"
-                            change=".onFilterChange"
-                            class="sapUiTinyMarginBegin">
-                            <core:Item key="all" text="{i18n>filterAll}"/>
-                            <core:Item key="required" text="{i18n>filterRequired}"/>
-                            <core:Item key="optional" text="{i18n>filterOptional}"/>
-                        </Select>
-                        <SearchField
-                            id="idCategorySearchField"
-                            width="15rem"
-                            placeholder="{i18n>searchCategories}"
-                            liveChange=".onSearchFieldCategoryLiveChange"/>
-                    </Toolbar> -->
 
                     <!-- Responsive card grid bound to settingsModel>/categories -->
                     <VBox
