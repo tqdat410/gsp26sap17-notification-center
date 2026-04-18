@@ -211,11 +211,6 @@ sap.ui.define([
             return BooleanHelper.isTrue(vIsRead) ? sSpan : '<strong>' + sSpan + '</strong>';
         },
 
-        formatReadStatusText: function (vIsRead, oBundle) {
-            var sKey = BooleanHelper.isTrue(vIsRead) ? 'read' : 'unreadStatus';
-            return oBundle ? oBundle.getText(sKey) : (BooleanHelper.isTrue(vIsRead) ? 'Read' : 'Unread');
-        },
-
         formatReadStatusCombined: function (vIsRead, vIsArchived, oBundle) {
             if (BooleanHelper.isTrue(vIsArchived)) {
                 var sArchived = oBundle ? oBundle.getText('archived') : 'Archived';
