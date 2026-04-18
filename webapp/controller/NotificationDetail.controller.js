@@ -271,8 +271,6 @@ sap.ui.define([
         _getActionIcon: function (sSemanticObject, sActionLabel) {
             if (sActionLabel) {
                 var sLabelLower = sActionLabel.toLowerCase();
-                if (sLabelLower.indexOf('approve') !== -1) { return 'sap-icon://accept'; }
-                if (sLabelLower.indexOf('reject') !== -1) { return 'sap-icon://decline'; }
                 if (sLabelLower.indexOf('view') !== -1 || sLabelLower.indexOf('display') !== -1) { return 'sap-icon://arrow-right'; }
                 if (sLabelLower.indexOf('edit') !== -1) { return 'sap-icon://edit'; }
             }

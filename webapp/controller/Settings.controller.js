@@ -17,7 +17,6 @@ sap.ui.define([
         /** Initialize settings model and route listener */
         onInit: function () {
             var oSettingsModel = new JSONModel({
-                masterEnabled: true,
                 isDirty: false,
                 busy: false,
                 categories: []
@@ -25,9 +24,6 @@ sap.ui.define([
             this.getView().setModel(oSettingsModel, 'settingsModel');
 
             this._aAllCategories = null;          // full unfiltered category list
-            this._sSearchQuery = '';               // current search text
-            this._sStatusFilter = 'all';           // enabled/disabled filter
-            this._sRequiredFilter = 'all';         // required/optional filter
             this._bGuardInHistory = false;         // pushState guard entry active
             this._fnPopstateHandler = null;        // browser back listener ref
 
@@ -40,12 +36,8 @@ sap.ui.define([
         /** Reset state and reload on each route match */
         _onRouteMatched: function () {
             var oModel = this.getView().getModel('settingsModel');
-            oModel.setProperty('/masterEnabled', true);
             oModel.setProperty('/isDirty', false);
             this._aAllCategories = null;
-            this._sSearchQuery = '';
-            this._sStatusFilter = 'all';
-            this._sRequiredFilter = 'all';
             this._registerNavigationGuard();
             this._attachBrowserBackGuard();
             this._loadSettings();
@@ -79,65 +71,11 @@ sap.ui.define([
             });
         },
 
-        /** Master toggle changed — re-evaluate dirty state */
-        onSwitchMasterChange: function () {
-            this._checkDirty();
-        },
-
-        /** Live search by category name/description */
-        onSearchFieldCategoryLiveChange: function (oEvent) {
-            this._sSearchQuery = (oEvent.getParameter('newValue') || '').toLowerCase();
-            this._applyFilters();
-        },
-
-        /** Status or Required filter changed */
-        onFilterChange: function (oEvent) {
-            var oSource = oEvent.getSource();
-            var sKey = oEvent.getParameter('selectedItem').getKey();
-
-            if (oSource.getId().includes('StatusFilter')) {
-                this._sStatusFilter = sKey;
-            } else if (oSource.getId().includes('RequiredFilter')) {
-                this._sRequiredFilter = sKey;
-            }
-
-            this._applyFilters();
-        },
-
-        /** Apply search + status + required filters to category list */
-        _applyFilters: function () {
+        /** Sync all categories to the currently visible list */
+        _syncVisibleCategories: function () {
             var oModel = this.getView().getModel('settingsModel');
             var aAll = this._aAllCategories || [];
-            var sSearch = this._sSearchQuery || '';
-            var sStatus = this._sStatusFilter || 'all';
-            var sRequired = this._sRequiredFilter || 'all';
-
-            var aFiltered = aAll.filter(function (oItem) {
-                var bMatchSearch = true;
-                if (sSearch) {
-                    var sName = (oItem.categoryName || '').toLowerCase();
-                    var sDesc = (oItem.categoryDesc || '').toLowerCase();
-                    bMatchSearch = sName.indexOf(sSearch) !== -1 || sDesc.indexOf(sSearch) !== -1;
-                }
-
-                var bMatchStatus = true;
-                if (sStatus === 'enabled') {
-                    bMatchStatus = oItem.isEnabled === true || oItem.emailEnabled === true;
-                } else if (sStatus === 'disabled') {
-                    bMatchStatus = oItem.isEnabled === false && oItem.emailEnabled === false;
-                }
-
-                var bMatchRequired = true;
-                if (sRequired === 'required') {
-                    bMatchRequired = oItem.obligatory === true;
-                } else if (sRequired === 'optional') {
-                    bMatchRequired = oItem.obligatory === false;
-                }
-
-                return bMatchSearch && bMatchStatus && bMatchRequired;
-            });
-
-            oModel.setProperty('/categories', aFiltered);
+            oModel.setProperty('/categories', aAll.slice());
         },
 
         /** In-app toggle; turning off also disables email */
@@ -218,7 +156,7 @@ sap.ui.define([
                                     }
                                 });
 
-                                that._applyFilters();
+                                that._syncVisibleCategories();
                                 that._checkDirty();
 
                                 oSettingsModel.setProperty('/busy', false);
@@ -393,3 +331,4 @@ sap.ui.define([
         }
     });
 });
+
