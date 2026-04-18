@@ -114,25 +114,6 @@ sap.ui.define([
         },
 
         /**
-         * Resets all settings to default via a single static action ResetToDefault.
-         * The backend deletes all user setting records in one DELETE statement.
-         *
-         * @param {sap.ui.model.odata.v4.ODataModel} oODataModel
-         * @returns {Promise}
-         */
-        // resetToDefaultViaAction: function (oODataModel) {
-        //     var sNamespace = 'com.sap.gateway.srvd.z17_sd_notification.v0001';
-        //     var sActionPath = '/Setting/' + sNamespace + '.ResetToDefault(...)';
-        //     var oActionBinding = oODataModel.bindContext(sActionPath);
-        //     return oActionBinding.execute('$auto').then(function () {
-        //         Log.debug('SettingsUtil: ResetToDefault succeeded');
-        //     }).catch(function (oError) {
-        //         Log.error('SettingsUtil: ResetToDefault failed - ' + oError.message);
-        //         throw oError;
-        //     });
-        // },
-
-        /**
          * Fetches default settings from the Z17_C_SETTING_DEFAULT view.
          * Returns default values for each category (IsEnabled = DefaultEnabled, EmailEnabled = '').
          *

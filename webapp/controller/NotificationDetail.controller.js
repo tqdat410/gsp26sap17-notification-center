@@ -10,7 +10,6 @@
  */
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
-    'sap/ui/core/Fragment',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
@@ -18,20 +17,13 @@ sap.ui.define([
     'sap/m/MessageToast',
     'sap/m/MessageBox',
     'sap/m/Button',
-    'sap/m/Dialog',
-    'sap/m/TextArea',
-    'sap/m/Label',
-    'sap/m/VBox',
-    'sap/ui/core/routing/History',
     'sap/base/Log',
     'com/gsp26/sap17/notificationcenter/util/NotificationFormatter',
     'com/gsp26/sap17/notificationcenter/util/NotificationActionHelper',
     'com/gsp26/sap17/notificationcenter/util/BooleanHelper',
-    'com/gsp26/sap17/notificationcenter/util/CrossAppNavigation',
-    'com/gsp26/sap17/notificationcenter/util/LeaveRequestActionHelper'
-], function (Controller, Fragment, JSONModel, Filter, FilterOperator, Sorter, MessageToast, MessageBox, MButton,
-             MDialog, MTextArea, MLabel, MVBox, History, Log,
-             Formatter, ActionHelper, BooleanHelper, CrossAppNav, LeaveRequestHelper) {
+    'com/gsp26/sap17/notificationcenter/util/CrossAppNavigation'
+], function (Controller, JSONModel, Filter, FilterOperator, Sorter, MessageToast, MessageBox, MButton,
+             Log, Formatter, ActionHelper, BooleanHelper, CrossAppNav) {
     'use strict';
 
     var EVENT_CHANNEL = 'notification.center';
@@ -55,7 +47,6 @@ sap.ui.define([
             return Formatter.formatReadStatusCombined(vIsRead, vIsArchived, oBundle);
         },
         formatReadStatusCombinedState: Formatter.formatReadStatusCombinedState,
-        formatReadStatusState: Formatter.formatReadStatusState,
         formatDateTimeWithRelative: Formatter.formatDateTimeWithRelative,
         formatMarkReadText: function (v) {
             var oBundle = this.getView() && this.getView().getModel('i18n') ? this.getView().getModel('i18n').getResourceBundle() : null;
@@ -68,17 +59,10 @@ sap.ui.define([
         },
         formatArchiveIcon: Formatter.formatArchiveIcon,
         formatBodyHtml: Formatter.formatBodyHtml,
-        formatNavigationCounter: function (iCurrentIndex, aNotifications) {
-            if (!aNotifications || aNotifications.length === 0) { return ''; }
-            var iDisplayIndex = (iCurrentIndex || 0) + 1;
-            return iDisplayIndex + ' of ' + aNotifications.length;
-        },
 
         onInit: function () {
             this.getView().setModel(new JSONModel({ busy: false, hasActions: false }), 'view');
             this.getOwnerComponent().getRouter().getRoute('detail').attachPatternMatched(this._onRouteMatched, this);
-            this._oRejectDialog = null;
-            this._sCurrentRequestId = null;
         },
 
         _onRouteMatched: function (oEvent) {
@@ -171,37 +155,6 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo('main', {}, {}, true);
         },
 
-        onPreviousPress: function () {
-            this._navigateToAdjacentNotification(-1);
-        },
-
-        onNextPress: function () {
-            this._navigateToAdjacentNotification(1);
-        },
-
-        _navigateToAdjacentNotification: function (iDirection) {
-            var oAppModel = this.getOwnerComponent().getModel('app');
-            var aNotifications = oAppModel.getProperty('/navigationContext/notifications') || [];
-            var iCurrentIndex = oAppModel.getProperty('/navigationContext/currentIndex') || 0;
-            var iNewIndex = iCurrentIndex + iDirection;
-
-            if (iNewIndex < 0 || iNewIndex >= aNotifications.length) { return; }
-
-            var oNextNotification = aNotifications[iNewIndex];
-            oAppModel.setProperty('/navigationContext/currentIndex', iNewIndex);
-
-            // Fire-and-forget mark as read so detail page loads with IsRead=true (no flicker)
-            ActionHelper.executeAction(this.getView().getModel(), oNextNotification.notificationId, 'MarkAsRead')
-                .catch(function () {});
-
-            this.getOwnerComponent().getRouter().navTo('detail', {
-                notificationId: oNextNotification.notificationId,
-                recipientId: oNextNotification.recipientId,
-                '?query': { tab: this._sCurrentTab || 'all' }
-            });
-        },
-
-
         onIsReadButtonPress: function () {
             var oCtx = this.getView().getBindingContext();
             if (!oCtx) { return; }
@@ -249,38 +202,6 @@ sap.ui.define([
             });
         },
 
-        _handleArchiveNavigation: function () {
-            var oAppModel = this.getOwnerComponent().getModel('app');
-            var aNotifications = oAppModel.getProperty('/navigationContext/notifications') || [];
-            var iCurrentIndex = oAppModel.getProperty('/navigationContext/currentIndex') || 0;
-
-            if (aNotifications.length <= 1) {
-                this.onButtonNavBackPress();
-                return;
-            }
-
-            var aNewNotifications = aNotifications.slice();
-            aNewNotifications.splice(iCurrentIndex, 1);
-
-            if (iCurrentIndex >= aNewNotifications.length) {
-                iCurrentIndex = aNewNotifications.length - 1;
-            }
-
-            var oNavContext = {
-                notifications: aNewNotifications,
-                currentIndex: iCurrentIndex
-            };
-            oAppModel.setProperty('/navigationContext', oNavContext);
-
-            var oNextNotification = aNewNotifications[iCurrentIndex];
-            
-            this.getOwnerComponent().getRouter().navTo('detail', {
-                notificationId: oNextNotification.notificationId,
-                recipientId: oNextNotification.recipientId,
-                '?query': { tab: this._sCurrentTab || 'all' }
-            });
-        },
-
         onDeleteButtonPress: function () {
             var oCtx = this.getView().getBindingContext();
             if (!oCtx) { return; }
@@ -293,7 +214,7 @@ sap.ui.define([
                             .then(function () {
                                 that.getOwnerComponent().refreshUnreadCount();
                                 var oAppModel = that.getOwnerComponent().getModel('app');
-                                // Lưu ID để list ẩn item ngay (optimistic UI) + hiện toast sau navigate
+                                // Store ID so the list hides the item immediately (optimistic UI) and shows a toast after navigation
                                 oAppModel.setProperty('/deletedNotificationId', oCtx.getProperty('NotificationId'));
                                 oAppModel.setProperty('/pendingToast', 'notificationDeleted');
                                 that.onButtonNavBackPress();
@@ -311,126 +232,45 @@ sap.ui.define([
             oHBox.destroyItems();
             oCtx.requestObject().then(function (oData) {
                 var aActions = (oData && oData._Notification && oData._Notification._Actions) || [];
-                that.getView().getModel('view').setProperty('/hasActions', aActions.length > 0);
+                var aNavigableActions = aActions.filter(function (oAction) {
+                    var sSematicLower = (oAction.SematicAction || '').toLowerCase();
+                    return sSematicLower !== 'approve' && sSematicLower !== 'reject';
+                });
+                that.getView().getModel('view').setProperty('/hasActions', aNavigableActions.length > 0);
 
-                aActions.forEach(function (oAct, index) {
+                aNavigableActions.forEach(function (oAct, index) {
                     Log.info('[Actions] Action ' + index + ':', JSON.stringify(oAct));
                     var sIcon = that._getActionIcon(oAct.SematicObject, oAct.ActionLabel);
-                    var sSematicActionLower = (oAct.SematicAction || '').toLowerCase();
-                    var sType;
-                    if (sSematicActionLower === 'approve') {
-                        sType = 'Accept';
-                    } else if (sSematicActionLower === 'reject') {
-                        sType = 'Reject';
-                    } else {
-                        sType = index === 0 ? 'Emphasized' : 'Default';
-                    }
                     var oBtn = new MButton({
                         text: oAct.ActionLabel,
-                        type: sType,
+                        type: index === 0 ? 'Emphasized' : 'Default',
                         icon: sIcon,
                         tooltip: oAct.ActionLabel
                     });
-                    var aInlineKeywords = ['approve', 'reject'];
-                    var sSematicLower = (oAct.SematicAction || '').toLowerCase();
-                    if (aInlineKeywords.indexOf(sSematicLower) !== -1) {
-                        oBtn.attachPress((function (oAction) {
-                            return function () {
-                                that._executeInlineAction(oAction.SematicAction, oAction.ActionLabel, oAction.Params);
-                            };
-                        })(oAct));
-                    } else {
-                        oBtn.attachPress((function (oAction) {
-                            return function () {
-                                var oP = {};
-                                var sP = oAction.Params || '';
-                                try {
-                                    oP = JSON.parse(sP);
-                                } catch (e) {
-                                    sP.split('&').forEach(function (pair) {
-                                        var kv = pair.split('=');
-                                        if (kv.length === 2) { oP[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]); }
-                                    });
-                                }
-                                CrossAppNav.navigateWithAction(oAction.SematicObject, oAction.SematicAction, oP, that._getBundle());
-                            };
-                        })(oAct));
-                    }
+                    oBtn.attachPress((function (oAction) {
+                        return function () {
+                            var oP = {};
+                            var sP = oAction.Params || '';
+                            try {
+                                oP = JSON.parse(sP);
+                            } catch (e) {
+                                sP.split('&').forEach(function (pair) {
+                                    var kv = pair.split('=');
+                                    if (kv.length === 2) { oP[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]); }
+                                });
+                            }
+                            CrossAppNav.navigateWithAction(oAction.SematicObject, oAction.SematicAction, oP, that._getBundle());
+                        };
+                    })(oAct));
                     oBtn.addStyleClass('sapUiTinyMarginEnd sapUiTinyMarginBottom');
                     oHBox.addItem(oBtn);
                 });
             });
         },
 
-        _disableInlineActionButtons: function () {
-            var oHBox = this.byId('idActionsHBox');
-            if (!oHBox) { return; }
-            oHBox.getItems().forEach(function (oBtn) {
-                var sType = oBtn.getType ? oBtn.getType() : '';
-                if (sType === 'Accept' || sType === 'Reject') {
-                    oBtn.setEnabled(false);
-                }
-            });
-        },
-
-        _executeInlineAction: function (sSematicAction, sActionLabel, sRawParams) {
-            var that = this;
-            var oBundle = this._getBundle();
-
-            var oParams = {};
-            var sP = sRawParams || '';
-            try { oParams = JSON.parse(sP); } catch (e) {
-                sP.split('&').forEach(function (pair) {
-                    var kv = pair.split('=');
-                    if (kv.length === 2) { oParams[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]); }
-                });
-            }
-            var sRequestId = oParams.RequestID || oParams.RequestId || '';
-
-            if (sSematicAction.toLowerCase() === 'approve') {
-                MessageBox.confirm(
-                    oBundle.getText('confirmApproveLeaveRequest'),
-                    {
-                        onClose: function (sAction) {
-                            if (sAction === MessageBox.Action.OK) {
-                                var oVM = that.getView().getModel('view');
-                                oVM.setProperty('/busy', true);
-                                LeaveRequestHelper.approve(sRequestId)
-                                    .then(function () {
-                                        oVM.setProperty('/busy', false);
-                                        MessageToast.show(oBundle.getText('approveSuccess'));
-                                        that._disableInlineActionButtons();
-                                        var oCtx = that.getView().getBindingContext();
-                                        if (oCtx) { oCtx.refresh(); }
-                                        that.getOwnerComponent().refreshUnreadCount();
-                                        that._publishRefresh({
-                                            source: 'action',
-                                            notificationId: oCtx ? oCtx.getProperty('NotificationId') : ''
-                                        });
-                                    })
-                                    .catch(function (oErr) {
-                                        oVM.setProperty('/busy', false);
-                                        var sMsg = oErr && oErr.message || '';
-                                        if (sMsg.toLowerCase().indexOf('operation is not enabled') !== -1) {
-                                            MessageBox.error(oBundle.getText('actionNotAvailable'));
-                                        } else {
-                                            MessageBox.error(sMsg);
-                                        }
-                                    });
-                            }
-                        }
-                    }
-                );
-            } else if (sSematicAction.toLowerCase() === 'reject') {
-                this._openRejectDialog(sRequestId);
-            }
-        },
-
         _getActionIcon: function (sSemanticObject, sActionLabel) {
             if (sActionLabel) {
                 var sLabelLower = sActionLabel.toLowerCase();
-                if (sLabelLower.indexOf('approve') !== -1) { return 'sap-icon://accept'; }
-                if (sLabelLower.indexOf('reject') !== -1) { return 'sap-icon://decline'; }
                 if (sLabelLower.indexOf('view') !== -1 || sLabelLower.indexOf('display') !== -1) { return 'sap-icon://arrow-right'; }
                 if (sLabelLower.indexOf('edit') !== -1) { return 'sap-icon://edit'; }
             }
@@ -440,81 +280,6 @@ sap.ui.define([
             if (sLower.indexOf('workflow') !== -1) { return 'sap-icon://workflow-tasks'; }
             if (sLower.indexOf('approval') !== -1) { return 'sap-icon://approvals'; }
             return 'sap-icon://action';
-        },
-
-        _openRejectDialog: function (sRequestId) {
-            var that = this;
-            this._sCurrentRequestId = sRequestId;
-
-            if (!this._oRejectDialog) {
-                Fragment.load({
-                    id: this.getView().getId(),
-                    name: 'com.gsp26.sap17.notificationcenter.fragment.RejectDialog',
-                    controller: this
-                }).then(function (oDialog) {
-                    that._oRejectDialog = oDialog;
-                    that.getView().addDependent(oDialog);
-                    that._oRejectDialog.open();
-                });
-            } else {
-                this._oRejectDialog.open();
-            }
-        },
-
-        onRejectDialogBeforeOpen: function () {
-            var oTextArea = this.getView().byId('idRejectReasonTextArea');
-            if (oTextArea) {
-                oTextArea.setValue('');
-            }
-        },
-
-        onRejectDialogAfterClose: function () {
-            this._sCurrentRequestId = null;
-        },
-
-        onRejectDialogSubmit: function () {
-            var that = this;
-            var oBundle = this._getBundle();
-            var oTextArea = this.getView().byId('idRejectReasonTextArea');
-            var sReason = oTextArea.getValue().trim();
-
-            if (!sReason) {
-                MessageBox.warning(oBundle.getText('rejectReasonRequired'));
-                return;
-            }
-
-            this._oRejectDialog.close();
-            var oVM = this.getView().getModel('view');
-            oVM.setProperty('/busy', true);
-
-            LeaveRequestHelper.reject(this._sCurrentRequestId, sReason)
-                .then(function () {
-                    oVM.setProperty('/busy', false);
-                    MessageToast.show(oBundle.getText('rejectSuccess'));
-                    that._disableInlineActionButtons();
-                    var oCtx = that.getView().getBindingContext();
-                    if (oCtx) { oCtx.refresh(); }
-                    that.getOwnerComponent().refreshUnreadCount();
-                    that._publishRefresh({
-                        source: 'action',
-                        notificationId: oCtx ? oCtx.getProperty('NotificationId') : ''
-                    });
-                })
-                .catch(function (oErr) {
-                    oVM.setProperty('/busy', false);
-                    var sMsg = oErr && oErr.message || '';
-                    if (sMsg.toLowerCase().indexOf('operation is not enabled') !== -1) {
-                        MessageBox.error(oBundle.getText('actionNotAvailable'));
-                    } else {
-                        MessageBox.error(sMsg);
-                    }
-                });
-        },
-
-        onRejectDialogCancel: function () {
-            if (this._oRejectDialog) {
-                this._oRejectDialog.close();
-            }
         },
 
         _fetchNavigationContext: function () {
