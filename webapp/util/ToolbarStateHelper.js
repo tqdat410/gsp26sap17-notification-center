@@ -14,8 +14,10 @@ sap.ui.define([], function () {
             var aSelected = oTable.getSelectedItems();
             var aItems = oTable.getItems();
             var bHasSel = aSelected.length > 0;
+            var bHasItems = aItems.length > 0;
 
             oViewModel.setProperty('/hasSelection', bHasSel);
+            oViewModel.setProperty('/hasItems', bHasItems);
             oViewModel.setProperty('/deleteButtonText', oBundle.getText(bHasSel ? 'delete' : 'deleteAll'));
 
             if (bHasSel) {

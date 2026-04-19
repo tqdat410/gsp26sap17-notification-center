@@ -37,7 +37,7 @@ sap.ui.define([
 
         onInit: function () {
             this.getView().setModel(new JSONModel({
-                selectedTab: 'all', hasSelection: false,
+                selectedTab: 'all', hasSelection: false, hasItems: false,
                 deleteButtonText: 'Delete', archiveButtonText: 'Archive',
                 archiveButtonIcon: 'sap-icon://folder',
                 markReadButtonText: 'Mark All as Read', markReadButtonIcon: 'sap-icon://email-read'
@@ -303,7 +303,9 @@ sap.ui.define([
         },
 
         onDeleteAction: function () {
-            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oM = this.getView().getModel(), that = this;
+            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), aItems = oT.getItems(), oM = this.getView().getModel(), that = this;
+            if (aS.length === 0 && aItems.length === 0) { return; }
+
             if (aS.length > 0) {
                 this._confirmAction('confirmDeleteSelected', function () {
                     ActionHelper.executeBatchAction(oM, aS, 'MarkAsDeleted').then(function () {
@@ -340,8 +342,10 @@ sap.ui.define([
         },
 
         onMarkReadAction: function () {
-            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), oB = this._getBundle(), sT = this.getView().getModel('view').getProperty('/markReadButtonText');
+            var oT = this.byId('notificationTable'), aS = oT.getSelectedItems(), aItems = oT.getItems(), oB = this._getBundle(), sT = this.getView().getModel('view').getProperty('/markReadButtonText');
             var bMR = (sT === oB.getText('markRead') || sT === oB.getText('markAllRead')), sA = bMR ? 'MarkAsRead' : 'MarkAsUnread', oM = this.getView().getModel(), that = this;
+            if (aS.length === 0 && aItems.length === 0) { return; }
+
             if (aS.length > 0) {
                 ActionHelper.executeBatchAction(oM, aS, sA).then(function () {
                     that._showToast(bMR ? 'selectedNotificationsMarkedRead' : 'selectedNotificationsMarkedUnread');
@@ -366,6 +370,8 @@ sap.ui.define([
 
         onMarkAllAsRead: function () {
             var that = this;
+            if (this.byId('notificationTable').getItems().length === 0) { return; }
+
             ActionHelper.executeCollectionAction(this.getView().getModel(), 'MarkAllAsRead').then(function () {
                 that._showToast('allNotificationsMarkedRead');
                 that._refreshAfterAction();

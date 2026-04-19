@@ -63,9 +63,15 @@ sap.ui.define([
 			this.aStubs = [];
 			this.oBundle = createBundle();
 			this.oMainModel = {};
+			this.mViewProps = {
+				archiveButtonText: that.oBundle.getText("archive")
+			};
 			this.oViewModel = {
-				getProperty: function () {
-					return that.oBundle.getText("archive");
+				getProperty: function (sPath) {
+					return that.mViewProps[sPath.replace(/^\//, "")];
+				},
+				setProperty: function (sPath, vValue) {
+					that.mViewProps[sPath.replace(/^\//, "")] = vValue;
 				}
 			};
 			this.oTable = {
@@ -155,6 +161,10 @@ sap.ui.define([
 	});
 
 	QUnit.test("confirms before deleting all notifications", function (assert) {
+		this.oTable.getItems = function () {
+			return [createItem("1000")];
+		};
+
 		var oExecuteCollectionActionStub = sinon.stub(ActionHelper, "executeCollectionAction").returns(Promise.resolve());
 		var oToastStub = sinon.stub(MessageToast, "show");
 		this.aStubs.push(oExecuteCollectionActionStub, oToastStub);
@@ -281,6 +291,9 @@ sap.ui.define([
 		this.oViewModel.getProperty = function () {
 			return "Mark as Unread";
 		};
+		this.oTable.getItems = function () {
+			return [createItem("1008")];
+		};
 
 		var oExecuteCollectionActionStub = sinon.stub(ActionHelper, "executeCollectionAction").returns(Promise.resolve());
 		var oToastStub = sinon.stub(MessageToast, "show");
@@ -293,5 +306,55 @@ sap.ui.define([
 			assert.ok(oToastStub.calledOnceWithExactly("All notifications marked as unread."), "unread toast is shown");
 			assert.ok(this.bRefreshed, "list is refreshed");
 		}.bind(this));
+	});
+
+	QUnit.test("tracks whether the current list has visible items", function (assert) {
+		this.oController._updateToolbarButtons();
+
+		assert.strictEqual(this.oViewModel.getProperty("/hasItems"), false, "empty table sets hasItems=false");
+
+		this.oTable.getItems = function () {
+			return [createItem("1010")];
+		};
+
+		this.oController._updateToolbarButtons();
+
+		assert.strictEqual(this.oViewModel.getProperty("/hasItems"), true, "non-empty table sets hasItems=true");
+	});
+
+	QUnit.test("does nothing when delete is triggered with an empty list", function (assert) {
+		var oExecuteCollectionActionStub = sinon.stub(ActionHelper, "executeCollectionAction");
+		var oExecuteBatchActionStub = sinon.stub(ActionHelper, "executeBatchAction");
+		var oConfirmStub = sinon.stub(MessageBox, "confirm");
+		this.aStubs.push(oExecuteCollectionActionStub, oExecuteBatchActionStub, oConfirmStub);
+
+		this.oController.onDeleteAction();
+
+		assert.ok(oConfirmStub.notCalled, "no confirmation dialog is shown");
+		assert.ok(oExecuteCollectionActionStub.notCalled, "no collection delete action is executed");
+		assert.ok(oExecuteBatchActionStub.notCalled, "no batch delete action is executed");
+		assert.notOk(this.bRefreshed, "list is not refreshed");
+	});
+
+	QUnit.test("does nothing when mark-read action is triggered with an empty list", function (assert) {
+		var oExecuteCollectionActionStub = sinon.stub(ActionHelper, "executeCollectionAction");
+		var oExecuteBatchActionStub = sinon.stub(ActionHelper, "executeBatchAction");
+		this.aStubs.push(oExecuteCollectionActionStub, oExecuteBatchActionStub);
+
+		this.oController.onMarkReadAction();
+
+		assert.ok(oExecuteCollectionActionStub.notCalled, "no collection mark action is executed");
+		assert.ok(oExecuteBatchActionStub.notCalled, "no batch mark action is executed");
+		assert.notOk(this.bRefreshed, "list is not refreshed");
+	});
+
+	QUnit.test("does nothing when mark-all-as-read is triggered with an empty list", function (assert) {
+		var oExecuteCollectionActionStub = sinon.stub(ActionHelper, "executeCollectionAction");
+		this.aStubs.push(oExecuteCollectionActionStub);
+
+		this.oController.onMarkAllAsRead();
+
+		assert.ok(oExecuteCollectionActionStub.notCalled, "mark-all-as-read is skipped for an empty list");
+		assert.notOk(this.bRefreshed, "list is not refreshed");
 	});
 });
