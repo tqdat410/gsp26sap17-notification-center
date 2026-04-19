@@ -23,6 +23,7 @@ sap.ui.define([
     var EVENT_REFRESH = 'refreshList';
     var NAV_CONTEXT_WINDOW_SIZE = 100;
     var NAV_CONTEXT_WINDOW_MARGIN = 30;
+    var SILENT_RECONCILE_DELAY_MS = 400;
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationList', {
 
@@ -49,11 +50,13 @@ sap.ui.define([
             this._dDateFrom = null;
             this._dDateTo = null;
             this._bPendingRefresh = false;
+            this._iSilentReconcileTimer = null;
             this.getOwnerComponent().getRouter().getRoute('main').attachPatternMatched(this._onRouteMatched, this);
             this.getOwnerComponent().getEventBus().subscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
         },
 
         onExit: function () {
+            clearTimeout(this._iSilentReconcileTimer);
             this.getOwnerComponent().getEventBus().unsubscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
         },
 
@@ -93,9 +96,11 @@ sap.ui.define([
                     var oItemCtx = aItems[i].getBindingContext();
                     if (oItemCtx && String(oItemCtx.getProperty('NotificationId')) === String(sDeletedId)) {
                         aItems[i].setVisible(false);
+                        this._adjustTableTitleCount(-1);
                         break;
                     }
                 }
+                this._scheduleSilentReconcile();
             }
 
             // Flush pending refresh from EventBus (when table was not visible)
@@ -161,18 +166,51 @@ sap.ui.define([
         _updateTableTitleCount: function () {
             var oList = this.byId('notificationTable');
             var oBinding = oList.getBinding('items');
-            var oTitle = this.byId('tableTitle');
-            var oBundle = this._getBundle();
+            var that = this;
 
-            if (oBinding && oTitle) {
+            if (oBinding) {
                 oBinding.attachEventOnce('dataReceived', function () {
                     var iCount = oBinding.getLength();
                     if (iCount === undefined) {
                         iCount = oList.getItems().length;
                     }
-                    oTitle.setText(oBundle.getText('notifications') + ' (' + iCount + ')');
+                    that._setTableTitleCount(iCount);
                 });
             }
+        },
+        
+        _adjustTableTitleCount: function (iDelta) {
+            var oTitle = this.byId('tableTitle');
+            if (!oTitle) { return; }
+            var sText = oTitle.getText() || '';
+            var aMatch = sText.match(/\((\d+)\)/);
+            var iCurrentCount = aMatch ? parseInt(aMatch[1], 10) : 0;
+            if (isNaN(iCurrentCount)) { iCurrentCount = 0; }
+            this._setTableTitleCount(Math.max(0, iCurrentCount + iDelta));
+        },
+
+        _setTableTitleCount: function (iCount) {
+            var oTitle = this.byId('tableTitle');
+            if (!oTitle) { return; }
+            oTitle.setText(this._getBundle().getText('notifications') + ' (' + iCount + ')');
+        },
+
+        _scheduleSilentReconcile: function () {
+            var that = this;
+            clearTimeout(this._iSilentReconcileTimer);
+            this._iSilentReconcileTimer = setTimeout(function () {
+                var oTable = that.byId('notificationTable');
+                var oBinding = oTable ? oTable.getBinding('items') : null;
+                if (!oBinding) { return; }
+
+                var bPrevBusyIndicator = oTable.getEnableBusyIndicator();
+                oTable.setEnableBusyIndicator(false);
+                oBinding.attachEventOnce('dataReceived', function () {
+                    oTable.setEnableBusyIndicator(bPrevBusyIndicator);
+                    that._updateTableTitleCount();
+                });
+                oBinding.refresh();
+            }, SILENT_RECONCILE_DELAY_MS);
         },
 
         onNotificationPress: function (oEvent) { this._markAsReadAndNavigate(oEvent.getSource().getBindingContext()); },
