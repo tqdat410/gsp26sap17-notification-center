@@ -108,11 +108,13 @@
                                         text="{view>/deleteButtonText}"
                                         icon="sap-icon://delete" type="Reject"
                                         press=".onDeleteAction"
+                                        visible="{view>/showReadDeleteActions}"
                                         enabled="{= ${view>/hasSelection} || ${view>/hasItems} }"/>
                                     <Button id="btnMarkRead"
                                         text="{view>/markReadButtonText}"
                                         icon="{view>/markReadButtonIcon}"
                                         type="Transparent" press=".onMarkReadAction"
+                                        visible="{view>/showReadDeleteActions}"
                                         enabled="{= ${view>/hasSelection} || ${view>/hasItems} }"/>
                                     <Button id="btnArchive"
                                         text="{view>/archiveButtonText}"
@@ -173,7 +175,7 @@
         </semantic:content>
 
         <semantic:positiveAction>
-            <semantic:PositiveAction text="{i18n>markAllRead}" press=".onMarkAllAsRead" enabled="{view>/hasItems}"/>
+            <semantic:PositiveAction text="{i18n>markAllRead}" press=".onMarkAllAsRead" visible="{view>/showReadDeleteActions}" enabled="{view>/hasItems}"/>
         </semantic:positiveAction>
 
         <semantic:negativeAction>

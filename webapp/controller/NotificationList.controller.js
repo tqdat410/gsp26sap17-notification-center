@@ -37,7 +37,7 @@ sap.ui.define([
 
         onInit: function () {
             this.getView().setModel(new JSONModel({
-                selectedTab: 'all', hasSelection: false, hasItems: false,
+                selectedTab: 'all', hasSelection: false, hasItems: false, showReadDeleteActions: true,
                 deleteButtonText: 'Delete', archiveButtonText: 'Archive',
                 archiveButtonIcon: 'sap-icon://folder',
                 markReadButtonText: 'Mark All as Read', markReadButtonIcon: 'sap-icon://email-read'
@@ -51,6 +51,7 @@ sap.ui.define([
             this._bPendingRefresh = false;
             this.getOwnerComponent().getRouter().getRoute('main').attachPatternMatched(this._onRouteMatched, this);
             this.getOwnerComponent().getEventBus().subscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
+            this._updateTabActionVisibility();
         },
 
         onExit: function () {
@@ -112,7 +113,12 @@ sap.ui.define([
         onTabSelect: function (oEvent) {
             this._sCurrentTab = oEvent.getParameter('key');
             this.getView().getModel('view').setProperty('/selectedTab', this._sCurrentTab);
+            this._updateTabActionVisibility();
             this._applyFilters();
+        },
+
+        _updateTabActionVisibility: function () {
+            this.getView().getModel('view').setProperty('/showReadDeleteActions', this._sCurrentTab !== 'archived');
         },
 
         onSearch: function (oEvent) { this._sSearchQuery = oEvent.getParameter('newValue'); this._applyFilters(); },

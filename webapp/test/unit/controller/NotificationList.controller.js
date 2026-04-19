@@ -64,7 +64,8 @@ sap.ui.define([
 			this.oBundle = createBundle();
 			this.oMainModel = {};
 			this.mViewProps = {
-				archiveButtonText: that.oBundle.getText("archive")
+				archiveButtonText: that.oBundle.getText("archive"),
+				showReadDeleteActions: true
 			};
 			this.oViewModel = {
 				getProperty: function (sPath) {
@@ -320,6 +321,22 @@ sap.ui.define([
 		this.oController._updateToolbarButtons();
 
 		assert.strictEqual(this.oViewModel.getProperty("/hasItems"), true, "non-empty table sets hasItems=true");
+	});
+
+	QUnit.test("hides read and delete actions on archived tab", function (assert) {
+		this.oController._sCurrentTab = "archived";
+
+		this.oController._updateTabActionVisibility();
+
+		assert.strictEqual(this.oViewModel.getProperty("/showReadDeleteActions"), false, "archived tab hides read and delete actions");
+	});
+
+	QUnit.test("shows read and delete actions on non-archived tabs", function (assert) {
+		this.oController._sCurrentTab = "unread";
+
+		this.oController._updateTabActionVisibility();
+
+		assert.strictEqual(this.oViewModel.getProperty("/showReadDeleteActions"), true, "non-archived tab shows read and delete actions");
 	});
 
 	QUnit.test("does nothing when delete is triggered with an empty list", function (assert) {
