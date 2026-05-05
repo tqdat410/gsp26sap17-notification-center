@@ -216,7 +216,6 @@
             </Action>
             <Action Name="CustomCreate" EntitySetPath="_it" IsBound="true">
                 <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.z17_sd_notification.v0001.NotificationType)" Nullable="false"/>
-                <Parameter Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
                 <Parameter Name="EventCode" Type="Edm.String" Nullable="false" MaxLength="30"/>
                 <Parameter Name="UsingTemplate" Type="Edm.Boolean" Nullable="false"/>
                 <Parameter Name="Title" Type="Edm.String" Nullable="false" MaxLength="120"/>

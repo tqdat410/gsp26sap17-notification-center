@@ -23,6 +23,7 @@ sap.ui.define([
     var EVENT_REFRESH = 'refreshList';
     var NAV_CONTEXT_WINDOW_SIZE = 100;
     var NAV_CONTEXT_WINDOW_MARGIN = 30;
+    var SEARCH_DEBOUNCE_DELAY_MS = 300;
 
     return Controller.extend('com.gsp26.sap17.notificationcenter.controller.NotificationList', {
 
@@ -55,6 +56,10 @@ sap.ui.define([
         },
 
         onExit: function () {
+            if (this._iSearchDebounceTimer) {
+                clearTimeout(this._iSearchDebounceTimer);
+                this._iSearchDebounceTimer = null;
+            }
             this.getOwnerComponent().getEventBus().unsubscribe(EVENT_CHANNEL, EVENT_REFRESH, this._onRefreshList, this);
         },
 
@@ -121,7 +126,18 @@ sap.ui.define([
             this.getView().getModel('view').setProperty('/showReadDeleteActions', this._sCurrentTab !== 'archived');
         },
 
-        onSearch: function (oEvent) { this._sSearchQuery = oEvent.getParameter('newValue'); this._applyFilters(); },
+        onSearch: function (oEvent) {
+            this._sSearchQuery = oEvent.getParameter('newValue') || '';
+
+            if (this._iSearchDebounceTimer) {
+                clearTimeout(this._iSearchDebounceTimer);
+            }
+
+            this._iSearchDebounceTimer = setTimeout(function () {
+                this._iSearchDebounceTimer = null;
+                this._applyFilters();
+            }.bind(this), SEARCH_DEBOUNCE_DELAY_MS);
+        },
         onCategoryFilterChange: function (oEvent) { this._sCategoryFilter = oEvent.getParameter('selectedItem').getKey(); this._applyFilters(); },
         onPriorityFilterChange: function (oEvent) { this._sPriorityFilter = oEvent.getParameter('selectedItem').getKey(); this._applyFilters(); },
 
